@@ -1,32 +1,25 @@
-# About Me
+# Hi I'm Jacquelyn
 
-## Biography
+## Principal Product Design Director at Salesforce
 
-Hey there! I am a PhD student at the [Computer Science and Engineering](https://www.eecs.psu.edu/) department of [Pennsylvania State University](https://www.psu.edu/). Previously, I received my master's degree in [Computer Science](https://www.bu.edu/cs/) from [Boston University](https://www.bu.edu/) and my bachelor’s degree in [Software Engineering](http://sse.tongji.edu.cn/) from [Tongji University](https://www.tongji.edu.cn/).
+Thanks for stopping by! I am a creative technologist and product designer based in the U.S., specializing in AI-driven experiences, product design, and creative technology.
 
-I'm trying to find a balance between research and engineering.
+My work spans from building consumer AI features to designing accessible learning tools, generative art, and experimental storytelling. I believe technology isn’t just built for utility—it’s crafted through curiosity, iteration, and an unrelenting pursuit of meaningful human experiences.
 
-My current research interests primarily focus on understanding and enhancing the continuity, generalizability, efficiency, and other key properties of machine learning. I am also interested in large multimodal models.
-
-I'm also learning web development and building machine learning software and systems.
+I believe AI is meant to elevate you, not replace you.
 
 
 ## Contact
 
 Contact me by:
 
-- Email: [renovamenzxh@gmail.com](mailto:renovamenzxh@gmail.com)
-- Github: [@Renovamen](https://github.com/Renovamen)
-- [Google Scholar](https://scholar.google.com/citations?user=RuW6xgMAAAAJ)
-- Linkedin: [xiaohan-zou](https://www.linkedin.com/in/xiaohan-zou)
-- 知乎: [@西伯利亚大恶龙](https://www.zhihu.com/people/chao-neng-gui-su)
-- Personal Website: [zxh.me](https://zxh.me)
+- Email: [jacquelyn.halpern@gmail.com](mailto:jacquelyn.halpern@gmail.com)
+- Github: [@your-github-username](https://github.com/your-github-username)
+- LinkedIn: [your-linkedin-profile](https://www.linkedin.com/in/your-linkedin-profile)
+- Passion Project: [www.lilchef.app](https://www.lilchef.app)
 
 
 ## Résumé
 
-- Normal version: [English](https://zxh.me/files/cv/en.pdf) / [中文](https://zxh.me/files/cv/cn.pdf)
-
-  中文版的更新很可能不及时
-
-- Interesting version: [portfolio.zxh.me](https://portfolio.zxh.me) / [resume.zxh.io](https://resume.zxh.io)
+- Download my resume: [PDF Version](path/to/your/resume.pdf)
+- View my portfolio: [This website!](#)

@@ -73,11 +73,32 @@ const apps: AppsData[] = [
     content: <Terminal />
   },
   {
+    id: "figma",
+    title: "Figma",
+    desktop: false, // opens in a new tab
+    img: "img/icons/figma.png", // temporary icon; swap to "img/icons/figma.png" later
+    link: "https://www.figma.com/"
+  },
+  {
+    id: "medium",
+    title: "Medium",
+    desktop: false,
+    img: "img/icons/medium.png", // temporary; swap to img/icons/medium.png later
+    link: "https://medium.com/@jacquelynyakira"
+  },
+  {
     id: "github",
     title: "Github",
     desktop: false,
     img: "img/icons/github.png",
     link: "https://github.com/Renovamen/playground-macos"
+  },
+  {
+    id: "dribbble",
+    title: "Dribbble",
+    desktop: false,
+    img: "img/icons/dribbble.png",
+    link: "https://dribbble.com/Jacquelynyakira"
   }
 ];
 
