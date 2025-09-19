@@ -11,21 +11,28 @@ const bear: BearData[] = [
         title: "About Me",
         file: "markdown/about-me.md",
         icon: "i-la:dragon",
-        excerpt: "Hey there! I'm a dragon lost in human world..."
+        excerpt: "I believe that AI is meant to elevate you, not replace you."
       },
       {
-        id: "github-stats",
-        title: "Github Stats",
-        file: "markdown/github-stats.md",
-        icon: "i-icon-park-outline:github",
-        excerpt: "Here are some status about my github account..."
+        id: "educational-talks-workshops",
+        title: "Talks, & Workshops",
+        file: "markdown/educational-talks-workshops.md",
+        icon: "i-material-symbols:school",
+        excerpt: "Educational content, workshops, and learning resources..."
+      },
+      {
+        id: "awards-and-recognition",
+        title: "Awards and Publications",
+        file: "markdown/awards-and-recognition.md",
+        icon: "i-material-symbols:workspace-premium",
+        excerpt: "Honors, awards, and special acknowledgments throughout my career..."
       },
       {
         id: "about-site",
         title: "About This Site",
         file: "markdown/about-site.md",
         icon: "i-octicon:browser",
-        excerpt: "Something about this personal portfolio site..."
+        excerpt: "Why I chose this design"
       }
     ]
   },
@@ -35,12 +42,13 @@ const bear: BearData[] = [
     icon: "i-octicon:repo",
     md: [
       {
-        id: "flint",
-        title: "Flint",
-        file: "https://raw.githubusercontent.com/Renovamen/flint/main/README.md",
-        icon: "i-heroicons-solid:fire",
-        excerpt: "A deep learning framework implemented in Numpy...",
-        link: "https://github.com/Renovamen/flint"
+        id: "salesforce-trailhead",
+        title: "Salesforce Trailhead",
+        file: "markdown/salesforce-trailhead.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "Creating innovative learning experiences for millions of Trailblazers worldwide...",
+        link: "https://trailhead.salesforce.com"
       },
       {
         id: "portfolio-macos",

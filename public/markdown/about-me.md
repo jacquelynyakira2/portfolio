@@ -14,12 +14,10 @@ I believe AI is meant to elevate you, not replace you.
 Contact me by:
 
 - Email: [jacquelyn.halpern@gmail.com](mailto:jacquelyn.halpern@gmail.com)
-- Github: [@your-github-username](https://github.com/your-github-username)
-- LinkedIn: [your-linkedin-profile](https://www.linkedin.com/in/your-linkedin-profile)
+- LinkedIn: [/jacquelynhalpern](https://www.linkedin.com/in/jacquelynhalpern/)
 - Passion Project: [www.lilchef.app](https://www.lilchef.app)
 
 
-## Résumé
+## Extra Carricular
 
-- Download my resume: [PDF Version](path/to/your/resume.pdf)
-- View my portfolio: [This website!](#)
+- I sit on the Dean's Board at the Herron School of Art, helping bring perspective to the future of education and design with AI

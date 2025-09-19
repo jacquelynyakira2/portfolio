@@ -1,5 +1,11 @@
 import { appBarHeight } from "~/utils";
 import type { AppsData } from "~/types";
+import Notes from "~/components/apps/Notes";
+import Typora from "~/components/apps/Typora";
+import Safari from "~/components/apps/Safari";
+import VSCode from "~/components/apps/VSCode";
+import FaceTime from "~/components/apps/FaceTime";
+import Terminal from "~/components/apps/Terminal";
 
 const apps: AppsData[] = [
   {
@@ -10,14 +16,14 @@ const apps: AppsData[] = [
   },
   {
     id: "bear",
-    title: "Bear",
+    title: "Notes",
     desktop: true,
     width: 860,
     height: 500,
     show: true,
     y: -40,
-    img: "img/icons/bear.png",
-    content: <Bear />
+    img: "img/icons/notes.png",
+    content: <Notes />
   },
   {
     id: "typora",
@@ -87,11 +93,11 @@ const apps: AppsData[] = [
     link: "https://medium.com/@jacquelynyakira"
   },
   {
-    id: "github",
-    title: "Github",
+    id: "threads",
+    title: "Threads",
     desktop: false,
-    img: "img/icons/github.png",
-    link: "https://github.com/Renovamen/playground-macos"
+    img: "img/icons/threads.png",
+    link: "https://www.threads.com/@jacquelynyakira"
   },
   {
     id: "dribbble",
