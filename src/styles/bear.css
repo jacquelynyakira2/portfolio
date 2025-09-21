@@ -6,6 +6,8 @@
 .bear .markdown h2,
 .bear .markdown h3,
 .bear .markdown h4 {
+  font-family: "Inter Variable", "Inter", "Avenir Next LT Pro", "Helvetica Neue", SFCompactRounded,
+    -apple-system, Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", sans-serif;
   @apply font-600 relative text-gray-900 dark:text-gray-100;
 }
 
@@ -13,7 +15,7 @@
 .bear .markdown h2,
 .bear .markdown h3,
 .bear .markdown h4 {
-  @apply mt-7;
+  @apply mt-12;
 }
 
 /* Remove top margin for the very first element to avoid extra space at the top */
@@ -33,22 +35,34 @@
   @apply text-3xl;
 }
 
+.bear .markdown h1:first-of-type {
+  padding-top: 48px;
+}
+
 .bear .markdown h1::before { content: ""; }
 
 .bear .markdown h2 {
-  @apply text-2xl;
+  font-family: var(--font-mono, "JetBrains Mono", "Fira Code", monospace);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 16px;
 }
 
 .bear .markdown h2::before { content: ""; }
 
 .bear .markdown h3 {
-  @apply text-xl;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .bear .markdown h3::before { content: ""; }
 
-.bear .markdown h3 {
-  @apply text-xl;
+.bear .markdown h2 + h3 {
+  margin-top: 16px;
 }
 
 .bear .markdown h4 {

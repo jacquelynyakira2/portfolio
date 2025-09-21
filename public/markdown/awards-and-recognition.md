@@ -2,9 +2,13 @@
 
 Welcome to my awards and recognition page! Here you'll find highlights of honors, awards, and special acknowledgments I've received.
 
+---
+
 ## Recent Publications
 
 *Coming soon...*
+
+---
 
 ## Past Awards
 
@@ -19,12 +23,16 @@ Welcome to my awards and recognition page! Here you'll find highlights of honors
 - Global attendance: 60% AMER, 28% JAPAC, and 10% EMEA
 - 12 orgs participated
 
+---
+
 ## Areas of Recognition
 
 - **AI & Machine Learning**: Innovative contributions to AI-driven projects and solutions
 - **Design & Accessibility**: Advancing inclusive and accessible technology
 - **Creative Technology**: Pioneering work in generative art and digital storytelling
 - **Human-Centered Design**: Excellence in creating meaningful user experiences
+
+---
 
 ## Share an Honor
 

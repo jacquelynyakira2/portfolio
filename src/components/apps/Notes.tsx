@@ -250,7 +250,6 @@ const Content = ({
           className={`markdown w-full ${fullWidth ? "px-6" : "pl-12 pr-6"} pt-0 pb-6 ${
             fullWidth ? "max-w-[750px] mx-auto" : ""
           }`}
-          text="c-700 dark:gray-100"
         >
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkMath]}
@@ -259,6 +258,7 @@ const Content = ({
               [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }]
             ]}
             components={Highlighter(dark as boolean)}
+            skipHtml={false}
           >
             {storeMd[contentID]}
           </ReactMarkdown>
@@ -300,6 +300,9 @@ const Bear = () => {
   // Helpers for full-width top navigation
   const goPrev = () => {
     const list = state.midbarList;
+    if (!list.length) {
+      return;
+    }
     const idx = (state.curMidbar - 1 + list.length) % list.length;
     const item = list[idx];
     setContent(item.id, item.file, idx);
@@ -307,10 +310,55 @@ const Bear = () => {
 
   const goNext = () => {
     const list = state.midbarList;
+    if (!list.length) {
+      return;
+    }
     const idx = (state.curMidbar + 1) % list.length;
     const item = list[idx];
     setContent(item.id, item.file, idx);
   };
+
+  useEffect(() => {
+    if (!fullWidth) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented) {
+        return;
+      }
+
+      if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) {
+        return;
+      }
+
+      const target = event.target as HTMLElement | null;
+      if (target) {
+        const tag = target.tagName;
+        if (
+          tag === "INPUT" ||
+          tag === "TEXTAREA" ||
+          tag === "SELECT" ||
+          target.isContentEditable
+        ) {
+          return;
+        }
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goPrev();
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goNext();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [fullWidth, goNext, goPrev]);
 
   return (
     <div className="bear font-avenir flex h-full" bg="gray-50 dark:gray-900">

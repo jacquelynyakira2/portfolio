@@ -6,7 +6,7 @@ Thanks for stopping by! I am a creative technologist and product designer based 
 
 My work spans from building consumer AI features to designing accessible learning tools, generative art, and experimental storytelling. I believe technology isn’t just built for utility—it’s crafted through curiosity, iteration, and an unrelenting pursuit of meaningful human experiences.
 
-I believe AI is meant to elevate you, not replace you.
+**I believe AI is meant to elevate you, not replace you.**
 
 
 ## Contact
@@ -21,3 +21,4 @@ Contact me by:
 ## Extra Carricular
 
 - I sit on the Dean's Board at the Herron School of Art, helping bring perspective to the future of education and design with AI
+- Each year I run a 6 month cohort for senior college students to help facilitate their end of year capstone projects. 
