@@ -3,6 +3,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeExternalLinks from "rehype-external-links";
+import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula, prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 import bear from "~/configs/bear";
@@ -175,6 +176,98 @@ const getRepoURL = (url: string) => {
   return url.slice(0, -10) + "/";
 };
 
+const processMarkdownWithHTML = (text: string): string => {
+  // Basic markdown to HTML conversion
+  const html = text
+    // Headers
+    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+    .replace(/^# (.*$)/gim, "<h1>$1</h1>")
+    // Bold and italic
+    .replace(/\*\*(.*)\*\*/gim, "<strong>$1</strong>")
+    .replace(/\*(.*)\*/gim, "<em>$1</em>")
+    // Links
+    .replace(
+      /\[([^\]]*)\]\(([^\)]*)\)/gim,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+    )
+    // Images
+    .replace(/!\[([^\]]*)\]\(([^\)]*)\)/gim, '<img alt="$1" src="$2" />')
+    // Lists
+    .replace(/^\- (.*$)/gim, "<li>$1</li>")
+    // Line breaks
+    .replace(/\n\n/gim, "</p><p>")
+    .replace(/\n/gim, "<br />");
+
+  // Wrap in paragraphs but avoid wrapping HTML elements
+  const lines = text.split("\n");
+  let result = "";
+  let inList = false;
+  let inHTML = false;
+
+  for (let line of lines) {
+    line = line.trim();
+
+    // Check if line contains HTML
+    if (line.includes("<iframe") || line.includes("<div") || line.includes("</div>")) {
+      inHTML = true;
+      result += line + "\n";
+      if (line.includes("</div>") || line.includes("</iframe>")) {
+        inHTML = false;
+      }
+      continue;
+    }
+
+    // Skip empty lines
+    if (!line) {
+      if (!inHTML && !inList) result += "</p><p>";
+      continue;
+    }
+
+    // Handle headers
+    if (line.startsWith("#")) {
+      const level = line.match(/^#+/)[0].length;
+      const text = line.replace(/^#+\s*/, "");
+      result += `<h${level}>${text}</h${level}>`;
+      continue;
+    }
+
+    // Handle lists
+    if (line.startsWith("- ")) {
+      if (!inList) {
+        result += "<ul>";
+        inList = true;
+      }
+      result += `<li>${line.substring(2)}</li>`;
+      continue;
+    } else if (inList) {
+      result += "</ul>";
+      inList = false;
+    }
+
+    // Handle bold/italic/links
+    line = line
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*/g, "<em>$1</em>")
+      .replace(
+        /\[([^\]]*)\]\(([^\)]*)\)/g,
+        '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+      )
+      .replace(/!\[([^\]]*)\]\(([^\)]*)\)/g, '<img alt="$1" src="$2" />');
+
+    // Regular paragraph
+    if (!inHTML) {
+      result += `<p>${line}</p>`;
+    } else {
+      result += line + "\n";
+    }
+  }
+
+  if (inList) result += "</ul>";
+
+  return result;
+};
+
 const fixImageURL = (text: string, contentURL: string): string => {
   text = text.replace(/&nbsp;/g, "");
   if (contentURL.indexOf("raw.githubusercontent.com") !== -1) {
@@ -254,10 +347,17 @@ const Content = ({
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkMath]}
             rehypePlugins={[
+              rehypeRaw,
               rehypeKatex,
               [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }]
             ]}
-            components={Highlighter(dark as boolean)}
+            components={{
+              ...Highlighter(dark as boolean),
+              // Allow HTML elements by passing through props
+              iframe: ({ node, ...props }) => <iframe {...props} />,
+              div: ({ node, ...props }) => <div {...props} />,
+              img: ({ node, ...props }) => <img {...props} />
+            }}
             skipHtml={false}
           >
             {storeMd[contentID]}

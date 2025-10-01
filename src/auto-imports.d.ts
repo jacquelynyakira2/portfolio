@@ -46,6 +46,7 @@ declare global {
   const useMemo: typeof import('react')['useMemo']
   const useReducer: typeof import('react')['useReducer']
   const useRef: typeof import('react')['useRef']
+  const useSpotifyNowPlaying: typeof import('./hooks/useSpotifyNowPlaying')['useSpotifyNowPlaying']
   const useState: typeof import('react')['useState']
   const useStore: typeof import('./stores/index')['useStore']
   const useSyncExternalStore: typeof import('react')['useSyncExternalStore']

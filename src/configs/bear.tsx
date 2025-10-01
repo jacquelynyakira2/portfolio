@@ -76,6 +76,15 @@ const bear: BearData[] = [
     icon: "i-carbon:favorite-filled",
     md: [
       {
+        id: "colorgen-project",
+        title: "ColorGen - Figma Plugin",
+        file: "markdown/colorgen-project.md",
+        icon: "i-material-symbols:palette",
+        excerpt:
+          "A Figma plugin that generates harmonious color palettes to streamline design workflows...",
+        link: "https://github.com/jacquelynyakira2/ColorGen"
+      },
+      {
         id: "passion-placeholder",
         title: "Coming Soon",
         file: "markdown/passions-coming-soon.md",

@@ -409,6 +409,59 @@
   }
 }
 
+/* ===== EMBEDDED CONTENT ===== */
+
+/* Video embeds (YouTube, Vimeo, etc.) */
+.markdown iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  min-height: 315px;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin: var(--space-lg) 0;
+}
+
+.dark .markdown iframe {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive video container */
+.markdown .video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  margin: var(--space-lg) 0;
+}
+
+.markdown .video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* Images */
+.markdown img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: var(--space-md) 0;
+}
+
+/* HTML divs for custom layouts */
+.markdown div {
+  margin: inherit;
+}
+
+.markdown div[style*="text-align:center"] {
+  text-align: center;
+}
+
 /* ===== UTILITY CLASSES ===== */
 
 .text-balance {
