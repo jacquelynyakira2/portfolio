@@ -139,23 +139,40 @@
 .markdown a {
   color: #2563eb;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: all 0.2s ease;
   font-weight: 500;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.markdown a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #2563eb;
+  transition: width 0.3s ease;
 }
 
 .markdown a:hover {
   color: #1d4ed8;
-  border-bottom-color: #2563eb;
+}
+
+.markdown a:hover::after {
+  width: 100%;
 }
 
 .dark .markdown a {
   color: #60a5fa;
 }
 
+.dark .markdown a::after {
+  background-color: #60a5fa;
+}
+
 .dark .markdown a:hover {
   color: #93c5fd;
-  border-bottom-color: #60a5fa;
 }
 
 /* ===== LISTS ===== */

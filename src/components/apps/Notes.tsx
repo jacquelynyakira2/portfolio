@@ -224,12 +224,15 @@ const processMarkdownWithHTML = (text: string): string => {
       continue;
     }
 
-    // Handle headers
+    // Handle headers safely, checking for null from match()
     if (line.startsWith("#")) {
-      const level = line.match(/^#+/)[0].length;
-      const text = line.replace(/^#+\s*/, "");
-      result += `<h${level}>${text}</h${level}>`;
-      continue;
+      const match = line.match(/^#+/);
+      if (match) {
+        const level = match[0].length; // Number of '#' determines header level
+        const text = line.replace(/^#+\s*/, ""); // Remove leading '#' and spaces
+        result += `<h${level}>${text}</h${level}>`;
+        continue;
+      }
     }
 
     // Handle lists
