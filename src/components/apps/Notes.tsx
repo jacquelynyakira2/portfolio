@@ -472,7 +472,7 @@ const Bear = () => {
       </div>
       <div
         className={`overflow-auto border-r transition-all duration-300 ease-in-out ${
-          fullWidth ? "w-0 opacity-0" : "w-72 opacity-100"
+          fullWidth ? "w-0 opacity-0" : "w-66 opacity-100"
         }`}
         border="c-300 dark:c-700"
       >

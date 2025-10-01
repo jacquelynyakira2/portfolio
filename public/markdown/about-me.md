@@ -1,4 +1,8 @@
-# Hi I'm Jacquelyn
+<div style="text-align: center; margin-bottom: 1rem;">
+  <img src="/logo/logo513.png" alt="Jacquelyn's Logo" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+</div>
+
+<h1 style="margin-top: 0; padding-top: 0;">Hi I'm Jacquelyn</h1>
 
 ## Principal Product Design Director at Salesforce
 

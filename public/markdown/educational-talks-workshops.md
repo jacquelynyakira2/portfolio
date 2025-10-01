@@ -66,6 +66,10 @@ Welcome to my educational content hub! Here you'll find information about my wor
 
 ---
 
+<div style="margin: 0.5rem 0; background: transparent; padding: 0;">
+  <img src="/img/projects/speaking.png" alt="Speaking at an event" style="width: 100%; max-width: 600px; aspect-ratio: 5/4; object-fit: cover; border-radius: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+</div>
+
 ## Hire me to speak on these topics! 
 
 ### **Generative AI**

@@ -2,7 +2,7 @@ import type { UserData } from "~/types";
 
 const user: UserData = {
   name: "Jacquelyn Yakira",
-  avatar: "img/ui/avatar.jpg",
+  avatar: "logo/logo513.png",
   password: ""
 };
 
