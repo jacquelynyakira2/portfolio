@@ -51,6 +51,60 @@ const bear: BearData[] = [
         link: "https://trailhead.salesforce.com"
       },
       {
+        id: "trailhead-learning-agent",
+        title: "Trailhead Learning Agent",
+        file: "markdown/trailhead-learning-agent.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "An AI-powered learning companion that provides personalized guidance and real-time support...",
+        link: "https://trailhead.salesforce.com"
+      },
+      {
+        id: "salesforce-help-agent",
+        title: "Salesforce Help Agent",
+        file: "markdown/salesforce-help-agent.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "AI agent with 83% autonomous resolution rate, handling 1M+ support requests and saving $50M...",
+        link: "https://help.salesforce.com/s/"
+      },
+      {
+        id: "agentblazer-status",
+        title: "Agentblazer Status",
+        file: "markdown/agentblazer-status.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "Recognition program for AI builders, aiming for 1 million Agentblazers by 2025...",
+        link: "https://trailhead.salesforce.com/agentblazer"
+      },
+      {
+        id: "trailhead-skill-taxonomy",
+        title: "Skill Taxonomy",
+        file: "markdown/trailhead-skill-taxonomy.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "Three-dimensional taxonomy system helping millions discover relevant learning content...",
+        link: "https://trailhead.salesforce.com"
+      },
+      {
+        id: "trailhead-merging-communities",
+        title: "Merging Communities",
+        file: "markdown/trailhead-merging-communities.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "Unified Slack, MuleSoft, and Tableau communities using a scalable Neighborhood framework...",
+        link: "https://trailhead.salesforce.com/trailblazer-community"
+      },
+      {
+        id: "trailhead-for-slack",
+        title: "Trailhead for Slack",
+        file: "markdown/trailhead-for-slack.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "First Salesforce app on Slack - bringing learning into the flow of work...",
+        link: "https://trailhead.salesforce.com/en/slack"
+      },
+      {
         id: "api-ification-project",
         title: "The API-ification of Everything",
         file: "markdown/project-example.md",

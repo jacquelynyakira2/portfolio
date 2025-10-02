@@ -15,57 +15,40 @@ As part of the Salesforce Trailhead team, I've been instrumental in creating inn
 ## Key Features I've Helped Launch
 
 ### Trailhead Learning Agent
-Currently leading design for our agentic experience for Salesforce learning.  
+Currently leading design for our agentic experience for Salesforce learning - an AI-powered companion that helps learners navigate content, answer questions, and provide personalized guidance.
 
-[View live →](https://trailhead.salesforce.com/content/learn/modules/artificial-intelligence-fundamentals/get-started-with-artificial-intelligence) 
-
-<span style="font-size: 0.85em; color: #666;">(must be authenticated)</span>
+[View case study →](/markdown/trailhead-learning-agent.md)
 
 ---
 
 ### Salesforce Help Agent
-I helped launch Salesforce's first Help agent as customer zero for Salesforce technology. Agentforce is now handling the majority of Salesforce’s customer support cases, autonomously resolving more than 80% of queries and crossing the one million support milestone in less than a year.  
+As customer zero for Salesforce's Agentforce technology, I helped launch the first AI-powered Help agent that autonomously handles customer support cases. This agent has crossed 1 million support requests with an 83% autonomous resolution rate and $50M in estimated annual savings.
 
-- Agentforce has handled over 1 million support requests on Salesforce Help as of mid-2025, helping deliver faster answers, scale meaningful service, and free up support engineers for complex cases.
-- In Salesforce’s own operations, Agentforce directly resolved over 380,000 customer support interactions in its first six months, with an autonomous resolution rate of 83-84% (only 2% needing human escalation).
-- Agentforce’s deployment has resulted in an estimated $50 million in annual cost savings for Salesforce in 2025 due to its high case-resolution efficiency.
-
-  [Try it out →](https://help.salesforce.com/s/)
+[View case study →](/markdown/salesforce-help-agent.md)
 
 ---
 
-**Agentblazer Status**  
-With the launch of Agentforce and the rapidly changing landscape, we launched three new Statuses tied to learning AI and skilling up with Agentforce.
+### Agentblazer Status  
+With the launch of Agentforce, we created three new recognition statuses for learners building AI skills. The program aims for 1 million Agentblazers by year-end 2025 and has already reached 100,000 Champions by August 2025.
 
-## Key stats:
-- **Goal:** 1 million Agentblazers by year-end 2025  
-- **Current milestone:** 100,000 Agentblazer Champions (August 2025)  
-- **Definition:** Includes anyone learning, building, or actively participating in Salesforce’s Agentforce ecosystem/training  
-
-  [View live project →](https://trailhead.salesforce.com/agentblazer)
+[View case study →](/markdown/agentblazer-status.md)
 
 ---
 
-**Skill Taxonomy**  
-Redesigning content filtering, content overview pages and more to showcase the new taxonomy for skills, products and industries.  
+### Skill Taxonomy  
+Redesigned Trailhead's content organization system with a new three-dimensional taxonomy (Skills, Products, Industries) to help millions of learners discover relevant content at scale.
 
-[View the Project →](#)
-
----
-
-**Merging Communities**  
-With [Slack](https://trailhead.salesforce.com/trailblazer-community/neighborhoods/slack), [Mulesoft](https://trailhead.salesforce.com/trailblazer-community/neighborhoods/mulesoft), and Tableau being a part of the ecosystem, we wanted a way to have a single space for community. This project involved migrating these communities into the Trailblazer community. I helped create a scalable framework (neighborhood lite pages) to make the transition user friendly.  
-
-[View the Project →](#)
+[View case study →](/markdown/trailhead-skill-taxonomy.md)
 
 ---
 
-### Platform Improvements
-- **[Improvement 1]**: [Description of platform enhancement]
-- **[Improvement 2]**: [Description of platform enhancement]
-- **[Improvement 3]**: [Description of platform enhancement]
+### Merging Communities  
+Led the design to unify Slack, MuleSoft, and Tableau communities into one Trailblazer Community using a scalable "Neighborhood" framework. This preserved each community's unique culture while enabling cross-product connections.
+
+[View case study →](/markdown/trailhead-merging-communities.md)
 
 ---
+
 
 ## Dreamforce Highlights
 
@@ -81,28 +64,10 @@ With [Slack](https://trailhead.salesforce.com/trailblazer-community/neighborhood
 
 ### Dreamforce 2021
 
-- **Trailhead for Slack**: Salesforce announced the new Trailhead for Slack app, which allows users to learn and work within a single environment. The feature uses AI-powered recommendations to help employees meet development goals.
+#### Trailhead for Slack
+The first Salesforce app to launch on Slack - bringing learning directly into the flow of work with AI-powered recommendations, social sharing, and progress tracking.
 
-<img 
-  src="/img/projects/Trailhead/share_slack.png" 
-  alt="Trailhead for Slack Stats" 
-  style="
-    width: 100%; 
-    height: auto; 
-    display: block; 
-    margin: 1.5rem 0; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 16px 0 rgba(0,0,0,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.08);
-  " 
-/>
-
-**Key Stats:**
-- **42** Average Daily Shares
-- **68** Average Daily Searches  
-- **27%** Increase in module completions
-- **First Salesforce App** Trailhead was the first Salesforce app to go live.
-
-[Try it out →](https://trailhead.salesforce.com/en/slack)
+[View case study →](/markdown/trailhead-for-slack.md)
 
 ### Dreamforce 2020
 - **Einstein Automate**: Sarah Franklin, the EVP and GM of Platform, Trailhead, and AppExchange, introduced Einstein Automate. This solution integrates Trailhead, AI, and other key Salesforce functions to streamline and automate complex workflows.

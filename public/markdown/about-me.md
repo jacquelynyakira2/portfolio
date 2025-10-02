@@ -6,7 +6,36 @@
 
 ## Principal Product Design Director at Salesforce
 
-Thanks for stopping by! I am a creative technologist and product designer based in the U.S., specializing in AI-driven experiences, product design, and creative technology.
+<style>
+.location-hover {
+  text-decoration: underline;
+  cursor: pointer;
+  position: relative;
+  text-decoration-style: solid;
+  text-underline-offset: 2px;
+}
+
+.location-hover .hover-image {
+  display: none !important;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+  margin-top: 10px;
+  z-index: 1000;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  width: 1200px;
+  height: auto;
+  pointer-events: none;
+}
+
+.location-hover:hover .hover-image {
+  display: block !important;
+}
+</style>
+
+Thanks for stopping by! I am a creative technologist and product designer based in <span class="location-hover">Indianapolis<img class="hover-image" src="/img/projects/Trailhead/indy.jpg" alt="Indianapolis skyline" /></span>, specializing in AI-driven experiences, product design, and creative technology.
 
 My work spans from building consumer AI features to designing accessible learning tools, generative art, and experimental storytelling. I believe technology isn’t just built for utility—it’s crafted through curiosity, iteration, and an unrelenting pursuit of meaningful human experiences.
 

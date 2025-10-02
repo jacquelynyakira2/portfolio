@@ -2,6 +2,7 @@ import React from "react";
 import { apps, wallpapers } from "~/configs";
 import { minMarginY } from "~/utils";
 import type { MacActions } from "~/types";
+import DesktopIcon from "~/components/DesktopIcon";
 
 interface DesktopState {
   showApps: {
@@ -255,8 +256,26 @@ export default function Desktop(props: MacActions) {
         setSpotlightBtnRef={setSpotlightBtnRef}
       />
 
+      {/* Desktop Icon - Easter Egg! */}
+      <div
+        className="absolute z-5"
+        style={{ top: minMarginY, left: 0, right: 0, bottom: 0 }}
+      >
+        <DesktopIcon
+          id="desktop-folder"
+          title="desktop"
+          img="img/icons/Folder.png"
+          onOpen={openApp}
+          initialX={50}
+          initialY={50}
+        />
+      </div>
+
       {/* Desktop Apps */}
-      <div className="window-bound z-10 absolute" style={{ top: minMarginY }}>
+      <div
+        className="window-bound z-10 absolute"
+        style={{ top: minMarginY, pointerEvents: "none" }}
+      >
         {renderAppWindows()}
       </div>
 

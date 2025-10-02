@@ -6,6 +6,8 @@ import Safari from "~/components/apps/Safari";
 import VSCode from "~/components/apps/VSCode";
 import FaceTime from "~/components/apps/FaceTime";
 import Terminal from "~/components/apps/Terminal";
+import DesktopFolder from "~/components/apps/DesktopFolder";
+import Trash from "~/components/apps/Trash";
 
 const apps: AppsData[] = [
   {
@@ -79,6 +81,18 @@ const apps: AppsData[] = [
     content: <Terminal />
   },
   {
+    id: "desktop-folder",
+    title: "desktop",
+    desktop: true, // Can be opened as a window
+    dockHidden: true, // Don't show in dock
+    width: 800,
+    height: 420,
+    x: 0,
+    y: 0,
+    img: "img/icons/Folder.png",
+    content: <DesktopFolder />
+  },
+  {
     id: "figma",
     title: "Figma",
     desktop: false, // opens in a new tab
@@ -105,6 +119,15 @@ const apps: AppsData[] = [
     desktop: false,
     img: "img/icons/dribbble.png",
     link: "https://dribbble.com/Jacquelynyakira"
+  },
+  {
+    id: "trash",
+    title: "Trash",
+    desktop: true,
+    width: 800,
+    height: 500,
+    img: "img/icons/trash-full.png",
+    content: <Trash />
   }
 ];
 
