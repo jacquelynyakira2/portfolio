@@ -1,12 +1,45 @@
-# Hi I'm Jacquelyn
+<div style="text-align: center; margin-bottom: 1rem;">
+  <img src="/logo/logo513.png" alt="Jacquelyn's Logo" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+</div>
+
+<h1 style="margin-top: 0; padding-top: 0;">Hi I'm Jacquelyn</h1>
 
 ## Principal Product Design Director at Salesforce
 
-Thanks for stopping by! I am a creative technologist and product designer based in the U.S., specializing in AI-driven experiences, product design, and creative technology.
+<style>
+.location-hover {
+  text-decoration: underline;
+  cursor: pointer;
+  position: relative;
+  text-decoration-style: solid;
+  text-underline-offset: 2px;
+}
+
+.location-hover .hover-image {
+  display: none !important;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+  margin-top: 10px;
+  z-index: 1000;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  width: 1200px;
+  height: auto;
+  pointer-events: none;
+}
+
+.location-hover:hover .hover-image {
+  display: block !important;
+}
+</style>
+
+Thanks for stopping by! I am a creative technologist and product designer based in <span class="location-hover">Indianapolis<img class="hover-image" src="/img/projects/Trailhead/indy.jpg" alt="Indianapolis skyline" /></span>, specializing in AI-driven experiences, product design, and creative technology.
 
 My work spans from building consumer AI features to designing accessible learning tools, generative art, and experimental storytelling. I believe technology isn’t just built for utility—it’s crafted through curiosity, iteration, and an unrelenting pursuit of meaningful human experiences.
 
-I believe AI is meant to elevate you, not replace you.
+**I believe AI is meant to elevate you, not replace you.**
 
 
 ## Contact
@@ -14,12 +47,11 @@ I believe AI is meant to elevate you, not replace you.
 Contact me by:
 
 - Email: [jacquelyn.halpern@gmail.com](mailto:jacquelyn.halpern@gmail.com)
-- Github: [@your-github-username](https://github.com/your-github-username)
-- LinkedIn: [your-linkedin-profile](https://www.linkedin.com/in/your-linkedin-profile)
+- LinkedIn: [/jacquelynhalpern](https://www.linkedin.com/in/jacquelynhalpern/)
 - Passion Project: [www.lilchef.app](https://www.lilchef.app)
 
 
-## Résumé
+## Extra Carricular
 
-- Download my resume: [PDF Version](path/to/your/resume.pdf)
-- View my portfolio: [This website!](#)
+- I sit on the Dean's Board at the Herron School of Art, helping bring perspective to the future of education and design with AI
+- Each year I run a 6 month cohort for senior college students to help facilitate their end of year capstone projects. 

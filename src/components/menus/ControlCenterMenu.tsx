@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
-import { music } from "~/configs";
+import type { SpotifyMode, SpotifyStatus } from "~/hooks";
 
 interface SliderProps {
   icon: string;
@@ -25,13 +25,27 @@ const SliderComponent = ({ icon, value, setValue }: SliderProps) => (
   </div>
 );
 
+interface MusicPanelState {
+  title: string;
+  subtitle: string;
+  cover: string;
+  hasPreview: boolean;
+  isFromSpotify: boolean;
+  lastUpdated?: number;
+}
+
 interface CCMProps {
   toggleControlCenter: () => void;
-  toggleAudio: (target: boolean) => void;
+  toggleAudio?: (target?: boolean) => void;
   setBrightness: (value: number) => void;
   setVolume: (value: number) => void;
-  playing: boolean;
+  playing?: boolean;
   btnRef: React.RefObject<HTMLDivElement>;
+  music: MusicPanelState;
+  spotifyStatus: SpotifyStatus;
+  spotifyError?: string;
+  spotifyConfigured: boolean;
+  spotifyMode: SpotifyMode;
 }
 
 export default function ControlCenterMenu({
@@ -40,7 +54,12 @@ export default function ControlCenterMenu({
   setBrightness,
   setVolume,
   playing,
-  btnRef
+  btnRef,
+  music,
+  spotifyStatus,
+  spotifyError,
+  spotifyConfigured,
+  spotifyMode
 }: CCMProps) {
   const controlCenterRef = useRef<HTMLDivElement>(null);
   const { dark, wifi, brightness, bluetooth, airdrop, fullscreen, volume } = useStore(
@@ -64,6 +83,35 @@ export default function ControlCenterMenu({
     }));
 
   useClickOutside(controlCenterRef, toggleControlCenter, [btnRef]);
+
+  const showPlaybackControls = Boolean(toggleAudio && music.hasPreview);
+
+  const renderMusicAction = (): React.ReactNode => {
+    if (!showPlaybackControls || !toggleAudio) return null;
+
+    if (spotifyStatus === "refreshing") {
+      return (
+        <span
+          className="i-eos-icons:loading text-xl animate-spin"
+          aria-label="Updating Spotify"
+        />
+      );
+    }
+
+    return playing ? (
+      <span
+        className="i-bi:pause-fill text-2xl cursor-pointer"
+        onClick={() => toggleAudio(false)}
+        title="Pause preview"
+      />
+    ) : (
+      <span
+        className="i-bi:play-fill text-2xl cursor-pointer"
+        onClick={() => toggleAudio(true)}
+        title="Play preview"
+      />
+    );
+  };
 
   return (
     <div
@@ -146,16 +194,32 @@ export default function ControlCenterMenu({
         <SliderComponent icon="i-ion:volume-high" value={volume} setValue={setVolume} />
       </div>
       <div className="cc-grid col-span-4 hstack space-x-2.5" p="y-2 l-2 r-4">
-        <img className="w-12 rounded-lg" src={music.cover} alt="cover art" />
-        <div flex-1>
-          <div className="font-medium">{music.title}</div>
-          <div className="cc-text">{music.artist}</div>
+        <img
+          className="w-12 h-12 rounded-lg object-cover bg-gray-200/40"
+          src={music.cover}
+          alt="cover art"
+        />
+        <div className="flex-1 min-w-0">
+          <div className="font-medium truncate">{music.title}</div>
+          <div className="cc-text truncate">{music.subtitle}</div>
+          {spotifyMode !== "public" && !spotifyConfigured && (
+            <div className="cc-text text-xs">
+              Add Spotify env vars to enable live updates.
+            </div>
+          )}
+          {spotifyMode === "public" &&
+            music.isFromSpotify &&
+            spotifyStatus === "ready" && (
+              <div className="cc-text text-xs opacity-70">Live from Spotify</div>
+            )}
+          {music.isFromSpotify && spotifyStatus === "refreshing" && (
+            <div className="cc-text text-xs opacity-70">Updating…</div>
+          )}
+          {spotifyStatus === "error" && spotifyError && (
+            <div className="text-xs text-red-500 truncate">{spotifyError}</div>
+          )}
         </div>
-        {playing ? (
-          <span className="i-bi:pause-fill text-2xl" onClick={() => toggleAudio(false)} />
-        ) : (
-          <span className="i-bi:play-fill text-2xl" onClick={() => toggleAudio(true)} />
-        )}
+        <div className="flex items-center">{renderMusicAction()}</div>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import { format } from "date-fns";
 import { isFullScreen } from "~/utils";
 import { music } from "~/configs";
+import { useSpotifyNowPlaying } from "~/hooks";
 import type { MacActions } from "~/types";
 
 interface TopBarItemProps {
@@ -76,10 +77,31 @@ const TopBar = (props: TopBarProps) => {
     showAppleMenu: false
   });
 
+  const spotify = useSpotifyNowPlaying();
+  const fallbackMusic = music;
+
+  const activeMusic = spotify.track
+    ? {
+        title: spotify.track.title,
+        subtitle: spotify.track.subtitle,
+        cover: spotify.track.coverUrl || fallbackMusic.cover,
+        previewUrl: spotify.track.previewUrl ?? "",
+        isFromSpotify: true,
+        lastUpdated: spotify.track.lastUpdated
+      }
+    : {
+        title: fallbackMusic.title,
+        subtitle: fallbackMusic.artist,
+        cover: fallbackMusic.cover,
+        previewUrl: fallbackMusic.audio,
+        isFromSpotify: false,
+        lastUpdated: undefined
+      };
+
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const [audio, audioState, controls, audioRef] = useAudio({
-    src: music.audio,
-    autoReplay: true
+    src: activeMusic.previewUrl || "",
+    autoReplay: false
   });
   const { winWidth, winHeight } = useWindowSize();
 
@@ -106,6 +128,12 @@ const TopBar = (props: TopBarProps) => {
   }, []);
 
   useEffect(() => {
+    if (!activeMusic.previewUrl && audioRef.current) {
+      audioRef.current.pause();
+    }
+  }, [activeMusic.previewUrl]);
+
+  useEffect(() => {
     const isFull = isFullScreen();
     toggleFullScreen(isFull);
   }, [winWidth, winHeight]);
@@ -117,6 +145,21 @@ const TopBar = (props: TopBarProps) => {
 
   const setSiteBrightness = (value: number): void => {
     setBrightness(value);
+  };
+
+  const handleAudioToggle = (target?: boolean): void => {
+    if (!activeMusic.previewUrl) return;
+
+    if (typeof target === "boolean") {
+      if (target) {
+        controls.play();
+      } else {
+        controls.pause();
+      }
+      return;
+    }
+
+    controls.toggle();
   };
 
   const toggleControlCenter = (): void => {
@@ -138,6 +181,15 @@ const TopBar = (props: TopBarProps) => {
       ...state,
       showWifiMenu: !state.showWifiMenu
     });
+  };
+
+  const musicPanel = {
+    title: activeMusic.title,
+    subtitle: activeMusic.subtitle,
+    cover: activeMusic.cover,
+    hasPreview: Boolean(activeMusic.previewUrl),
+    isFromSpotify: activeMusic.isFromSpotify,
+    lastUpdated: activeMusic.lastUpdated
   };
 
   const logout = (): void => {
@@ -232,12 +284,17 @@ const TopBar = (props: TopBarProps) => {
         {/* Open this when clicking on Control Center button */}
         {state.showControlCenter && (
           <ControlCenterMenu
-            playing={audioState.playing}
-            toggleAudio={controls.toggle}
+            playing={activeMusic.previewUrl ? audioState.playing : false}
+            toggleAudio={activeMusic.previewUrl ? handleAudioToggle : undefined}
             setVolume={setAudioVolume}
             setBrightness={setSiteBrightness}
             toggleControlCenter={toggleControlCenter}
             btnRef={controlCenterBtnRef}
+            music={musicPanel}
+            spotifyStatus={spotify.status}
+            spotifyError={spotify.error}
+            spotifyConfigured={spotify.isConfigured}
+            spotifyMode={spotify.mode}
           />
         )}
 
