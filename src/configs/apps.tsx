@@ -8,6 +8,7 @@ import FaceTime from "~/components/apps/FaceTime";
 import Terminal from "~/components/apps/Terminal";
 import DesktopFolder from "~/components/apps/DesktopFolder";
 import Trash from "~/components/apps/Trash";
+import Preview from "~/components/apps/Preview";
 
 const apps: AppsData[] = [
   {
@@ -128,6 +129,18 @@ const apps: AppsData[] = [
     height: 500,
     img: "img/icons/trash-full.png",
     content: <Trash />
+  },
+  {
+    id: "preview",
+    title: "Preview",
+    desktop: true,
+    dockHidden: true, // Don't show in dock - opened programmatically from Trash
+    width: 800,
+    height: 600,
+    minWidth: 400,
+    minHeight: 300,
+    img: "img/icons/folder.png", // placeholder icon
+    content: <Preview />
   }
 ];
 

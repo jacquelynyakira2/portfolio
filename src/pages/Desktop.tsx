@@ -40,10 +40,14 @@ export default function Desktop(props: MacActions) {
   const [spotlightBtnRef, setSpotlightBtnRef] =
     useState<React.RefObject<HTMLDivElement> | null>(null);
 
-  const { dark, brightness } = useStore((state) => ({
-    dark: state.dark,
-    brightness: state.brightness
-  }));
+  const { dark, brightness, shouldOpenPreview, setShouldOpenPreview } = useStore(
+    (state) => ({
+      dark: state.dark,
+      brightness: state.brightness,
+      shouldOpenPreview: state.shouldOpenPreview,
+      setShouldOpenPreview: state.setShouldOpenPreview
+    })
+  );
 
   const getAppsData = (): void => {
     let showApps = {},
@@ -76,6 +80,14 @@ export default function Desktop(props: MacActions) {
   useEffect(() => {
     getAppsData();
   }, []);
+
+  // Watch for Preview app open request
+  useEffect(() => {
+    if (shouldOpenPreview) {
+      openApp("preview");
+      setShouldOpenPreview(false);
+    }
+  }, [shouldOpenPreview]);
 
   const toggleLaunchpad = (target: boolean): void => {
     const r = document.querySelector(`#launchpad`) as HTMLElement;
@@ -264,7 +276,7 @@ export default function Desktop(props: MacActions) {
         <DesktopIcon
           id="desktop-folder"
           title="desktop"
-          img="img/icons/Folder.png"
+          img="img/icons/folder.png"
           onOpen={openApp}
           initialX={50}
           initialY={50}
