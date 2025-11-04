@@ -2,7 +2,6 @@ import React from "react";
 import { format } from "date-fns";
 import { isFullScreen } from "~/utils";
 import { music } from "~/configs";
-import { useSpotifyNowPlaying } from "~/hooks";
 import type { MacActions } from "~/types";
 
 interface TopBarItemProps {
@@ -77,26 +76,14 @@ const TopBar = (props: TopBarProps) => {
     showAppleMenu: false
   });
 
-  const spotify = useSpotifyNowPlaying();
-  const fallbackMusic = music;
-
-  const activeMusic = spotify.track
-    ? {
-        title: spotify.track.title,
-        subtitle: spotify.track.subtitle,
-        cover: spotify.track.coverUrl || fallbackMusic.cover,
-        previewUrl: spotify.track.previewUrl ?? "",
-        isFromSpotify: true,
-        lastUpdated: spotify.track.lastUpdated
-      }
-    : {
-        title: fallbackMusic.title,
-        subtitle: fallbackMusic.artist,
-        cover: fallbackMusic.cover,
-        previewUrl: fallbackMusic.audio,
-        isFromSpotify: false,
-        lastUpdated: undefined
-      };
+  const activeMusic = {
+    title: music.title,
+    subtitle: music.artist,
+    cover: music.cover,
+    previewUrl: music.audio,
+    isFromSpotify: false,
+    lastUpdated: undefined
+  };
 
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const [audio, audioState, controls, audioRef] = useAudio({
@@ -291,10 +278,10 @@ const TopBar = (props: TopBarProps) => {
             toggleControlCenter={toggleControlCenter}
             btnRef={controlCenterBtnRef}
             music={musicPanel}
-            spotifyStatus={spotify.status}
-            spotifyError={spotify.error}
-            spotifyConfigured={spotify.isConfigured}
-            spotifyMode={spotify.mode}
+            spotifyStatus="disabled"
+            spotifyError={undefined}
+            spotifyConfigured={false}
+            spotifyMode="disabled"
           />
         )}
 

@@ -3,4 +3,3 @@ export * from "./useInterval";
 export * from "./useWindowSize";
 export * from "./useAudio";
 export * from "./useBattery";
-export * from "./useSpotifyNowPlaying";

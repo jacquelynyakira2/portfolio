@@ -1,7 +1,15 @@
 import React from "react";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
-import type { SpotifyMode, SpotifyStatus } from "~/hooks";
+
+type SpotifyMode = "public" | "client" | "disabled";
+type SpotifyStatus =
+  | "missing-config"
+  | "idle"
+  | "authorizing"
+  | "refreshing"
+  | "ready"
+  | "error";
 
 interface SliderProps {
   icon: string;
