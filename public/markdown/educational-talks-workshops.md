@@ -15,29 +15,38 @@ Welcome to my educational content hub! Here you'll find information about my wor
 
 ---
 
-## Past Educational Events
-
-### **Generative AI: Where we are and how we got here**
-- **Date**: April 21, 2023
-- **Attendees**: 100+ 
-- **Format**: Educational
-- **Location**: Internal Salesforce (original) - Virtual
-- **Description**: Walk through the current state of events to understand where things are in the broader landscape, then go back to the beginning to understand how we got here, and then current thoughts on what patterns are currently happening in the AI Space and some fun use cases.
-
-**Attendee Feedback:**
-> *Coming soon...*
+### **How AI is Changing the Way We Work: Cross-Functional Viewpoints**
+- **Date**: October 30, 2025
+- **Attendees**: 50+
+- **Format**: Panel Discussion (in person)
+- **Location**: Indiana University HCI Program
+- **Description**: Joined faculty and industry leaders to share cross-functional perspectives on how AI is reshaping workflows for designers, researchers, and product teams, guiding HCI students through real-world case studies and collaboration patterns.
 
 ---
 
-### **Generative AI: Where we are and how we got here (v2)**
-- **Date**: June 14, 2023
-- **Attendees**: 500+ 
-- **Format**: Educational
-- **Location**: Internal Salesforce - Virtual
-- **Description**: Walk through the current state of events to understand where things are in the broader landscape, then go back to the beginning to understand how we got here, and then current thoughts on what patterns are currently happening in the AI Space and some fun use cases.
+### **Designing with Cursor for Beginners**
+- **Date**: July 14, 2025
+- **Attendees**: 164 
+- **Format**: Educational Workshop (virtual)
+- **Location**: An intoruction to Cursor for Designers
+- **Description**: An introduction to cursor and how to get started. Tips and tricks on how to get the most out of the tool and providing use cases and hands on examples. 
 
 **Attendee Feedback:**
-> *Coming soon...*
+> "Jacquelyn - this was incredibly inspiring. Thakn you so much!"
+
+---
+
+## Past Educational Events
+
+### **AI & Sculpture: Navigating Emerging Technologies**
+- **Date**: September 2024
+- **Attendees**: National Sculpture Society Annual Conference participants
+- **Format**: Panel Discussion (in person)
+- **Location**: Herron School of Art and Design + Indianapolis Art Center
+- **Description**: I joined leaders in contemporary sculpture to examine how AI-driven tools and digital fabrication are reshaping sculptural practice, from concept development to installation workflows, sharing practical insights from the Herron studios in downtown Indianapolis.
+- **Recording**: [Watch on YouTube](https://www.youtube.com/watch?v=h6KHgfZ2sNE&t=7s)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/h6KHgfZ2sNE?start=7" title="AI & Sculpture panel recording" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -54,15 +63,36 @@ Welcome to my educational content hub! Here you'll find information about my wor
 
 ---
 
-### **Designing with Cursor for Beginners**
-- **Date**: July 14, 2025
-- **Attendees**: 164 
-- **Format**: Educational Workshop (virtual)
-- **Location**: An intoruction to Cursor for Designers
-- **Description**: An introduction to cursor and how to get started. Tips and tricks on how to get the most out of the tool and providing use cases and hands on examples. 
+### **Harnessing the Power of AI for Career Advancement**
+- **Date**: September 2023
+- **Attendees**: 100+
+- **Format**: Panel Discussion (virtual)
+- **Location**: InnovateHER: Women Redefining and Interpreting Ethical AI Innovation
+- **Description**: Shared strategies for leveraging AI tools to accelerate career growth alongside industry leaders Lulay Garduno (Mastercard) and Cathy Pearl (Google Bard), highlighting ethical considerations for women innovators embracing emerging technology.
+
+---
+
+### **Generative AI: Where we are and how we got here (v2)**
+- **Date**: June 14, 2023
+- **Attendees**: 500+ 
+- **Format**: Educational
+- **Location**: Internal Salesforce - Virtual
+- **Description**: Walk through the current state of events to understand where things are in the broader landscape, then go back to the beginning to understand how we got here, and then current thoughts on what patterns are currently happening in the AI Space and some fun use cases.
 
 **Attendee Feedback:**
-> "Jacquelyn - this was incredibly inspiring. Thakn you so much!"
+> *Coming soon...*
+
+---
+
+### **Generative AI: Where we are and how we got here**
+- **Date**: April 21, 2023
+- **Attendees**: 100+ 
+- **Format**: Educational
+- **Location**: Internal Salesforce (original) - Virtual
+- **Description**: Walk through the current state of events to understand where things are in the broader landscape, then go back to the beginning to understand how we got here, and then current thoughts on what patterns are currently happening in the AI Space and some fun use cases.
+
+**Attendee Feedback:**
+> *Coming soon...*
 
 ---
 

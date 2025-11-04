@@ -19,34 +19,6 @@ const Preview: React.FC = () => {
 
   return (
     <div className="w-full h-full bg-c-50 flex flex-col">
-      {/* Top toolbar */}
-      <div className="flex items-center justify-between px-4 py-2 bg-c-100/50 border-b border-c-200">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="p-1.5 rounded hover:bg-c-200 text-c-600"
-            title="Show in Finder"
-          >
-            <span className="i-mdi:compass text-lg" />
-          </button>
-          <button
-            type="button"
-            className="p-1.5 rounded hover:bg-c-200 text-c-600"
-            title="Rotate"
-          >
-            <span className="i-mdi:rotate-right text-lg" />
-          </button>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="px-3 py-1 text-xs rounded bg-c-200 hover:bg-c-300 text-c-700 font-medium"
-          >
-            Open with Preview
-          </button>
-        </div>
-      </div>
-
       {/* Content area */}
       <div className="flex-1 overflow-hidden flex items-center justify-center p-4">
         {item.type === "image" ? (

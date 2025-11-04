@@ -4,6 +4,8 @@ import { minMarginY } from "~/utils";
 import type { MacActions } from "~/types";
 import DesktopIcon from "~/components/DesktopIcon";
 
+const SHOW_DESKTOP_FOLDER = false;
+
 interface DesktopState {
   showApps: {
     [key: string]: boolean;
@@ -217,6 +219,9 @@ export default function Desktop(props: MacActions) {
 
   const renderAppWindows = () => {
     return apps.map((app) => {
+      if (!SHOW_DESKTOP_FOLDER && app.id === "desktop-folder") {
+        return <div key={`desktop-app-${app.id}`} />;
+      }
       if (app.desktop && state.showApps[app.id]) {
         const props = {
           id: app.id,
@@ -269,19 +274,21 @@ export default function Desktop(props: MacActions) {
       />
 
       {/* Desktop Icon - Easter Egg! */}
-      <div
-        className="absolute z-5"
-        style={{ top: minMarginY, left: 0, right: 0, bottom: 0 }}
-      >
-        <DesktopIcon
-          id="desktop-folder"
-          title="desktop"
-          img="img/icons/folder.png"
-          onOpen={openApp}
-          initialX={50}
-          initialY={50}
-        />
-      </div>
+      {SHOW_DESKTOP_FOLDER && (
+        <div
+          className="absolute z-5"
+          style={{ top: minMarginY, left: 0, right: 0, bottom: 0 }}
+        >
+          <DesktopIcon
+            id="desktop-folder"
+            title="desktop"
+            img="img/icons/folder.png"
+            onOpen={openApp}
+            initialX={50}
+            initialY={50}
+          />
+        </div>
+      )}
 
       {/* Desktop Apps */}
       <div

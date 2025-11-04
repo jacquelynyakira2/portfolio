@@ -59,9 +59,9 @@ const IDEA_FILES: IdeaFile[] = [
     body: `rewrite the night sky UI so constellations snap to the cursor.\nmake every drag feel like chalk on pavement.`
   },
   {
-    id: "idea-improv",
-    name: "improv-saas.md",
-    body: `weekly improv prompts delivered like stand-up notes.\nusers reply with voice clips, AI tags the vibe, friends roast kindly.`
+    id: "capture-pokemon",
+    name: "catch-em-all.md",
+    body: `Hide Pokémon throughout my portfolio as easter eggs. When you click on one, you "capture" it into a secret Poké Ball. Users captures will be cached so they can come back to them later.`
   },
   {
     id: "idea-daydream",
@@ -383,12 +383,6 @@ const Trash: React.FC = () => {
               {activeIdea.body}
             </div>
           </div>
-        </div>
-      )}
-
-      {isUnlocked && !isPromptOpen && !activeIdea && (
-        <div className="absolute bottom-6 right-6 rounded-xl bg-white/90 px-4 py-3 text-sm text-c-700 shadow-lg">
-          Secret dossier unlocked. Click the folder to peek inside.
         </div>
       )}
     </div>

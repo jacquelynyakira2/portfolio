@@ -1,5 +1,5 @@
 <div style="text-align: center; margin-bottom: 1rem;">
-  <img src="/logo/logo513.png" alt="Jacquelyn's Logo" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+  <video src="/logo/avatar.mp4" autoplay loop muted playsinline style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" aria-label="Jacquelyn's Logo"></video>
 </div>
 
 <h1 style="margin-top: 0; padding-top: 0;">Hi I'm Jacquelyn</h1>
@@ -50,8 +50,18 @@ Contact me by:
 - LinkedIn: [/jacquelynhalpern](https://www.linkedin.com/in/jacquelynhalpern/)
 - Passion Project: [www.lilchef.app](https://www.lilchef.app)
 
+## Brands I've Worked With
+
+<div style="display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; margin: 2rem 0;">
+  <img src="/img/brands/netflix.svg" alt="Netflix logo" style="height: 48px; width: auto;" />
+  <img src="/img/brands/apple.svg" alt="Apple logo" style="height: 48px; width: auto;" />
+  <img src="/img/brands/meta.svg" alt="Meta logo" style="height: 48px; width: auto;" />
+  <img src="/img/brands/accenture.svg" alt="Accenture logo" style="height: 48px; width: auto;" />
+</div>
+
 
 ## Extra Carricular
 
 - I sit on the Dean's Board at the Herron School of Art, helping bring perspective to the future of education and design with AI
-- Each year I run a 6 month cohort for senior college students to help facilitate their end of year capstone projects. 
+- Each year I run a 6 month cohort for senior college students to help facilitate their end of year capstone projects.
+- I am part of the Design Mentorship program at Salesforce
