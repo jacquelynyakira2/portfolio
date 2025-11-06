@@ -21,7 +21,7 @@ const websites: WebsitesData = {
         id: "my-linkedin",
         title: "Linkedin",
         img: "img/sites/linkedin.svg",
-        link: "https://www.linkedin.com/in/xiaohan-zou"
+        link: "https://www.linkedin.com/in/jacquelynhalpern/"
       },
       {
         id: "my-google-scholar",
@@ -45,7 +45,7 @@ const websites: WebsitesData = {
         id: "my-email",
         title: "Email",
         img: "img/sites/gmail.svg",
-        link: "mailto:renovamenzxh@gmail.com"
+        link: "mailto:jacquelyn.halpern@gmail.com"
       }
     ]
   },
@@ -80,7 +80,7 @@ const websites: WebsitesData = {
         id: "pinterest",
         title: "Pinterest",
         img: "img/sites/pinterest.svg",
-        link: "https://www.pinterest.com/"
+        link: "https://www.pinterest.com/jacquelynyakira/"
       },
       {
         id: "art-station",

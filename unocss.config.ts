@@ -31,6 +31,15 @@ const colorAttr = (prefix: string, [, color, , opacity]: RegExpMatchArray) => {
 };
 
 export default defineConfig({
+  safelist: [
+    // Ensure icons are generated even if used conditionally
+    "i-ic:baseline-fullscreen",
+    "i-ic:baseline-fullscreen-exit",
+    // Top-nav chevrons
+    "i-tabler:chevron-left",
+    "i-tabler:chevron-right",
+    "i-tabler:chevron-down"
+  ],
   shortcuts: [
     ["flex-center", "flex items-center justify-center"],
     ["hstack", "flex items-center"],

@@ -11,148 +11,139 @@ const bear: BearData[] = [
         title: "About Me",
         file: "markdown/about-me.md",
         icon: "i-la:dragon",
-        excerpt: "Hey there! I'm a dragon lost in human world..."
+        excerpt: "I believe that AI is meant to elevate you, not replace you."
       },
       {
-        id: "github-stats",
-        title: "Github Stats",
-        file: "markdown/github-stats.md",
-        icon: "i-icon-park-outline:github",
-        excerpt: "Here are some status about my github account..."
+        id: "educational-talks-workshops",
+        title: "Talks, & Workshops",
+        file: "markdown/educational-talks-workshops.md",
+        icon: "i-material-symbols:school",
+        excerpt: "Educational content, workshops, and learning resources..."
+      },
+      {
+        id: "awards-and-recognition",
+        title: "Awards and Publications",
+        file: "markdown/awards-and-recognition.md",
+        icon: "i-material-symbols:workspace-premium",
+        excerpt: "Honors, awards, and special acknowledgments throughout my career..."
       },
       {
         id: "about-site",
         title: "About This Site",
         file: "markdown/about-site.md",
         icon: "i-octicon:browser",
-        excerpt: "Something about this personal portfolio site..."
+        excerpt: "Why I chose this design"
       }
     ]
   },
   {
     id: "project",
-    title: "Projects",
+    title: "Work",
     icon: "i-octicon:repo",
     md: [
       {
-        id: "flint",
-        title: "Flint",
-        file: "https://raw.githubusercontent.com/Renovamen/flint/main/README.md",
-        icon: "i-heroicons-solid:fire",
-        excerpt: "A deep learning framework implemented in Numpy...",
-        link: "https://github.com/Renovamen/flint"
+        id: "salesforce-trailhead",
+        title: "Salesforce Trailhead",
+        file: "markdown/salesforce-trailhead.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "Creating innovative learning experiences for millions of Trailblazers worldwide...",
+        link: "https://trailhead.salesforce.com"
       },
       {
-        id: "portfolio-macos",
-        title: "Portfolio macOS",
-        file: "https://raw.githubusercontent.com/Renovamen/playground-macos/main/README.md",
-        icon: "i-ri:gamepad-line",
-        excerpt: "My portfolio website simulating macOS's GUI...",
-        link: "https://github.com/Renovamen/playground-macos"
+        id: "trailhead-learning-agent",
+        title: "Trailhead Learning Agent",
+        file: "markdown/trailhead-learning-agent.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "An AI-powered learning companion that provides personalized guidance and real-time support...",
+        link: "https://trailhead.salesforce.com"
       },
       {
-        id: "oh-my-cv",
-        title: "Oh, My CV!",
-        file: "https://raw.githubusercontent.com/Renovamen/oh-my-cv/main/README.md",
-        icon: "i-ri:newspaper-fill",
-        excerpt: "Write your curriculum vitae / resume in Markdown online...",
-        link: "https://ohmycv.app"
+        id: "salesforce-help-agent",
+        title: "Salesforce Help Agent",
+        file: "markdown/salesforce-help-agent.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "AI agent with 83% autonomous resolution rate, handling 1M+ support requests and saving $50M...",
+        link: "https://help.salesforce.com/s/"
       },
       {
-        id: "oh-vue-icons",
-        title: "Oh, Vue Icons!",
-        file: "https://raw.githubusercontent.com/Renovamen/oh-vue-icons/master/README.md",
-        icon: "i-fa-brands:vuejs",
-        excerpt: "Importing icons from different icon packs in Vue easily...",
-        link: "https://oh-vue-icons.js.org"
+        id: "agentblazer-status",
+        title: "Agentblazer Status",
+        file: "markdown/agentblazer-status.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "Recognition program for AI builders, aiming for 1 million Agentblazers by 2025...",
+        link: "https://trailhead.salesforce.com/agentblazer"
       },
       {
-        id: "gungnir",
-        title: "Gungnir",
-        file: "https://raw.githubusercontent.com/Renovamen/vuepress-theme-gungnir/main/README.md",
-        icon: "i-akar-icons:sword",
-        excerpt: "A simple and beautiful blog theme for VuePress...",
-        link: "https://vuepress-theme-gungnir.vercel.app"
+        id: "trailhead-skill-taxonomy",
+        title: "Skill Taxonomy",
+        file: "markdown/trailhead-skill-taxonomy.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "Three-dimensional taxonomy system helping millions discover relevant learning content...",
+        link: "https://trailhead.salesforce.com"
       },
       {
-        id: "metallic",
-        title: "Metallic",
-        file: "https://raw.githubusercontent.com/Renovamen/metallic/master/README.md",
-        icon: "i-icon-park-outline:heavy-metal",
-        excerpt: "A meta-learning library base on PyTorch...",
-        link: "https://github.com/Renovamen/metallic"
+        id: "trailhead-merging-communities",
+        title: "Merging Communities",
+        file: "markdown/trailhead-merging-communities.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "Unified Slack, MuleSoft, and Tableau communities using a scalable Neighborhood framework...",
+        link: "https://trailhead.salesforce.com/trailblazer-community"
       },
       {
-        id: "text-classification",
-        title: "Text Classification",
-        file: "https://raw.githubusercontent.com/Renovamen/Text-Classification/master/README.md",
-        icon: "i-gg:format-text",
-        excerpt: "PyTorch implementation of text classificaiton models...",
-        link: "https://github.com/Renovamen/Text-Classification"
+        id: "trailhead-for-slack",
+        title: "Trailhead for Slack",
+        file: "markdown/trailhead-for-slack.md",
+        icon: "i-simple-icons:salesforce",
+        excerpt:
+          "First Salesforce app on Slack - bringing learning into the flow of work...",
+        link: "https://trailhead.salesforce.com/en/slack"
       },
       {
-        id: "speech-emotion-recognition",
-        title: "Speech Emotion",
-        file: "https://raw.githubusercontent.com/Renovamen/Speech-Emotion-Recognition/master/README.md",
-        icon: "i-ant-design:audio-filled",
-        excerpt: "Speech emotion recognition using Keras and sklearn...",
-        link: "https://github.com/Renovamen/Speech-Emotion-Recognition"
+        id: "api-ification-project",
+        title: "The API-ification of Everything",
+        file: "markdown/project-example.md",
+        icon: "i-material-symbols:api",
+        excerpt:
+          "How Intent-Based Computing Kills the App - exploring the future of digital interaction...",
+        link: "https://example.com"
       },
       {
-        id: "pcalg-py",
-        title: "PC Algorithm",
-        file: "https://raw.githubusercontent.com/Renovamen/pcalg-py/master/README.md",
-        icon: "i-tabler:atom-2",
-        excerpt: "Implement PC algorithm in Python...",
-        link: "https://github.com/Renovamen/pcalg-py"
+        id: "tiny-ui-project",
+        title: "Tiny UI: Reaction Bubbles",
+        file: "markdown/tiny-ui-project.md",
+        icon: "i-material-symbols:bubble-chart",
+        excerpt:
+          "A design study exploring how micro-interactions create meaningful visual relationships...",
+        link: "https://example.com"
+      }
+    ]
+  },
+  {
+    id: "passion-projects",
+    title: "Passion",
+    icon: "i-carbon:favorite-filled",
+    md: [
+      {
+        id: "colorgen-project",
+        title: "ColorGen - Figma Plugin",
+        file: "markdown/colorgen-project.md",
+        icon: "i-material-symbols:palette",
+        excerpt:
+          "A Figma plugin that generates harmonious color palettes to streamline design workflows...",
+        link: "https://github.com/jacquelynyakira2/ColorGen"
       },
       {
-        id: "midgard",
-        title: "Midgard",
-        file: "https://raw.githubusercontent.com/Renovamen/midgard/master/README.md",
-        icon: "i-bx:game",
-        excerpt: "An interactive version of my resume, powered by Vue...",
-        link: "https://resume.zxh.io/"
-      },
-      {
-        id: "image-captioning",
-        title: "Image Captioning",
-        file: "https://raw.githubusercontent.com/Renovamen/Image-Captioning/master/README.md",
-        icon: "i-bi:image-fill",
-        excerpt: "PyTorch implementation of image captioning models...",
-        link: "https://github.com/Renovamen/Image-Captioning"
-      },
-      {
-        id: "wordle-helper",
-        title: "Wordle Helper",
-        file: "https://raw.githubusercontent.com/Renovamen/wordle-helper/main/README.md",
-        icon: "i-bi:grid-1x2",
-        excerpt: "Help you solve Wordle puzzles...",
-        link: "https://wordle.zxh.io"
-      },
-      {
-        id: "cube-solver",
-        title: "Cube Solver",
-        file: "https://raw.githubusercontent.com/Renovamen/Just-a-Cube/master/README.md",
-        icon: "i-bx:cube",
-        excerpt: "A rubik's cube solver (layer-by-layer & two-phase)...",
-        link: "https://cube.zxh.io"
-      },
-      {
-        id: "alkaid",
-        title: "Alkaid",
-        file: "https://raw.githubusercontent.com/Renovamen/alkaid/main/README.md",
-        icon: "i-simple-icons:stellar",
-        excerpt: "Minimal reinforcement-learning toolbox for PyTorch...",
-        link: "https://github.com/Renovamen/alkaid"
-      },
-      {
-        id: "fishmail",
-        title: "Fishmail",
-        file: "https://raw.githubusercontent.com/Renovamen/Fishmail/master/README.md",
-        icon: "i-game-icons:fish-escape",
-        excerpt: "上班的时候装作在 Gmail 上查邮件的样子看知乎摸鱼...",
-        link: "https://fishmail.vercel.app"
+        id: "passion-placeholder",
+        title: "Coming Soon",
+        file: "markdown/passions-coming-soon.md",
+        icon: "i-ph:lightbulb-filament-duotone",
+        excerpt: "Personal explorations that bring me joy."
       }
     ]
   }

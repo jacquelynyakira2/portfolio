@@ -2,6 +2,9 @@ import React from "react";
 import { apps, wallpapers } from "~/configs";
 import { minMarginY } from "~/utils";
 import type { MacActions } from "~/types";
+import DesktopIcon from "~/components/DesktopIcon";
+
+const SHOW_DESKTOP_FOLDER = false;
 
 interface DesktopState {
   showApps: {
@@ -39,10 +42,14 @@ export default function Desktop(props: MacActions) {
   const [spotlightBtnRef, setSpotlightBtnRef] =
     useState<React.RefObject<HTMLDivElement> | null>(null);
 
-  const { dark, brightness } = useStore((state) => ({
-    dark: state.dark,
-    brightness: state.brightness
-  }));
+  const { dark, brightness, shouldOpenPreview, setShouldOpenPreview } = useStore(
+    (state) => ({
+      dark: state.dark,
+      brightness: state.brightness,
+      shouldOpenPreview: state.shouldOpenPreview,
+      setShouldOpenPreview: state.setShouldOpenPreview
+    })
+  );
 
   const getAppsData = (): void => {
     let showApps = {},
@@ -75,6 +82,14 @@ export default function Desktop(props: MacActions) {
   useEffect(() => {
     getAppsData();
   }, []);
+
+  // Watch for Preview app open request
+  useEffect(() => {
+    if (shouldOpenPreview) {
+      openApp("preview");
+      setShouldOpenPreview(false);
+    }
+  }, [shouldOpenPreview]);
 
   const toggleLaunchpad = (target: boolean): void => {
     const r = document.querySelector(`#launchpad`) as HTMLElement;
@@ -204,6 +219,9 @@ export default function Desktop(props: MacActions) {
 
   const renderAppWindows = () => {
     return apps.map((app) => {
+      if (!SHOW_DESKTOP_FOLDER && app.id === "desktop-folder") {
+        return <div key={`desktop-app-${app.id}`} />;
+      }
       if (app.desktop && state.showApps[app.id]) {
         const props = {
           id: app.id,
@@ -255,8 +273,28 @@ export default function Desktop(props: MacActions) {
         setSpotlightBtnRef={setSpotlightBtnRef}
       />
 
+      {/* Desktop Icon - Easter Egg! */}
+      {SHOW_DESKTOP_FOLDER && (
+        <div
+          className="absolute z-5"
+          style={{ top: minMarginY, left: 0, right: 0, bottom: 0 }}
+        >
+          <DesktopIcon
+            id="desktop-folder"
+            title="desktop"
+            img="img/icons/folder.png"
+            onOpen={openApp}
+            initialX={50}
+            initialY={50}
+          />
+        </div>
+      )}
+
       {/* Desktop Apps */}
-      <div className="window-bound z-10 absolute" style={{ top: minMarginY }}>
+      <div
+        className="window-bound z-10 absolute"
+        style={{ top: minMarginY, pointerEvents: "none" }}
+      >
         {renderAppWindows()}
       </div>
 

@@ -185,7 +185,7 @@ const Window = (props: WindowProps) => {
       enableResizing={!props.max}
       lockAspectRatio={props.aspectRatio}
       lockAspectRatioExtraHeight={props.aspectRatio ? appBarHeight : undefined}
-      style={{ zIndex: props.z }}
+      style={{ zIndex: props.z, pointerEvents: "auto" }}
       onMouseDown={() => props.focus(props.id)}
       className={`overflow-hidden ${round} ${border} shadow-lg shadow-black/30 ${minimized}`}
       id={`window-${props.id}`}
