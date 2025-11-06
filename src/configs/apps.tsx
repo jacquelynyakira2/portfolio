@@ -21,7 +21,7 @@ const apps: AppsData[] = [
     id: "bear",
     title: "Notes",
     desktop: true,
-    width: 860,
+    width: 900,
     height: 500,
     show: true,
     y: -40,

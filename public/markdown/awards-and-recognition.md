@@ -6,7 +6,8 @@ Welcome to my awards and recognition page! Here you'll find highlights of honors
 
 ## Recent Publications
 
-*Coming soon...*
+- **UX Magazine** — [The Future of Product Design in an AI-Driven World](https://uxmag.com/articles/the-future-of-product-design-in-an-ai-driven-world)
+- **UX Magazine** — [Vibe Coding: Is This How We'll Build Software in the Future?](https://uxmag.com/articles/vibe-coding-is-this-how-well-build-software-in-the-future)
 
 ---
 

@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -6,6 +7,7 @@ import rehypeExternalLinks from "rehype-external-links";
 import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula, prism } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useStore } from "~/stores";
 import bear from "~/configs/bear";
 import type { BearMdData } from "~/types";
 import type { ReactNode } from "react";
@@ -16,6 +18,7 @@ interface ContentProps {
   fullWidth?: boolean;
   setFullWidth?: (value: boolean) => void;
   headerRight?: ReactNode;
+  componentWidth?: number;
 }
 
 interface MiddlebarProps {
@@ -298,7 +301,8 @@ const Content = ({
   contentURL,
   fullWidth = false,
   setFullWidth,
-  headerRight
+  headerRight,
+  componentWidth = 1024
 }: ContentProps) => {
   const [storeMd, setStoreMd] = useState<{ [key: string]: string }>({});
   const dark = useStore((state) => state.dark);
@@ -322,6 +326,16 @@ const Content = ({
     fetchMarkdown(contentID, contentURL);
   }, [contentID, contentURL, fetchMarkdown]);
 
+  // Determine padding based on component width, not viewport
+  const isNarrow = componentWidth < 640;
+  const paddingClass = fullWidth
+    ? isNarrow
+      ? "px-4"
+      : "px-6"
+    : isNarrow
+      ? "px-4"
+      : "pl-12 pr-6";
+
   return (
     <div className="h-full flex flex-col" bg="gray-50 dark:gray-900">
       <div className="h-10 flex items-start justify-between px-4 pt-1">
@@ -343,8 +357,8 @@ const Content = ({
       </div>
       <div className="flex-1 overflow-auto">
         <div
-          className={`markdown w-full ${fullWidth ? "px-6" : "pl-12 pr-6"} pt-0 pb-6 ${
-            fullWidth ? "max-w-[750px] mx-auto" : ""
+          className={`markdown w-full ${paddingClass} pt-0 pb-6 ${
+            fullWidth ? "max-w-[750px] mx-auto" : "max-w-[700px]"
           }`}
         >
           <ReactMarkdown
@@ -373,6 +387,8 @@ const Content = ({
 
 const Bear = () => {
   const [fullWidth, setFullWidth] = useState(false);
+  const [componentWidth, setComponentWidth] = useState(1000); // Start with a default that shows sidebars
+  const containerRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<BearState>({
     curSidebar: 0,
     curMidbar: 0,
@@ -380,6 +396,26 @@ const Bear = () => {
     contentID: bear[0].md[0].id,
     contentURL: bear[0].md[0].file
   });
+
+  // Track component resize for responsive navigation
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    // Set initial width immediately
+    setComponentWidth(containerRef.current.offsetWidth);
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setComponentWidth(entry.contentRect.width);
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   const setMidBar = (items: BearMdData[], index: number) => {
     setState({
@@ -400,7 +436,12 @@ const Bear = () => {
     });
   };
 
-  // Helpers for full-width top navigation
+  // Determine what to show based on component width
+  const showLeftSidebar = !fullWidth && componentWidth >= 800;
+  const showMiddleNav = !fullWidth && componentWidth >= 600;
+  // Show compact navigation when fullWidth OR when any sidebar is hidden
+  const showCompactNav = fullWidth || !showLeftSidebar || !showMiddleNav;
+
   const goPrev = () => {
     const list = state.midbarList;
     if (!list.length) {
@@ -422,7 +463,8 @@ const Bear = () => {
   };
 
   useEffect(() => {
-    if (!fullWidth) {
+    // Enable keyboard navigation when in fullWidth mode OR when compact nav is showing
+    if (!fullWidth && !showCompactNav) {
       return;
     }
 
@@ -461,22 +503,57 @@ const Bear = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [fullWidth, goNext, goPrev]);
+  }, [fullWidth, showCompactNav, goNext, goPrev]);
+
+  // Calculate flexible widths - sidebars shrink as component gets smaller
+  const getLeftSidebarWidth = () => {
+    if (!showLeftSidebar) return 0;
+    // Shrink from 176px (w-44) at 1000px down to 128px (w-32) at 800px
+    if (componentWidth >= 1000) return 176;
+    if (componentWidth <= 800) return 128;
+    const ratio = (componentWidth - 800) / (1000 - 800);
+    return Math.round(128 + ratio * (176 - 128));
+  };
+
+  const getMiddleNavWidth = () => {
+    if (!showMiddleNav) return 0;
+    // Shrink from 240px (w-60) at 900px down to 180px (w-45) at 600px
+    if (componentWidth >= 900) return 240;
+    if (componentWidth <= 600) return 180;
+    const ratio = (componentWidth - 600) / (900 - 600);
+    return Math.round(180 + ratio * (240 - 180));
+  };
+
+  const leftSidebarWidth = getLeftSidebarWidth();
+  const middleNavWidth = getMiddleNavWidth();
 
   return (
-    <div className="bear font-avenir flex h-full" bg="gray-50 dark:gray-900">
+    <div
+      ref={containerRef}
+      className="bear font-avenir flex h-full"
+      bg="gray-50 dark:gray-900"
+    >
+      {/* Left Sidebar - Shrinks gracefully before hiding at < 800px OR when fullWidth is true */}
       <div
-        className={`overflow-auto border-r transition-all duration-300 ease-in-out ${
-          fullWidth ? "w-0 opacity-0" : "w-44 opacity-100"
-        }`}
+        className="overflow-auto border-r transition-all duration-300 ease-in-out"
+        style={{
+          width: `${leftSidebarWidth}px`,
+          opacity: showLeftSidebar ? 1 : 0,
+          display: showLeftSidebar ? "block" : "none"
+        }}
         border="c-300 dark:c-700"
       >
         <Sidebar cur={state.curSidebar} setMidBar={setMidBar} />
       </div>
+
+      {/* Middle Navigation - Shrinks gracefully before hiding at < 600px OR when fullWidth is true */}
       <div
-        className={`overflow-auto border-r transition-all duration-300 ease-in-out ${
-          fullWidth ? "w-0 opacity-0" : "w-66 opacity-100"
-        }`}
+        className="overflow-auto border-r transition-all duration-300 ease-in-out"
+        style={{
+          width: `${middleNavWidth}px`,
+          opacity: showMiddleNav ? 1 : 0,
+          display: showMiddleNav ? "block" : "none"
+        }}
         border="c-300 dark:c-700"
       >
         <Middlebar
@@ -485,14 +562,17 @@ const Bear = () => {
           setContent={setContent}
         />
       </div>
-      <div className="flex-1 overflow-auto">
+
+      {/* Content Area - Always visible, takes full width when sidebars are hidden */}
+      <div className="flex-1 overflow-auto min-w-0">
         <Content
           contentID={state.contentID}
           contentURL={state.contentURL}
           fullWidth={fullWidth}
           setFullWidth={setFullWidth}
+          componentWidth={componentWidth}
           headerRight={
-            fullWidth ? (
+            showCompactNav ? (
               <div className="flex items-center gap-2">
                 {/* Category selector */}
                 <div className="relative rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-600 transition-colors">
