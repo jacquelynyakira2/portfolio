@@ -38,7 +38,7 @@ const bear: BearData[] = [
   },
   {
     id: "project",
-    title: "Work Projects",
+    title: "Work",
     icon: "i-octicon:repo",
     md: [
       {
@@ -126,7 +126,7 @@ const bear: BearData[] = [
   },
   {
     id: "passion-projects",
-    title: "Passion Projects",
+    title: "Passion",
     icon: "i-carbon:favorite-filled",
     md: [
       {

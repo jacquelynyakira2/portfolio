@@ -56,10 +56,9 @@ Welcome to my educational content hub! Here you'll find information about my wor
 - **Format**: Educational Talk (in person & virtual)
 - **Location**: [Creative Mornings Indianapolis - In-person and Virtual](https://www.instagram.com/p/DHd9U-oon1e/?img_index=1)
 - **Description**: Walk through the current state of events to understand where things are in the broader landscape, then go back to the beginning to understand how we got here, and then current thoughts on what patterns are currently happening in the AI Space and some fun use cases.
-- **Recording**: [Watch on YouTube](https://www.youtube.com/watch?v=umKCpB9Jz2s)
+- **Recording**: [Watch on YouTube](https://youtu.be/umKCpB9Jz2s?si=uPVAKG3Abe2dwJS0)
 
-**Attendee Feedback:**
-> *Coming soon...*
+<iframe width="560" height="315" src="https://www.youtube.com/embed/umKCpB9Jz2s?si=7iyhenKS3J9PUdeD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><!-- Video embed not showing up? Here is the recording: [Watch on YouTube](https://youtu.be/umKCpB9Jz2s?si=uPVAKG3Abe2dwJS0) -->
 
 ---
 
