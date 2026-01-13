@@ -15,6 +15,8 @@ Welcome to my educational content hub! Here you'll find information about my wor
 
 ---
 
+## Past Educational Events
+
 ### **How AI is Changing the Way We Work: Cross-Functional Viewpoints**
 - **Date**: October 30, 2025
 - **Attendees**: 50+
@@ -36,7 +38,32 @@ Welcome to my educational content hub! Here you'll find information about my wor
 
 ---
 
-## Past Educational Events
+### **How Salesforce Delivers Self-Service with Agentforce (Chicago)**
+- **Date**: December 19, 2024
+- **Attendees**: Salesforce World Tour Chicago participants
+- **Format**: Theatre Session (in person)
+- **Location**: Salesforce World Tour Chicago
+- **Description**: Shared the strategy behind salesforce.com/help, breaking down how Agentforce powers scalable self-service and how Trailblazers can replicate the approach.
+
+---
+
+### **How Salesforce Delivers Self-Service with Agentforce (Toronto)**
+- **Date**: December 12, 2024
+- **Attendees**: Salesforce World Tour Toronto participants
+- **Format**: Theatre Session (in person)
+- **Location**: Salesforce World Tour Toronto
+- **Description**: Walked through how we launched Agentforce to deliver trusted self-service at scale, highlighting insights for Canadian Trailblazers building service excellence.
+
+---
+
+### **How Salesforce Delivers Self-Service with Agentforce (New York)**
+- **Date**: November 20, 2024
+- **Attendees**: Salesforce World Tour New York participants
+- **Format**: Theatre Session (in person)
+- **Location**: Salesforce World Tour New York
+- **Description**: Detailed how the salesforce.com/help agent combines Agentforce, knowledge, and design to deliver seamless support experiences for Trailblazers worldwide.
+
+---
 
 ### **AI & Sculpture: Navigating Emerging Technologies**
 - **Date**: September 2024
@@ -58,7 +85,8 @@ Welcome to my educational content hub! Here you'll find information about my wor
 - **Description**: Walk through the current state of events to understand where things are in the broader landscape, then go back to the beginning to understand how we got here, and then current thoughts on what patterns are currently happening in the AI Space and some fun use cases.
 - **Recording**: [Watch on YouTube](https://youtu.be/umKCpB9Jz2s?si=uPVAKG3Abe2dwJS0)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/umKCpB9Jz2s?si=7iyhenKS3J9PUdeD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><!-- Video embed not showing up? Here is the recording: [Watch on YouTube](https://youtu.be/umKCpB9Jz2s?si=uPVAKG3Abe2dwJS0) -->
+<!-- Video embed not showing up? Here is the recording: [Watch on YouTube](https://youtu.be/umKCpB9Jz2s?si=uPVAKG3Abe2dwJS0) -->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/umKCpB9Jz2s" title="Creativity and AI Creative Mornings talk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
