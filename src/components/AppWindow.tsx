@@ -170,6 +170,14 @@ const Window = (props: WindowProps) => {
       onDragStop={(e, d) => {
         setState({ ...state, x: d.x, y: d.y });
       }}
+      onResize={(e, direction, ref, delta, position) => {
+        setState({
+          ...state,
+          width: parseInt(ref.style.width),
+          height: parseInt(ref.style.height),
+          ...position
+        });
+      }}
       onResizeStop={(e, direction, ref, delta, position) => {
         setState({
           ...state,

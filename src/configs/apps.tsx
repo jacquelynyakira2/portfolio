@@ -9,6 +9,7 @@ import Terminal from "~/components/apps/Terminal";
 import DesktopFolder from "~/components/apps/DesktopFolder";
 import Trash from "~/components/apps/Trash";
 import Preview from "~/components/apps/Preview";
+import IBooks from "~/components/apps/IBooks";
 
 const apps: AppsData[] = [
   {
@@ -121,6 +122,17 @@ const apps: AppsData[] = [
     desktop: false,
     img: "img/icons/dribbble.png",
     link: "https://dribbble.com/Jacquelynyakira"
+  },
+  {
+    id: "ibooks",
+    title: "iBooks",
+    desktop: true,
+    width: 1024,
+    height: 768,
+    minWidth: 600,
+    minHeight: 400,
+    img: "img/icons/books.png",
+    content: <IBooks />
   },
   {
     id: "trash",
