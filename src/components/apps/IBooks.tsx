@@ -143,6 +143,69 @@ const initialBooks: Book[] = [
     author: "Ethan Mollick",
     coverColor: "bg-violet-700 text-white",
     isbn: "9780753560778"
+  },
+  {
+    id: "20",
+    title: "The Girl on the Train",
+    author: "Paula Hawkins",
+    coverColor: "bg-slate-700 text-white",
+    isbn: "9781784161750"
+  },
+  {
+    id: "21",
+    title: "Sistersong",
+    author: "Lucy Holland",
+    coverColor: "bg-purple-800 text-white",
+    isbn: "9780316320771"
+  },
+  {
+    id: "22",
+    title: "Gone Girl",
+    author: "Gillian Flynn",
+    coverColor: "bg-gray-800 text-white",
+    isbn: "9789022572047"
+  },
+  {
+    id: "23",
+    title: "Dark Places",
+    author: "Gillian Flynn",
+    coverColor: "bg-zinc-900 text-white",
+    isbn: "9780307459923"
+  },
+  {
+    id: "24",
+    title: "The End of Bias : A Beginning",
+    author: "Jessica Nordell",
+    coverColor: "bg-blue-800 text-white",
+    isbn: "9781250186188"
+  },
+  {
+    id: "25",
+    title: "Untamed",
+    author: "Glennon Doyle",
+    coverColor: "bg-pink-600 text-white",
+    isbn: "9780593400470"
+  },
+  {
+    id: "26",
+    title: "The Silence of the Girls",
+    author: "Pat Barker",
+    coverColor: "bg-amber-800 text-white",
+    isbn: "9780241338070"
+  },
+  {
+    id: "27",
+    title: "Milk and Honey",
+    author: "Rupi Kaur",
+    coverColor: "bg-yellow-600 text-white",
+    isbn: "9781502784278"
+  },
+  {
+    id: "28",
+    title: "The Secret Lives of Color",
+    author: "Kassia St. Clair",
+    coverColor: "bg-rose-500 text-white",
+    isbn: "9780143131144"
   }
 ];
 

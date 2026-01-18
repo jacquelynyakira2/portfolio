@@ -10,6 +10,7 @@ import DesktopFolder from "~/components/apps/DesktopFolder";
 import Trash from "~/components/apps/Trash";
 import Preview from "~/components/apps/Preview";
 import IBooks from "~/components/apps/IBooks";
+import Maps from "~/components/apps/Maps";
 
 const apps: AppsData[] = [
   {
@@ -50,6 +51,17 @@ const apps: AppsData[] = [
     x: -20,
     img: "img/icons/safari.png",
     content: <Safari />
+  },
+  {
+    id: "maps",
+    title: "Maps",
+    desktop: true,
+    width: 1100,
+    height: 700,
+    minWidth: 640,
+    minHeight: 420,
+    img: "img/icons/maps.png",
+    content: <Maps />
   },
   {
     id: "vscode",

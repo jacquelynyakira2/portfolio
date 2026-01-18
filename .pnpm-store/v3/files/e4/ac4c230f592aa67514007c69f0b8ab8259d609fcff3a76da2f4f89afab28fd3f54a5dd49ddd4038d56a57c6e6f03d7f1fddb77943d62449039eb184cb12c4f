@@ -1,0 +1,40 @@
+# Installation
+> `npm install --save @types/react-rangeslider`
+
+# Summary
+This package contains type definitions for react-rangeslider (https://github.com/whoisandy/react-rangeslider).
+
+# Details
+Files were exported from https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-rangeslider.
+## [index.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-rangeslider/index.d.ts)
+````ts
+import * as React from "react";
+
+export interface SliderProps {
+    disabled?: boolean | undefined;
+    format?: ((value: number) => string | number | undefined) | undefined;
+    handleLabel?: string | undefined;
+    labels?: { [value: number]: string } | undefined;
+    max?: number | undefined;
+    min?: number | undefined;
+    onChange?(value: number): void;
+    onChangeComplete?(value: number): void;
+    onChangeStart?(value: number): void;
+    orientation?: string | undefined;
+    reverse?: boolean | undefined;
+    step?: number | undefined;
+    tooltip?: boolean | undefined;
+    className?: string | undefined;
+    value: number;
+}
+
+export default class Slider extends React.Component<SliderProps> {}
+
+````
+
+### Additional Details
+ * Last updated: Tue, 07 Nov 2023 09:09:39 GMT
+ * Dependencies: [@types/react](https://npmjs.com/package/@types/react)
+
+# Credits
+These definitions were written by [Riku Kallio](https://github.com/RichieRock).

@@ -18,6 +18,7 @@ declare global {
   const FaceTime: typeof import('./components/apps/FaceTime')['default']
   const IBooks: typeof import('./components/apps/IBooks')['default']
   const Launchpad: typeof import('./components/Launchpad')['default']
+  const Maps: typeof import('./components/apps/Maps')['default']
   const MenuItem: typeof import('./components/menus/base')['MenuItem']
   const MenuItemGroup: typeof import('./components/menus/base')['MenuItemGroup']
   const Metamorphosis: typeof import('./components/apps/Metamorphosis')['default']
