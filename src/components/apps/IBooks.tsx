@@ -108,6 +108,41 @@ const initialBooks: Book[] = [
     author: "George Orwell",
     coverColor: "bg-red-900 text-white",
     isbn: "9780452284234"
+  },
+  {
+    id: "15",
+    title: "The Age of Surveillance Capitalism",
+    author: "Shoshana Zuboff",
+    coverColor: "bg-indigo-900 text-white",
+    isbn: "9781610395694"
+  },
+  {
+    id: "16",
+    title: "Future Ethics",
+    author: "Cennydd Bowles",
+    coverColor: "bg-teal-700 text-white",
+    isbn: "9781999601911"
+  },
+  {
+    id: "17",
+    title: "The User Experience Team of One",
+    author: "Leah Buley",
+    coverColor: "bg-cyan-600 text-white",
+    isbn: "9781933820187"
+  },
+  {
+    id: "18",
+    title: "The Medium is the Massage",
+    author: "Marshall McLuhan & Quentin Fiore",
+    coverColor: "bg-orange-600 text-white",
+    isbn: "9781584230700"
+  },
+  {
+    id: "19",
+    title: "Co-Intelligence",
+    author: "Ethan Mollick",
+    coverColor: "bg-violet-700 text-white",
+    isbn: "9780753560778"
   }
 ];
 
@@ -432,38 +467,105 @@ const RecommendModal = ({
   const [bookTitle, setBookTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [note, setNote] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
   if (!isOpen) return null;
 
-  const getMessage = () => {
-    let msg = `Title: ${bookTitle}`;
-    if (author) msg += `\nAuthor: ${author}`;
-    if (note) msg += `\n\nNote: ${note}`;
-    return msg;
-  };
+  const handleSend = async () => {
+    if (!bookTitle.trim() || isSending) return;
 
-  const handleSend = () => {
-    if (!bookTitle.trim()) return;
-    const subject = encodeURIComponent("Book Recommendation");
-    const body = encodeURIComponent(getMessage());
-    window.open(
-      `mailto:jacquelyn.halpern@gmail.com?subject=${subject}&body=${body}`,
-      "_blank"
-    );
-    onClose();
-    resetForm();
+    setIsSending(true);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: "d0621f6d-f8d3-47d3-837d-f01b67d8d551",
+          subject: "Book Recommendation",
+          from_name: "Portfolio Visitor",
+          book_title: bookTitle,
+          author: author || "Not provided",
+          note: note || "No note provided"
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setIsSent(true);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      alert("Failed to send. Please try again.");
+      console.error(error);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const resetForm = () => {
     setBookTitle("");
     setAuthor("");
     setNote("");
+    setIsSent(false);
   };
 
   const handleClose = () => {
     onClose();
     resetForm();
   };
+
+  // Thank you screen after successful send
+  if (isSent) {
+    return (
+      <div
+        className="absolute inset-0 bg-black/30 flex items-start justify-center pt-12 z-50"
+        onClick={handleClose}
+      >
+        <div
+          className="w-[340px] rounded-lg shadow-2xl overflow-hidden"
+          style={{
+            background: "linear-gradient(to bottom, #f6f6f6 0%, #ececec 100%)",
+            boxShadow: "0 10px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.1)"
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="px-5 py-8 text-center">
+            <div className="mb-3 flex justify-center">
+              <img
+                src="/img/icons/books.png"
+                alt="Books icon"
+                className="w-6 h-6"
+                style={{ width: "24px", height: "24px" }}
+              />
+            </div>
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">Thank You!</h2>
+            <p className="text-sm text-gray-600">
+              Your book recommendation has been sent. I can't wait to check it out!
+            </p>
+          </div>
+          <div
+            className="px-5 py-3 flex justify-end border-t border-gray-300/50"
+            style={{ background: "linear-gradient(to bottom, #e8e8e8 0%, #d8d8d8 100%)" }}
+          >
+            <button
+              onClick={handleClose}
+              className="px-5 py-1.5 rounded-md text-sm text-white font-medium shadow-sm transition-all"
+              style={{
+                background: "linear-gradient(to bottom, #4BA3F5 0%, #1A6ED8 100%)",
+                boxShadow:
+                  "0 1px 2px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3)"
+              }}
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -538,18 +640,20 @@ const RecommendModal = ({
           </button>
           <button
             onClick={handleSend}
-            disabled={!bookTitle.trim()}
+            disabled={!bookTitle.trim() || isSending}
             className="px-5 py-1.5 rounded-md text-sm text-white font-medium shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
-              background: bookTitle.trim()
-                ? "linear-gradient(to bottom, #4BA3F5 0%, #1A6ED8 100%)"
-                : "#a0a0a0",
-              boxShadow: bookTitle.trim()
-                ? "0 1px 2px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3)"
-                : "none"
+              background:
+                bookTitle.trim() && !isSending
+                  ? "linear-gradient(to bottom, #4BA3F5 0%, #1A6ED8 100%)"
+                  : "#a0a0a0",
+              boxShadow:
+                bookTitle.trim() && !isSending
+                  ? "0 1px 2px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3)"
+                  : "none"
             }}
           >
-            Send
+            {isSending ? "Sending..." : "Send"}
           </button>
         </div>
       </div>
