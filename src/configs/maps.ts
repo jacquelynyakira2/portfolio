@@ -9,8 +9,8 @@ const maps: MapsData = {
       country: "United States",
       lat: 40.7128,
       lng: -74.006,
-      visitedOn: "2019",
-      notes: "First big solo trip."
+      visitedOn: "2019, 2023",
+      notes: "The city never sleeps."
     },
     {
       id: "san-francisco",
@@ -19,7 +19,7 @@ const maps: MapsData = {
       country: "United States",
       lat: 37.7749,
       lng: -122.4194,
-      visitedOn: "2020",
+      visitedOn: "Yearly",
       notes: "Golden Gate views."
     },
     {
@@ -39,7 +39,7 @@ const maps: MapsData = {
       country: "United Kingdom",
       lat: 51.5074,
       lng: -0.1278,
-      visitedOn: "2022",
+      visitedOn: "2023",
       notes: "Museum day in Bloomsbury."
     },
     {
@@ -59,7 +59,7 @@ const maps: MapsData = {
       country: "Italy",
       lat: 41.9028,
       lng: 12.4964,
-      visitedOn: "2023",
+      visitedOn: "2025",
       notes: "Colosseum and gelato."
     },
     {
@@ -69,8 +69,30 @@ const maps: MapsData = {
       country: "Japan",
       lat: 35.6762,
       lng: 139.6503,
-      visitedOn: "2023",
+      visitedOn: "2025",
       notes: "Late-night ramen."
+    },
+    {
+      id: "osaka",
+      name: "Osaka",
+      city: "Osaka",
+      country: "Japan",
+      lat: 34.6937,
+      lng: 135.5023,
+      visitedOn: "2023",
+      notes: "Best street food in Japan.",
+      favorite: true
+    },
+    {
+      id: "jaipur",
+      name: "Jaipur",
+      city: "Jaipur",
+      country: "India",
+      lat: 26.9124,
+      lng: 75.7873,
+      visitedOn: "2016",
+      notes: "The Pink City.",
+      favorite: true
     },
     {
       id: "sydney",
@@ -100,7 +122,8 @@ const maps: MapsData = {
       lat: 64.1466,
       lng: -21.9426,
       visitedOn: "2025",
-      notes: "Northern lights chase."
+      notes: "Northern lights chase.",
+      favorite: true
     }
   ]
 };

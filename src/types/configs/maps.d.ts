@@ -7,6 +7,7 @@ export interface MapPlace {
   lng: number;
   visitedOn?: string;
   notes?: string;
+  favorite?: boolean;
 }
 
 export interface MapsData {

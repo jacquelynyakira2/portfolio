@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { maps } from "~/configs";
@@ -25,11 +25,42 @@ const Maps = ({ width = 1024 }: MapsProps) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkerEntry[]>([]);
-  const [activePlaceId, setActivePlaceId] = useState<string | null>(
-    maps.places[0]?.id ?? null
-  );
+  const [activePlaceId, setActivePlaceId] = useState<string | null>(null);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const places = maps.places;
+
+  // Set initial active place to the first favorite
+  useEffect(() => {
+    const firstFavorite = places.find((p) => p.favorite);
+    if (firstFavorite) {
+      setActivePlaceId(firstFavorite.id);
+    } else if (places.length > 0) {
+      setActivePlaceId(places[0].id);
+    }
+  }, [places]);
+
+  const filteredPlaces = useMemo(() => {
+    return places.filter((place) => {
+      const search = searchTerm.toLowerCase();
+      return (
+        place.name.toLowerCase().includes(search) ||
+        place.city?.toLowerCase().includes(search) ||
+        place.country?.toLowerCase().includes(search)
+      );
+    });
+  }, [places, searchTerm]);
+
+  const favorites = useMemo(
+    () => filteredPlaces.filter((p) => p.favorite),
+    [filteredPlaces]
+  );
+  const traveled = useMemo(
+    () => filteredPlaces.filter((p) => !p.favorite),
+    [filteredPlaces]
+  );
+
   const isCompact = width < 720;
 
   const openPlace = useCallback((place: MapPlace) => {
@@ -67,46 +98,67 @@ const Maps = ({ width = 1024 }: MapsProps) => {
     mapRef.current = map;
 
     map.on("load", () => {
-      const bounds = new mapboxgl.LngLatBounds();
-
-      markersRef.current = places.map((place) => {
-        const popupContent = [
-          `<strong>${place.name}</strong>`,
-          place.city || place.country
-            ? `${place.city || ""}${place.city && place.country ? ", " : ""}${place.country || ""}`
-            : "",
-          place.visitedOn ? `Visited: ${place.visitedOn}` : "",
-          place.notes ? place.notes : ""
-        ]
-          .filter(Boolean)
-          .join("<br />");
-
-        const popup = new mapboxgl.Popup({ offset: 18 }).setHTML(popupContent);
-        const marker = new mapboxgl.Marker({ color: "#2563eb" })
-          .setLngLat([place.lng, place.lat])
-          .setPopup(popup)
-          .addTo(map);
-
-        marker.getElement().addEventListener("click", () => openPlace(place));
-        bounds.extend([place.lng, place.lat]);
-
-        return { id: place.id, marker };
-      });
-
-      if (places.length > 0) {
-        map.fitBounds(bounds, { padding: getMapPadding(isCompact), duration: 0 });
-      }
-
-      if (places[0]) openPlace(places[0]);
+      mapRef.current = map;
+      setIsMapLoaded(true);
     });
 
     return () => {
-      markersRef.current.forEach(({ marker }) => marker.remove());
-      markersRef.current = [];
       map.remove();
       mapRef.current = null;
     };
-  }, [isCompact, openPlace, places, token]);
+  }, [token]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !isMapLoaded) return;
+
+    // Remove old markers
+    markersRef.current.forEach(({ marker }) => marker.remove());
+    markersRef.current = [];
+
+    const bounds = new mapboxgl.LngLatBounds();
+
+    markersRef.current = filteredPlaces.map((place) => {
+      const popupContent = [
+        `<strong>${place.name}</strong>`,
+        place.city || place.country
+          ? `${place.city || ""}${place.city && place.country ? ", " : ""}${place.country || ""}`
+          : "",
+        place.visitedOn ? `Visited: ${place.visitedOn}` : "",
+        place.notes ? place.notes : ""
+      ]
+        .filter(Boolean)
+        .join("<br />");
+
+      const popup = new mapboxgl.Popup({ offset: 18 }).setHTML(popupContent);
+      const marker = new mapboxgl.Marker({ color: "#2563eb" })
+        .setLngLat([place.lng, place.lat])
+        .setPopup(popup)
+        .addTo(map);
+
+      marker.getElement().addEventListener("click", () => openPlace(place));
+      bounds.extend([place.lng, place.lat]);
+
+      return { id: place.id, marker };
+    });
+
+    if (activePlaceId && searchTerm === "") {
+      const activePlace = places.find((p) => p.id === activePlaceId);
+      if (activePlace) {
+        openPlace(activePlace);
+      }
+    } else if (filteredPlaces.length > 0 && searchTerm === "") {
+      map.fitBounds(bounds, { padding: getMapPadding(isCompact), duration: 0 });
+    }
+  }, [
+    filteredPlaces,
+    isCompact,
+    openPlace,
+    searchTerm,
+    isMapLoaded,
+    activePlaceId,
+    places
+  ]);
 
   useEffect(() => {
     if (mapRef.current) {
@@ -119,52 +171,158 @@ const Maps = ({ width = 1024 }: MapsProps) => {
 
   return (
     <div className="w-full h-full bg-[#f5f5f7] text-c-900">
-      <div className="h-10 flex items-center justify-between px-3 bg-white/80 border-b border-gray-200">
-        <div className="font-semibold text-sm">Maps</div>
-        <div className="flex-1 flex items-center justify-center px-3">
-          <div className="h-6 w-full max-w-sm px-2 rounded-md bg-gray-100 text-xs text-gray-500 flex items-center">
-            Search (coming soon)
-          </div>
-        </div>
-        <div className="text-xs text-gray-500">{places.length} places</div>
-      </div>
-
-      <div className={`h-[calc(100%-40px)] flex ${isCompact ? "flex-col" : ""}`}>
+      <style>{`
+        .mapboxgl-popup-close-button {
+          padding: 8px 10px !important;
+          font-size: 16px !important;
+          color: #666 !important;
+          border-radius: 0 8px 0 0 !important;
+        }
+        .mapboxgl-popup-close-button:hover {
+          background-color: transparent !important;
+          color: #000 !important;
+        }
+        .mapboxgl-popup-content {
+          padding: 15px 18px !important;
+          border-radius: 12px !important;
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+        }
+      `}</style>
+      <div className={`h-full flex ${isCompact ? "flex-col" : ""}`}>
         <div
           className={`${
             isCompact
-              ? "w-full max-h-56 border-b border-gray-200"
+              ? "w-full max-h-[40%] border-b border-gray-200"
               : "w-72 border-r border-gray-200"
-          } bg-white/90 backdrop-blur`}
+          } bg-white/90 backdrop-blur flex flex-col`}
         >
-          <div className="px-3 pt-3 pb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
-            Saved places
-          </div>
-          <div className="px-2 pb-3 space-y-1 overflow-y-auto max-h-full">
-            {places.map((place) => {
-              const isActive = place.id === activePlaceId;
-              const locationLine = [place.city, place.country].filter(Boolean).join(", ");
-
-              return (
+          {/* Search Bar in Sidebar */}
+          <div className="p-3">
+            <div className="relative">
+              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 i-ion:search-outline text-gray-400 text-sm" />
+              <input
+                type="text"
+                placeholder="Search for a place or address"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full h-8 pl-8 pr-8 bg-gray-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+              {searchTerm && (
                 <button
-                  key={place.id}
-                  className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
-                    isActive ? "bg-blue-100 text-blue-900" : "hover:bg-gray-100"
-                  }`}
-                  onClick={() => openPlace(place)}
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full bg-gray-300 hover:bg-gray-400 transition-colors flex-center"
                 >
-                  <div className="text-sm font-semibold">{place.name}</div>
-                  {locationLine && (
-                    <div className="text-xs text-gray-500">{locationLine}</div>
-                  )}
-                  {place.visitedOn && (
-                    <div className="text-[11px] text-gray-400">
-                      Visited {place.visitedOn}
-                    </div>
-                  )}
+                  <span className="i-ion:close text-[10px] text-white" />
                 </button>
-              );
-            })}
+              )}
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-2 pb-3 custom-scrollbar">
+            {/* Favorites Section */}
+            {favorites.length > 0 && (
+              <div className="mb-4">
+                <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                  Favorites
+                </div>
+                <div className="grid grid-cols-1 gap-1">
+                  {favorites.map((place) => {
+                    const isActive = place.id === activePlaceId;
+                    const locationLine = [place.city, place.country]
+                      .filter(Boolean)
+                      .join(", ");
+
+                    return (
+                      <button
+                        key={place.id}
+                        onClick={() => openPlace(place)}
+                        className={`group flex items-center space-x-3 px-3 py-2 rounded-xl transition-all ${
+                          isActive ? "bg-blue-500 text-white" : "hover:bg-gray-100"
+                        }`}
+                      >
+                        <div
+                          className={`size-8 rounded-full flex-center text-white shrink-0 ${
+                            isActive ? "bg-white/20" : "bg-blue-500 shadow-sm"
+                          }`}
+                        >
+                          <span className="i-ion:star text-lg" />
+                        </div>
+                        <div className="min-w-0 text-left">
+                          <div
+                            className={`text-sm font-semibold truncate ${
+                              isActive ? "text-white" : "text-gray-900"
+                            }`}
+                          >
+                            {place.name}
+                          </div>
+                          <div
+                            className={`text-[11px] truncate ${
+                              isActive ? "text-white/80" : "text-gray-500"
+                            }`}
+                          >
+                            {locationLine || "Saved place"}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Traveled Section */}
+            <div className="mb-2">
+              <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                Traveled
+              </div>
+              <div className="space-y-0.5">
+                {traveled.map((place) => {
+                  const isActive = place.id === activePlaceId;
+                  const locationLine = [place.city, place.country]
+                    .filter(Boolean)
+                    .join(", ");
+
+                  return (
+                    <button
+                      key={place.id}
+                      onClick={() => openPlace(place)}
+                      className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
+                        isActive ? "bg-blue-500 text-white" : "hover:bg-gray-100"
+                      }`}
+                    >
+                      <div
+                        className={`size-8 rounded-lg overflow-hidden shrink-0 bg-gray-200 flex-center ${
+                          isActive ? "bg-white/20" : ""
+                        }`}
+                      >
+                        {/* Placeholder for place image or icon */}
+                        <span
+                          className={`i-ion:location text-lg ${
+                            isActive ? "text-white" : "text-blue-500"
+                          }`}
+                        />
+                      </div>
+                      <div className="min-w-0 text-left">
+                        <div
+                          className={`text-sm font-semibold truncate ${
+                            isActive ? "text-white" : "text-gray-900"
+                          }`}
+                        >
+                          {place.name}
+                        </div>
+                        <div
+                          className={`text-[11px] truncate ${
+                            isActive ? "text-white/80" : "text-gray-500"
+                          }`}
+                        >
+                          {locationLine || "1 Place"}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
 
