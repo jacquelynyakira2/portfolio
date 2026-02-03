@@ -1,3 +1,4 @@
+import aimConfig from "./aim";
 import apps from "./apps";
 import bear from "./bear";
 import launchpadApps from "./launchpad";
@@ -8,4 +9,15 @@ import user from "./user";
 import wallpapers from "./wallpapers";
 import websites from "./websites";
 
-export { apps, bear, launchpadApps, maps, music, terminal, user, wallpapers, websites };
+export {
+  aimConfig,
+  apps,
+  bear,
+  launchpadApps,
+  maps,
+  music,
+  terminal,
+  user,
+  wallpapers,
+  websites
+};

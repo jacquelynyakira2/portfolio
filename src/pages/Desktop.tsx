@@ -1,8 +1,10 @@
 import React from "react";
 import { apps, wallpapers } from "~/configs";
 import { minMarginY } from "~/utils";
+import { useAIMSounds } from "~/hooks";
 import type { MacActions } from "~/types";
 import DesktopIcon from "~/components/DesktopIcon";
+import AIMChatWindow from "~/components/apps/AIMChat";
 
 const SHOW_DESKTOP_FOLDER = false;
 
@@ -42,14 +44,34 @@ export default function Desktop(props: MacActions) {
   const [spotlightBtnRef, setSpotlightBtnRef] =
     useState<React.RefObject<HTMLDivElement> | null>(null);
 
-  const { dark, brightness, shouldOpenPreview, setShouldOpenPreview } = useStore(
-    (state) => ({
-      dark: state.dark,
-      brightness: state.brightness,
-      shouldOpenPreview: state.shouldOpenPreview,
-      setShouldOpenPreview: state.setShouldOpenPreview
-    })
-  );
+  const {
+    dark,
+    brightness,
+    shouldOpenPreview,
+    setShouldOpenPreview,
+    aimChatWindows,
+    aimCloseChat,
+    aimFocusChat,
+    aimBuddyGroups
+  } = useStore((state) => ({
+    dark: state.dark,
+    brightness: state.brightness,
+    shouldOpenPreview: state.shouldOpenPreview,
+    setShouldOpenPreview: state.setShouldOpenPreview,
+    aimChatWindows: state.aimChatWindows,
+    aimCloseChat: state.aimCloseChat,
+    aimFocusChat: state.aimFocusChat,
+    aimBuddyGroups: state.aimBuddyGroups
+  }));
+
+  // AIM sounds
+  const { playDoorClose } = useAIMSounds();
+
+  // Close AIM chat with door sound
+  const handleCloseAIMChat = (buddyId: string) => {
+    playDoorClose();
+    aimCloseChat(buddyId);
+  };
 
   const getAppsData = (): void => {
     let showApps = {},
@@ -253,6 +275,43 @@ export default function Desktop(props: MacActions) {
     });
   };
 
+  // Render AIM chat windows
+  const renderAIMChatWindows = () => {
+    return aimChatWindows.map((chatWindow) => {
+      const buddy = aimBuddyGroups
+        .flatMap((g) => g.buddies)
+        .find((b) => b.id === chatWindow.buddyId);
+
+      if (!buddy) return null;
+
+      return (
+        <AppWindow
+          key={`aim-chat-${chatWindow.buddyId}`}
+          id={`aim-chat-${chatWindow.buddyId}`}
+          title={`${buddy.screenName} - Instant Message`}
+          width={400}
+          height={450}
+          minWidth={300}
+          minHeight={350}
+          x={chatWindow.x}
+          y={chatWindow.y}
+          z={chatWindow.z}
+          max={false}
+          min={false}
+          close={() => handleCloseAIMChat(chatWindow.buddyId)}
+          setMax={() => {}}
+          setMin={() => {}}
+          focus={() => aimFocusChat(chatWindow.buddyId)}
+        >
+          <AIMChatWindow
+            buddyId={chatWindow.buddyId}
+            onClose={() => handleCloseAIMChat(chatWindow.buddyId)}
+          />
+        </AppWindow>
+      );
+    });
+  };
+
   return (
     <div
       className="size-full overflow-hidden bg-center bg-cover"
@@ -296,6 +355,7 @@ export default function Desktop(props: MacActions) {
         style={{ top: minMarginY, pointerEvents: "none" }}
       >
         {renderAppWindows()}
+        {renderAIMChatWindows()}
       </div>
 
       {/* Spotlight */}

@@ -1,0 +1,104 @@
+/* ============================================================================
+   AIM - AOL Instant Messenger Styles
+   Classic AIM aesthetic with macOS integration
+   ============================================================================ */
+
+/* ---------- Login Screen ---------- */
+
+.aim-login {
+  font-family: "Inter Variable", "Inter", "Avenir Next LT Pro", -apple-system, sans-serif;
+}
+
+.aim-login input:focus {
+  @apply ring-2 ring-blue-500 border-transparent;
+}
+
+/* ---------- Buddy List ---------- */
+
+.aim-buddy-list {
+  font-family: "Inter Variable", "Inter", "Avenir Next LT Pro", -apple-system, sans-serif;
+}
+
+/* Scrollbar styling for buddy list */
+.aim-buddy-list .overflow-y-auto::-webkit-scrollbar {
+  width: 12px;
+}
+
+.aim-buddy-list .overflow-y-auto::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-left: 1px solid #c0c0c0;
+}
+
+.aim-buddy-list .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #c8c8c8, #a8a8a8, #c8c8c8);
+  border: 1px solid #909090;
+  border-radius: 0;
+}
+
+.aim-buddy-list .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to right, #b8b8b8, #989898, #b8b8b8);
+}
+
+/* ---------- Chat Window ---------- */
+
+.aim-chat {
+  font-family: "Inter Variable", "Inter", "Avenir Next LT Pro", -apple-system, sans-serif;
+}
+
+/* Scrollbar styling for chat messages */
+.aim-chat .overflow-y-auto::-webkit-scrollbar {
+  width: 12px;
+}
+
+.aim-chat .overflow-y-auto::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-left: 1px solid #c0c0c0;
+}
+
+.aim-chat .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #c8c8c8, #a8a8a8, #c8c8c8);
+  border: 1px solid #909090;
+  border-radius: 0;
+}
+
+.aim-chat .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to right, #b8b8b8, #989898, #b8b8b8);
+}
+
+/* ---------- Status Indicator Animation ---------- */
+
+@keyframes aimOnlinePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Subtle pulse for online status */
+.aim-buddy-list .bg-green-500,
+.aim-chat .bg-green-500 {
+  animation: aimOnlinePulse 2s ease-in-out infinite;
+}
+
+/* ---------- Classic AIM Blue Selection ---------- */
+
+.aim-buddy-list .hover\:bg-blue-100:hover {
+  background-color: #cce5ff;
+}
+
+/* ---------- Away Picker Scrollbar ---------- */
+
+.aim-buddy-list > div:last-child .overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.aim-buddy-list > div:last-child .overflow-y-auto::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.aim-buddy-list > div:last-child .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 4px;
+}

@@ -1,4 +1,15 @@
 export { AppsData } from "./apps";
+export {
+  AIMStatus,
+  AIMBuddy,
+  AIMBuddyGroup,
+  AIMChatMessage,
+  AIMChat,
+  AIMAwayMessage,
+  AIMPreferences,
+  AIMState,
+  AIMConfig
+} from "./aim";
 export { BearMdData, BearData } from "./bear";
 export { LaunchpadData } from "./launchpad";
 export { MapsData, MapPlace } from "./maps";

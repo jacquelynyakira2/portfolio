@@ -8,6 +8,15 @@ export interface MacActions {
 }
 
 export {
+  AIMStatus,
+  AIMBuddy,
+  AIMBuddyGroup,
+  AIMChatMessage,
+  AIMChat,
+  AIMAwayMessage,
+  AIMPreferences,
+  AIMState,
+  AIMConfig,
   AppsData,
   BearMdData,
   BearData,

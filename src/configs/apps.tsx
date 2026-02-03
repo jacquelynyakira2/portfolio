@@ -1,5 +1,6 @@
 import { appBarHeight } from "~/utils";
 import type { AppsData } from "~/types";
+import AIM from "~/components/apps/AIM";
 import Notes from "~/components/apps/Notes";
 import Typora from "~/components/apps/Typora";
 import Safari from "~/components/apps/Safari";
@@ -94,6 +95,17 @@ const apps: AppsData[] = [
     desktop: true,
     img: "img/icons/terminal.png",
     content: <Terminal />
+  },
+  {
+    id: "aim",
+    title: "AIM",
+    desktop: true,
+    width: 280,
+    height: 500,
+    minWidth: 240,
+    minHeight: 400,
+    img: "img/icons/aim.svg",
+    content: <AIM />
   },
   {
     id: "desktop-folder",
