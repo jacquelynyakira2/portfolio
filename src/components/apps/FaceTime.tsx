@@ -1,11 +1,14 @@
+import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
 import { format } from "date-fns";
+import { useStore } from "~/stores";
 
 interface SidebarProps {
   state: FaceTimeState;
   onTake: () => void;
   onSave: () => void;
   onSelect: (src: string) => void;
+  isMobile?: boolean;
 }
 
 interface SidebarItemProps {
@@ -56,13 +59,18 @@ const SidebarItem = ({ date, active }: SidebarItemProps) => {
   );
 };
 
-const Sidebar = ({ state, onTake, onSave, onSelect }: SidebarProps) => {
+const Sidebar = ({ state, onTake, onSave, onSelect, isMobile }: SidebarProps) => {
   const { images } = useStore((state) => ({
     images: state.faceTimeImages
   }));
 
+  // On mobile, make sidebar full-width at the bottom instead of side
+  const sidebarClasses = isMobile
+    ? "absolute w-full h-auto bottom-0 left-0 z-1 flex flex-col bg-zinc-900/85 backdrop-blur-xl"
+    : "absolute w-74 h-full z-1 left-0 top-0 flex flex-col bg-zinc-900/85 backdrop-blur-xl";
+
   return (
-    <div className="absolute w-74 h-full z-1 left-0 top-0 flex flex-col bg-zinc-900/85 backdrop-blur-xl">
+    <div className={sidebarClasses}>
       <div className="p-5 space-y-2.5 text-sm">
         <button
           className="flex-center space-x-1 w-full py-1 text-white bg-green-700 rounded-md"
@@ -105,7 +113,11 @@ const Sidebar = ({ state, onTake, onSave, onSelect }: SidebarProps) => {
   );
 };
 
-const FaceTime = () => {
+interface FaceTimeProps {
+  width?: number;
+}
+
+const FaceTime = ({ width }: FaceTimeProps) => {
   const webcamRef = useRef<Webcam>(null);
   const { addImage } = useStore((state) => ({
     addImage: state.addFaceTimeImage
@@ -115,10 +127,13 @@ const FaceTime = () => {
     curImage: null
   });
 
+  const isMobile = (width || 640) < 640;
+
   return (
     <div className="relative h-full">
       <Sidebar
         state={state}
+        isMobile={isMobile}
         onTake={() => {
           if (!state.curImage) {
             const src = webcamRef.current?.getScreenshot() || "";

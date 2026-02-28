@@ -40,12 +40,13 @@ export default function Dock({
       overflow="x-scroll sm:x-visible"
     >
       <ul
-        className="flex space-x-2 px-2 backdrop-blur-2xl bg-c-white/20"
-        border="~ c-400/40 rounded-none sm:rounded-xl"
+        className="flex px-2 backdrop-blur-2xl bg-c-white/20"
+        border="~ c-400/40 rounded-xl"
         onMouseMove={(e) => mouseX.set(e.nativeEvent.x)}
         onMouseLeave={() => mouseX.set(null)}
         style={{
-          height: `${(dockSize + 15) / 16}rem`
+          height: `${(dockSize + 15) / 16}rem`,
+          gap: "0.75rem" // Increased spacing for better touch targets (space-x-3)
         }}
       >
         {apps

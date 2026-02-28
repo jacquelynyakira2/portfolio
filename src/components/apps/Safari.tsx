@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { websites, wallpapers } from "~/configs";
 import { checkURL } from "~/utils";
+import { useStore } from "~/stores";
 import type { SiteSectionData, SiteData } from "~/types";
 
 interface SafariState {
@@ -162,6 +163,9 @@ const Safari = ({ width }: SafariProps) => {
   const buttonColor = state.goURL === "" ? "text-c-400" : "text-c-700";
   const grid = (width as number) < 640 ? "grid-cols-2" : "grid-cols-3";
   const hideLast = (width as number) < 640 ? "hidden" : "flex";
+  const isMobile = (width as number) < 640;
+  const btnSize = isMobile ? "w-10" : "w-7"; // Larger buttons on mobile for better touch targets
+  const btnSizeLg = isMobile ? "w-11" : "w-9";
 
   return (
     <div className="w-full h-full">
@@ -169,20 +173,20 @@ const Safari = ({ width }: SafariProps) => {
       <div className={`h-10 grid ${grid} items-center bg-c-white`}>
         <div className="flex px-2">
           <button
-            className={`safari-btn w-7 ${buttonColor}`}
+            className={`safari-btn ${btnSize} ${buttonColor}`}
             onClick={() => setGoURL("")}
           >
             <span className="i-jam:chevron-left text-xl" />
           </button>
-          <button className="safari-btn w-7 text-c-400">
+          <button className={`safari-btn ${btnSize} text-c-400`}>
             <span className="i-jam:chevron-right text-xl" />
           </button>
-          <button className="safari-btn w-9 ml-3 text-c-700">
+          <button className={`safari-btn ${btnSizeLg} ml-3 text-c-700`}>
             <span className="i-bi:layout-sidebar text-sm" />
           </button>
         </div>
         <div className="hstack space-x-2 px-2">
-          <button className="safari-btn w-9 -ml-10 text-c-400">
+          <button className={`safari-btn ${btnSizeLg} -ml-10 text-c-400`}>
             <span className="i-fa-solid:shield-alt text-sm" />
           </button>
           <input
@@ -196,10 +200,10 @@ const Safari = ({ width }: SafariProps) => {
           />
         </div>
         <div className={`${hideLast} justify-end space-x-2 px-2`}>
-          <button className={`safari-btn w-9 ${buttonColor}`}>
+          <button className={`safari-btn ${btnSizeLg} ${buttonColor}`}>
             <span className="i-ion:share-outline" />
           </button>
-          <button className="safari-btn w-9 text-c-700">
+          <button className={`safari-btn ${btnSizeLg} text-c-700`}>
             <span className="i-ion:copy-outline" />
           </button>
         </div>

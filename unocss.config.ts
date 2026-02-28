@@ -4,8 +4,7 @@ import {
   presetIcons,
   presetUno,
   transformerDirectives,
-  transformerVariantGroup,
-  transformerAttributifyJsx
+  transformerVariantGroup
 } from "unocss";
 
 const colorReg = (prefix: string) => new RegExp("^" + prefix + "-([0-9a-z]+)(/(\\d+))?$");
@@ -79,9 +78,5 @@ export default defineConfig({
       }
     })
   ],
-  transformers: [
-    transformerDirectives(),
-    transformerVariantGroup(),
-    transformerAttributifyJsx()
-  ]
+  transformers: [transformerDirectives(), transformerVariantGroup()]
 });

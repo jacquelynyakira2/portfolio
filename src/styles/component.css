@@ -48,6 +48,14 @@
   @apply block;
 }
 
+/* --------- terminal --------- */
+
+@media (max-width: 639px) {
+  .terminal {
+    @apply text-base;
+  }
+}
+
 /* --------- dock --------- */
 
 .dock ul {

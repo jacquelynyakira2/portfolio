@@ -24,6 +24,7 @@ declare global {
   const MenuItem: typeof import('./components/menus/base')['MenuItem']
   const MenuItemGroup: typeof import('./components/menus/base')['MenuItemGroup']
   const Metamorphosis: typeof import('./components/apps/Metamorphosis')['default']
+  const MobileAppWindow: typeof import('./components/MobileAppWindow')['default']
   const Notes: typeof import('./components/apps/Notes')['default']
   const Preview: typeof import('./components/apps/Preview')['default']
   const Safari: typeof import('./components/apps/Safari')['default']

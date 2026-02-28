@@ -23,9 +23,10 @@ const TopBarItem = forwardRef(
     return (
       <div
         ref={ref}
-        className={`hstack space-x-1 h-6 px-1 cursor-default rounded ${hide} ${bg} ${
+        className={`hstack space-x-1 px-1 cursor-default rounded ${hide} ${bg} ${
           props.className || ""
         }`}
+        style={{ minHeight: "32px", alignItems: "center" }}
         onClick={props.onClick}
         onMouseEnter={props.onMouseEnter}
       >
@@ -285,8 +286,13 @@ const TopBar = (props: TopBarProps) => {
           />
         )}
 
-        <TopBarItem>
+        {/* Show full date + time on desktop */}
+        <TopBarItem hideOnMobile={true}>
           <span>{format(state.date, "eee MMM d")}</span>
+          <span>{format(state.date, "h:mm aa")}</span>
+        </TopBarItem>
+        {/* Show just time on mobile */}
+        <TopBarItem className="sm:hidden">
           <span>{format(state.date, "h:mm aa")}</span>
         </TopBarItem>
       </div>

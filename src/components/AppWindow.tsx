@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { minMarginX, minMarginY, appBarHeight } from "~/utils";
+import { useWindowSize } from "~/hooks";
+import { useStore } from "~/stores";
+import MobileAppWindow from "./MobileAppWindow";
 
 const FullIcon = ({ size }: { size: number }) => (
   <svg
@@ -106,6 +109,14 @@ const TrafficLights = ({ id, close, aspectRatio, max, setMax, setMin }: TrafficP
 const Window = (props: WindowProps) => {
   const dockSize = useStore((state) => state.dockSize);
   const { winWidth, winHeight } = useWindowSize();
+
+  // Mobile detection - use full-screen mobile window on small screens
+  const isMobile = winWidth < 640;
+
+  // Render mobile window on small screens
+  if (isMobile) {
+    return <MobileAppWindow {...props}>{props.children}</MobileAppWindow>;
+  }
 
   const initWidth = Math.min(winWidth, props.width || 640);
   const initHeight = Math.min(winHeight, props.height || 400);
