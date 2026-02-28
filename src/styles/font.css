@@ -1,3 +1,4 @@
+/* Existing Avenir family */
 @font-face {
   font-family: "Avenir Next LT Pro";
   font-style: normal;
@@ -26,6 +27,32 @@
   src: local("Avenir Next LT Pro DemiIt"), url("./fonts/AvenirNextLTPro-DemiItalic.woff") format("woff");
 }
 
+/* Optional: add your own custom body and heading fonts.
+   Drop the corresponding .woff/.woff2 files into ./fonts and
+   update the src URLs below if needed. These are stubs and safe
+   to keep even without the font files (will fall back). */
+@font-face {
+  font-family: "Custom Body";
+  font-style: normal;
+  font-weight: 100 900;
+  src: local("Custom Body"), url("./fonts/CustomBody.woff2") format("woff2"), url("./fonts/CustomBody.woff") format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Custom Heading";
+  font-style: normal;
+  font-weight: 100 900;
+  src: local("Custom Heading"), url("./fonts/CustomHeading.woff2") format("woff2"), url("./fonts/CustomHeading.woff") format("woff");
+  font-display: swap;
+}
+
+/* Font variables: defaults keep current look */
+:root {
+  --font-body: "Helvetica Neue", SFCompactRounded, -apple-system, Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", sans-serif;
+  --font-heading: var(--font-body);
+}
+
 .font-avenir {
   font-family: "Avenir Next LT Pro", "Helvetica Neue", SFCompactRounded, -apple-system, Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", sans-serif;
 }
@@ -35,5 +62,24 @@
 }
 
 body:not(pre) {
-  font-family: "Helvetica Neue", SFCompactRounded, -apple-system, Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", sans-serif;
+  font-family: var(--font-body);
+}
+
+/* Apply heading font */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Utilities to switch fonts without touching components */
+.use-custom-fonts {
+  --font-body: "Custom Body", "Helvetica Neue", SFCompactRounded, -apple-system, Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", sans-serif;
+  --font-heading: "Custom Heading", "Custom Body", "Avenir Next LT Pro", "Helvetica Neue", SFCompactRounded, -apple-system, Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", sans-serif;
+}
+
+.use-avenir-body {
+  --font-body: "Avenir Next LT Pro", "Helvetica Neue", SFCompactRounded, -apple-system, Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", sans-serif;
+}
+
+.use-avenir-heading {
+  --font-heading: "Avenir Next LT Pro", var(--font-body);
 }

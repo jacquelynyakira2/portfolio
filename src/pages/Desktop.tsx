@@ -1,7 +1,13 @@
 import React from "react";
 import { apps, wallpapers } from "~/configs";
 import { minMarginY } from "~/utils";
+import { useAIMSounds, useWindowSize } from "~/hooks";
+import { useStore } from "~/stores";
 import type { MacActions } from "~/types";
+import DesktopIcon from "~/components/DesktopIcon";
+import AIMChatWindow from "~/components/apps/AIMChat";
+
+const SHOW_DESKTOP_FOLDER = false;
 
 interface DesktopState {
   showApps: {
@@ -24,6 +30,9 @@ interface DesktopState {
 }
 
 export default function Desktop(props: MacActions) {
+  const { winWidth } = useWindowSize();
+  const isMobile = winWidth < 640;
+
   const [state, setState] = useState({
     showApps: {},
     appsZ: {},
@@ -39,10 +48,34 @@ export default function Desktop(props: MacActions) {
   const [spotlightBtnRef, setSpotlightBtnRef] =
     useState<React.RefObject<HTMLDivElement> | null>(null);
 
-  const { dark, brightness } = useStore((state) => ({
+  const {
+    dark,
+    brightness,
+    shouldOpenPreview,
+    setShouldOpenPreview,
+    aimChatWindows,
+    aimCloseChat,
+    aimFocusChat,
+    aimBuddyGroups
+  } = useStore((state) => ({
     dark: state.dark,
-    brightness: state.brightness
+    brightness: state.brightness,
+    shouldOpenPreview: state.shouldOpenPreview,
+    setShouldOpenPreview: state.setShouldOpenPreview,
+    aimChatWindows: state.aimChatWindows,
+    aimCloseChat: state.aimCloseChat,
+    aimFocusChat: state.aimFocusChat,
+    aimBuddyGroups: state.aimBuddyGroups
   }));
+
+  // AIM sounds
+  const { playDoorClose } = useAIMSounds();
+
+  // Close AIM chat with door sound
+  const handleCloseAIMChat = (buddyId: string) => {
+    playDoorClose();
+    aimCloseChat(buddyId);
+  };
 
   const getAppsData = (): void => {
     let showApps = {},
@@ -75,6 +108,14 @@ export default function Desktop(props: MacActions) {
   useEffect(() => {
     getAppsData();
   }, []);
+
+  // Watch for Preview app open request
+  useEffect(() => {
+    if (shouldOpenPreview) {
+      openApp("preview");
+      setShouldOpenPreview(false);
+    }
+  }, [shouldOpenPreview]);
 
   const toggleLaunchpad = (target: boolean): void => {
     const r = document.querySelector(`#launchpad`) as HTMLElement;
@@ -203,8 +244,27 @@ export default function Desktop(props: MacActions) {
   };
 
   const renderAppWindows = () => {
+    // On mobile, find the focused app (highest z-index)
+    let focusedAppId: string | null = null;
+    if (isMobile) {
+      const openApps = apps.filter((app) => app.desktop && state.showApps[app.id]);
+      if (openApps.length > 0) {
+        focusedAppId = openApps.reduce((maxApp, app) =>
+          state.appsZ[app.id] > state.appsZ[maxApp.id] ? app : maxApp
+        ).id;
+      }
+    }
+
     return apps.map((app) => {
+      if (!SHOW_DESKTOP_FOLDER && app.id === "desktop-folder") {
+        return <div key={`desktop-app-${app.id}`} />;
+      }
       if (app.desktop && state.showApps[app.id]) {
+        // On mobile, only render the focused app
+        if (isMobile && app.id !== focusedAppId) {
+          return <div key={`desktop-app-${app.id}`} />;
+        }
+
         const props = {
           id: app.id,
           title: app.title,
@@ -235,6 +295,56 @@ export default function Desktop(props: MacActions) {
     });
   };
 
+  // Render AIM chat windows
+  const renderAIMChatWindows = () => {
+    // On mobile, find the focused AIM chat window (highest z-index)
+    let focusedChatId: string | null = null;
+    if (isMobile && aimChatWindows.length > 0) {
+      focusedChatId = aimChatWindows.reduce((maxChat, chat) =>
+        chat.z > maxChat.z ? chat : maxChat
+      ).buddyId;
+    }
+
+    return aimChatWindows.map((chatWindow) => {
+      const buddy = aimBuddyGroups
+        .flatMap((g) => g.buddies)
+        .find((b) => b.id === chatWindow.buddyId);
+
+      if (!buddy) return null;
+
+      // On mobile, only render the focused chat window
+      if (isMobile && chatWindow.buddyId !== focusedChatId) {
+        return null;
+      }
+
+      return (
+        <AppWindow
+          key={`aim-chat-${chatWindow.buddyId}`}
+          id={`aim-chat-${chatWindow.buddyId}`}
+          title={`${buddy.screenName} - Instant Message`}
+          width={400}
+          height={450}
+          minWidth={300}
+          minHeight={350}
+          x={chatWindow.x}
+          y={chatWindow.y}
+          z={chatWindow.z}
+          max={false}
+          min={false}
+          close={() => handleCloseAIMChat(chatWindow.buddyId)}
+          setMax={() => {}}
+          setMin={() => {}}
+          focus={() => aimFocusChat(chatWindow.buddyId)}
+        >
+          <AIMChatWindow
+            buddyId={chatWindow.buddyId}
+            onClose={() => handleCloseAIMChat(chatWindow.buddyId)}
+          />
+        </AppWindow>
+      );
+    });
+  };
+
   return (
     <div
       className="size-full overflow-hidden bg-center bg-cover"
@@ -255,9 +365,30 @@ export default function Desktop(props: MacActions) {
         setSpotlightBtnRef={setSpotlightBtnRef}
       />
 
+      {/* Desktop Icon - Easter Egg! */}
+      {SHOW_DESKTOP_FOLDER && (
+        <div
+          className="absolute z-5"
+          style={{ top: minMarginY, left: 0, right: 0, bottom: 0 }}
+        >
+          <DesktopIcon
+            id="desktop-folder"
+            title="desktop"
+            img="img/icons/folder.png"
+            onOpen={openApp}
+            initialX={50}
+            initialY={50}
+          />
+        </div>
+      )}
+
       {/* Desktop Apps */}
-      <div className="window-bound z-10 absolute" style={{ top: minMarginY }}>
+      <div
+        className="window-bound z-10 absolute"
+        style={{ top: minMarginY, pointerEvents: "none" }}
+      >
         {renderAppWindows()}
+        {renderAIMChatWindows()}
       </div>
 
       {/* Spotlight */}

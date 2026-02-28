@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { minMarginX, minMarginY, appBarHeight } from "~/utils";
+import { useWindowSize } from "~/hooks";
+import { useStore } from "~/stores";
+import MobileAppWindow from "./MobileAppWindow";
 
 const FullIcon = ({ size }: { size: number }) => (
   <svg
@@ -107,6 +110,14 @@ const Window = (props: WindowProps) => {
   const dockSize = useStore((state) => state.dockSize);
   const { winWidth, winHeight } = useWindowSize();
 
+  // Mobile detection - use full-screen mobile window on small screens
+  const isMobile = winWidth < 640;
+
+  // Render mobile window on small screens
+  if (isMobile) {
+    return <MobileAppWindow {...props}>{props.children}</MobileAppWindow>;
+  }
+
   const initWidth = Math.min(winWidth, props.width || 640);
   const initHeight = Math.min(winHeight, props.height || 400);
 
@@ -170,6 +181,14 @@ const Window = (props: WindowProps) => {
       onDragStop={(e, d) => {
         setState({ ...state, x: d.x, y: d.y });
       }}
+      onResize={(e, direction, ref, delta, position) => {
+        setState({
+          ...state,
+          width: parseInt(ref.style.width),
+          height: parseInt(ref.style.height),
+          ...position
+        });
+      }}
       onResizeStop={(e, direction, ref, delta, position) => {
         setState({
           ...state,
@@ -185,7 +204,7 @@ const Window = (props: WindowProps) => {
       enableResizing={!props.max}
       lockAspectRatio={props.aspectRatio}
       lockAspectRatioExtraHeight={props.aspectRatio ? appBarHeight : undefined}
-      style={{ zIndex: props.z }}
+      style={{ zIndex: props.z, pointerEvents: "auto" }}
       onMouseDown={() => props.focus(props.id)}
       className={`overflow-hidden ${round} ${border} shadow-lg shadow-black/30 ${minimized}`}
       id={`window-${props.id}`}

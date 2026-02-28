@@ -1,5 +1,7 @@
 # About This Site
 
-This site is inspired by macOS [Big Sur](https://www.apple.com/in/macos/big-sur/) and [Catalina](https://www.apple.com/bw/macos/catalina/), developed using [React](https://reactjs.org/), [Zustand](https://zustand-demo.pmnd.rs/) and [UnoCSS](https://uno.antfu.me/), and hosted on [Github Pages](https://pages.github.com/). Some of the icons are generated using [sindresorhus/file-icon-cli](https://github.com/sindresorhus/file-icon-cli).
+I've always wanted to recreate my portfolio in a macOS operating system. I remember getting our first Apple computer and my very first Macbook. I stumbled upon this incredible open source site and used it as the foundation for my portfolio.
+
+Original site created by [Xiaohan Zou](https://zxh.me/).
 
 The source code is hosted [here](https://github.com/Renovamen/playground-macos).

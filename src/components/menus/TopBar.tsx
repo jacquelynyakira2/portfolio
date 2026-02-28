@@ -23,9 +23,10 @@ const TopBarItem = forwardRef(
     return (
       <div
         ref={ref}
-        className={`hstack space-x-1 h-6 px-1 cursor-default rounded ${hide} ${bg} ${
+        className={`hstack space-x-1 px-1 cursor-default rounded ${hide} ${bg} ${
           props.className || ""
         }`}
+        style={{ minHeight: "32px", alignItems: "center" }}
         onClick={props.onClick}
         onMouseEnter={props.onMouseEnter}
       >
@@ -76,10 +77,19 @@ const TopBar = (props: TopBarProps) => {
     showAppleMenu: false
   });
 
+  const activeMusic = {
+    title: music.title,
+    subtitle: music.artist,
+    cover: music.cover,
+    previewUrl: music.audio,
+    isFromSpotify: false,
+    lastUpdated: undefined
+  };
+
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const [audio, audioState, controls, audioRef] = useAudio({
-    src: music.audio,
-    autoReplay: true
+    src: activeMusic.previewUrl || "",
+    autoReplay: false
   });
   const { winWidth, winHeight } = useWindowSize();
 
@@ -106,6 +116,12 @@ const TopBar = (props: TopBarProps) => {
   }, []);
 
   useEffect(() => {
+    if (!activeMusic.previewUrl && audioRef.current) {
+      audioRef.current.pause();
+    }
+  }, [activeMusic.previewUrl]);
+
+  useEffect(() => {
     const isFull = isFullScreen();
     toggleFullScreen(isFull);
   }, [winWidth, winHeight]);
@@ -117,6 +133,21 @@ const TopBar = (props: TopBarProps) => {
 
   const setSiteBrightness = (value: number): void => {
     setBrightness(value);
+  };
+
+  const handleAudioToggle = (target?: boolean): void => {
+    if (!activeMusic.previewUrl) return;
+
+    if (typeof target === "boolean") {
+      if (target) {
+        controls.play();
+      } else {
+        controls.pause();
+      }
+      return;
+    }
+
+    controls.toggle();
   };
 
   const toggleControlCenter = (): void => {
@@ -138,6 +169,15 @@ const TopBar = (props: TopBarProps) => {
       ...state,
       showWifiMenu: !state.showWifiMenu
     });
+  };
+
+  const musicPanel = {
+    title: activeMusic.title,
+    subtitle: activeMusic.subtitle,
+    cover: activeMusic.cover,
+    hasPreview: Boolean(activeMusic.previewUrl),
+    isFromSpotify: activeMusic.isFromSpotify,
+    lastUpdated: activeMusic.lastUpdated
   };
 
   const logout = (): void => {
@@ -232,17 +272,27 @@ const TopBar = (props: TopBarProps) => {
         {/* Open this when clicking on Control Center button */}
         {state.showControlCenter && (
           <ControlCenterMenu
-            playing={audioState.playing}
-            toggleAudio={controls.toggle}
+            playing={activeMusic.previewUrl ? audioState.playing : false}
+            toggleAudio={activeMusic.previewUrl ? handleAudioToggle : undefined}
             setVolume={setAudioVolume}
             setBrightness={setSiteBrightness}
             toggleControlCenter={toggleControlCenter}
             btnRef={controlCenterBtnRef}
+            music={musicPanel}
+            spotifyStatus="disabled"
+            spotifyError={undefined}
+            spotifyConfigured={false}
+            spotifyMode="disabled"
           />
         )}
 
-        <TopBarItem>
+        {/* Show full date + time on desktop */}
+        <TopBarItem hideOnMobile={true}>
           <span>{format(state.date, "eee MMM d")}</span>
+          <span>{format(state.date, "h:mm aa")}</span>
+        </TopBarItem>
+        {/* Show just time on mobile */}
+        <TopBarItem className="sm:hidden">
           <span>{format(state.date, "h:mm aa")}</span>
         </TopBarItem>
       </div>

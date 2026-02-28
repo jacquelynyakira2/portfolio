@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 export interface HTMLAudioState {
   volume: number;
   playing: boolean;
@@ -9,8 +11,8 @@ export interface HTMLAudioProps {
 }
 
 export function useAudio(props: HTMLAudioProps) {
-  const element = new Audio(props.src);
-  const ref = useRef<HTMLAudioElement>(element);
+  const [audio] = useState(() => new Audio(props.src));
+  const ref = useRef<HTMLAudioElement>(audio);
 
   const [state, setState] = useState<HTMLAudioState>({
     volume: 1,
@@ -54,20 +56,32 @@ export function useAudio(props: HTMLAudioProps) {
   };
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
     const handler = () => {
       if (props.autoReplay) controls.play();
     };
 
-    element.addEventListener("ended", handler);
+    el.addEventListener("ended", handler);
     return () => {
-      element.removeEventListener("ended", handler);
+      el.removeEventListener("ended", handler);
     };
   }, [props.autoReplay]);
 
   useEffect(() => {
-    const el = ref.current!;
-
+    const el = ref.current;
     if (!el) return;
+
+    if (props.src) {
+      if (el.src !== props.src) {
+        el.src = props.src;
+        el.load();
+      }
+    } else {
+      el.removeAttribute("src");
+      el.load();
+    }
 
     setState({
       volume: el.volume,
@@ -75,5 +89,5 @@ export function useAudio(props: HTMLAudioProps) {
     });
   }, [props.src]);
 
-  return [element, state, controls, ref] as const;
+  return [audio, state, controls, ref] as const;
 }

@@ -11,7 +11,7 @@ import "katex/dist/katex.min.css";
 import "~/styles/index.css";
 
 export default function App() {
-  const [login, setLogin] = useState<boolean>(false);
+  const [login, setLogin] = useState<boolean>(true); // Start on desktop by default
   const [booting, setBooting] = useState<boolean>(false);
   const [restart, setRestart] = useState<boolean>(false);
   const [sleep, setSleep] = useState<boolean>(false);

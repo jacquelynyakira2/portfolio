@@ -93,6 +93,10 @@ export default function DockItem({
   const { width } = useDockHoverAnimation(mouseX, imgRef, dockSize, dockMag);
   const { winWidth } = useWindowSize();
 
+  // Ensure touch-friendly sizing on mobile (minimum 44px)
+  const isMobile = winWidth < 640;
+  const mobileSize = Math.max(dockSize, 44); // Ensure minimum 44px for touch targets
+
   return (
     <li
       id={`dock-${id}`}
@@ -114,7 +118,11 @@ export default function DockItem({
             alt={title}
             title={title}
             draggable={false}
-            style={winWidth < 640 ? {} : { width, willChange: "width" }}
+            style={
+              isMobile
+                ? { width: `${mobileSize}px`, height: `${mobileSize}px` }
+                : { width, willChange: "width" }
+            }
           />
         </a>
       ) : (
@@ -124,7 +132,11 @@ export default function DockItem({
           alt={title}
           title={title}
           draggable={false}
-          style={winWidth < 640 ? {} : { width, willChange: "width" }}
+          style={
+            isMobile
+              ? { width: `${mobileSize}px`, height: `${mobileSize}px` }
+              : { width, willChange: "width" }
+          }
         />
       )}
       <div

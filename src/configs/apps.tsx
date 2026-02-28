@@ -1,5 +1,17 @@
 import { appBarHeight } from "~/utils";
 import type { AppsData } from "~/types";
+import AIM from "~/components/apps/AIM";
+import Notes from "~/components/apps/Notes";
+import Typora from "~/components/apps/Typora";
+import Safari from "~/components/apps/Safari";
+import VSCode from "~/components/apps/VSCode";
+import FaceTime from "~/components/apps/FaceTime";
+import Terminal from "~/components/apps/Terminal";
+import DesktopFolder from "~/components/apps/DesktopFolder";
+import Trash from "~/components/apps/Trash";
+import Preview from "~/components/apps/Preview";
+import IBooks from "~/components/apps/IBooks";
+import Maps from "~/components/apps/Maps";
 
 const apps: AppsData[] = [
   {
@@ -10,19 +22,20 @@ const apps: AppsData[] = [
   },
   {
     id: "bear",
-    title: "Bear",
+    title: "Notes",
     desktop: true,
-    width: 860,
+    width: 900,
     height: 500,
     show: true,
     y: -40,
-    img: "img/icons/bear.png",
-    content: <Bear />
+    img: "img/icons/notes.png",
+    content: <Notes />
   },
   {
     id: "typora",
     title: "Typora",
     desktop: true,
+    dockHidden: true, // Don't show in dock
     width: 600,
     height: 580,
     y: -20,
@@ -39,6 +52,17 @@ const apps: AppsData[] = [
     x: -20,
     img: "img/icons/safari.png",
     content: <Safari />
+  },
+  {
+    id: "maps",
+    title: "Maps",
+    desktop: true,
+    width: 1100,
+    height: 700,
+    minWidth: 640,
+    minHeight: 420,
+    img: "img/icons/maps.png",
+    content: <Maps />
   },
   {
     id: "vscode",
@@ -73,6 +97,29 @@ const apps: AppsData[] = [
     content: <Terminal />
   },
   {
+    id: "aim",
+    title: "AIM",
+    desktop: true,
+    width: 280,
+    height: 500,
+    minWidth: 240,
+    minHeight: 400,
+    img: "img/icons/aim.svg",
+    content: <AIM />
+  },
+  {
+    id: "desktop-folder",
+    title: "desktop",
+    desktop: true, // Can be opened as a window
+    dockHidden: true, // Don't show in dock
+    width: 800,
+    height: 420,
+    x: 0,
+    y: 0,
+    img: "img/icons/Folder.png",
+    content: <DesktopFolder />
+  },
+  {
     id: "figma",
     title: "Figma",
     desktop: false, // opens in a new tab
@@ -87,11 +134,11 @@ const apps: AppsData[] = [
     link: "https://medium.com/@jacquelynyakira"
   },
   {
-    id: "github",
-    title: "Github",
+    id: "threads",
+    title: "Threads",
     desktop: false,
-    img: "img/icons/github.png",
-    link: "https://github.com/Renovamen/playground-macos"
+    img: "img/icons/threads.png",
+    link: "https://www.threads.com/@jacquelynyakira"
   },
   {
     id: "dribbble",
@@ -99,6 +146,38 @@ const apps: AppsData[] = [
     desktop: false,
     img: "img/icons/dribbble.png",
     link: "https://dribbble.com/Jacquelynyakira"
+  },
+  {
+    id: "ibooks",
+    title: "iBooks",
+    desktop: true,
+    width: 1024,
+    height: 768,
+    minWidth: 600,
+    minHeight: 400,
+    img: "img/icons/books.png",
+    content: <IBooks />
+  },
+  {
+    id: "trash",
+    title: "Trash",
+    desktop: true,
+    width: 800,
+    height: 500,
+    img: "img/icons/trash-full.png",
+    content: <Trash />
+  },
+  {
+    id: "preview",
+    title: "Preview",
+    desktop: true,
+    dockHidden: true, // Don't show in dock - opened programmatically from Trash
+    width: 800,
+    height: 600,
+    minWidth: 400,
+    minHeight: 300,
+    img: "img/icons/folder.png", // placeholder icon
+    content: <Preview />
   }
 ];
 
