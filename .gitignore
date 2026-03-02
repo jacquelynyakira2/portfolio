@@ -3,3 +3,9 @@
 .cache/
 node_modules/
 dist/
+
+# Environment variables (never commit secrets)
+.env
+.env.local
+.env.*.local
+.env.server.local
