@@ -7,6 +7,12 @@ export interface AIMBuddy {
   awayMessage?: string;
   /** Pool of auto-response messages this buddy can send */
   autoResponses: string[];
+  /** Persona prompt sent to Claude */
+  systemPrompt?: string;
+  /** true only for jacquelynyakira — uses a better model */
+  isSpecial?: boolean;
+  /** Per-session message cap before buddy leaves (default 15, special 25) */
+  messageLimit?: number;
 }
 
 export interface AIMBuddyGroup {
