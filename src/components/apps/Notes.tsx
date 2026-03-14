@@ -12,6 +12,59 @@ import bear from "~/configs/bear";
 import type { BearMdData } from "~/types";
 import type { ReactNode } from "react";
 
+/** Normalize a link href or file path for matching (handles /markdown/x.md, markdown/x.md, full URLs) */
+const normalizeNotePath = (path: string): string => {
+  if (!path || typeof path !== "string") return "";
+  const cleaned = path.split("?")[0].split("#")[0].trim();
+  try {
+    if (cleaned.startsWith("http")) {
+      const url = new URL(cleaned);
+      return url.pathname.replace(/^\//, "");
+    }
+  } catch {
+    // fall through
+  }
+  return cleaned.replace(/^\//, "");
+};
+
+/** Build a lookup from normalized file path to note info for internal navigation */
+const buildNoteLookup = () => {
+  const lookup = new Map<
+    string,
+    { sidebarIndex: number; midbarIndex: number; item: BearMdData }
+  >();
+  bear.forEach((category, sidebarIndex) => {
+    category.md.forEach((item, midbarIndex) => {
+      const key = normalizeNotePath(item.file);
+      lookup.set(key, { sidebarIndex, midbarIndex, item });
+      // Also index by filename only (e.g. trailhead-learning-agent.md) for robustness
+      const filename = key.split("/").pop() ?? key;
+      if (filename !== key) lookup.set(filename, { sidebarIndex, midbarIndex, item });
+    });
+  });
+  return lookup;
+};
+
+const noteLookup = buildNoteLookup();
+
+/** Lookup from note id to note info (for /notes/<id> URLs) */
+const buildNoteIdLookup = () => {
+  const lookup = new Map<
+    string,
+    { sidebarIndex: number; midbarIndex: number; item: BearMdData }
+  >();
+  bear.forEach((category, sidebarIndex) => {
+    category.md.forEach((item, midbarIndex) => {
+      lookup.set(item.id, { sidebarIndex, midbarIndex, item });
+    });
+  });
+  return lookup;
+};
+const noteIdLookup = buildNoteIdLookup();
+
+/** Path prefix for note URLs (avoids collision with /markdown/* static files) */
+const NOTES_PATH_PREFIX = "/notes/";
+
 interface ContentProps {
   contentID: string;
   contentURL: string;
@@ -19,6 +72,13 @@ interface ContentProps {
   setFullWidth?: (value: boolean) => void;
   headerRight?: ReactNode;
   componentWidth?: number;
+  /** Called when user clicks a link to an internal note — navigates within the app instead of full-page */
+  onNavigateToNote?: (
+    id: string,
+    url: string,
+    sidebarIndex: number,
+    midbarIndex: number
+  ) => void;
 }
 
 interface MiddlebarProps {
@@ -302,7 +362,8 @@ const Content = ({
   fullWidth = false,
   setFullWidth,
   headerRight,
-  componentWidth = 1024
+  componentWidth = 1024,
+  onNavigateToNote
 }: ContentProps) => {
   const [storeMd, setStoreMd] = useState<{ [key: string]: string }>({});
   const dark = useStore((state) => state.dark);
@@ -370,6 +431,40 @@ const Content = ({
             ]}
             components={{
               ...Highlighter(dark as boolean),
+              // Intercept links to internal notes — use button to prevent any navigation, navigate within app
+              a: ({ href, children, node, ...props }) => {
+                const rawHref =
+                  href ??
+                  (node as { properties?: { href?: string } })?.properties?.href ??
+                  "";
+                const normalized = rawHref ? normalizeNotePath(String(rawHref)) : "";
+                const match = noteLookup.get(normalized);
+                if (match && onNavigateToNote) {
+                  return (
+                    <button
+                      type="button"
+                      className="text-c-600 dark:text-c-400 hover:underline cursor-pointer bg-transparent border-none p-0 font-inherit inline text-left"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onNavigateToNote(
+                          match.item.id,
+                          match.item.file,
+                          match.sidebarIndex,
+                          match.midbarIndex
+                        );
+                      }}
+                    >
+                      {children}
+                    </button>
+                  );
+                }
+                return (
+                  <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+                    {children}
+                  </a>
+                );
+              },
               // Allow HTML elements by passing through props
               iframe: ({ node, ...props }) => <iframe {...props} />,
               div: ({ node, ...props }) => <div {...props} />,
@@ -385,17 +480,69 @@ const Content = ({
   );
 };
 
-const Bear = () => {
-  const [fullWidth, setFullWidth] = useState(false);
-  const [componentWidth, setComponentWidth] = useState(1000); // Start with a default that shows sidebars
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [state, setState] = useState<BearState>({
+/** Get initial note state from URL if path is /notes/<id>, otherwise default */
+const getInitialNoteState = () => {
+  if (typeof window === "undefined") {
+    return {
+      curSidebar: 0,
+      curMidbar: 0,
+      midbarList: bear[0].md,
+      contentID: bear[0].md[0].id,
+      contentURL: bear[0].md[0].file
+    };
+  }
+  const path = window.location.pathname;
+  if (path.startsWith(NOTES_PATH_PREFIX)) {
+    const id = path.slice(NOTES_PATH_PREFIX.length).replace(/\/$/, "");
+    const match = noteIdLookup.get(id);
+    if (match) {
+      return {
+        curSidebar: match.sidebarIndex,
+        curMidbar: match.midbarIndex,
+        midbarList: bear[match.sidebarIndex].md,
+        contentID: match.item.id,
+        contentURL: match.item.file
+      };
+    }
+  }
+  return {
     curSidebar: 0,
     curMidbar: 0,
     midbarList: bear[0].md,
     contentID: bear[0].md[0].id,
     contentURL: bear[0].md[0].file
-  });
+  };
+};
+
+const Bear = () => {
+  const [fullWidth, setFullWidth] = useState(false);
+  const [componentWidth, setComponentWidth] = useState(1000); // Start with a default that shows sidebars
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [state, setState] = useState<BearState>(() => ({
+    ...getInitialNoteState()
+  }));
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      if (path.startsWith(NOTES_PATH_PREFIX)) {
+        const id = path.slice(NOTES_PATH_PREFIX.length).replace(/\/$/, "");
+        const match = noteIdLookup.get(id);
+        if (match) {
+          setState((prev) => ({
+            ...prev,
+            curSidebar: match.sidebarIndex,
+            curMidbar: match.midbarIndex,
+            midbarList: bear[match.sidebarIndex].md,
+            contentID: match.item.id,
+            contentURL: match.item.file
+          }));
+        }
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   // Track component resize for responsive navigation
   useEffect(() => {
@@ -434,6 +581,25 @@ const Bear = () => {
       contentID: id,
       contentURL: url
     });
+  };
+
+  /** Navigate to a specific note (used when clicking internal links like "View case study →") */
+  const navigateToNote = (
+    id: string,
+    url: string,
+    sidebarIndex: number,
+    midbarIndex: number
+  ) => {
+    const items = bear[sidebarIndex].md;
+    setState({
+      curSidebar: sidebarIndex,
+      curMidbar: midbarIndex,
+      midbarList: items,
+      contentID: id,
+      contentURL: url
+    });
+    // Update browser URL so the path reflects the current note (/notes/<id> avoids /markdown/* static file collision)
+    window.history.pushState({ note: id }, "", `${NOTES_PATH_PREFIX}${id}`);
   };
 
   // Determine what to show based on component width
@@ -571,6 +737,7 @@ const Bear = () => {
           fullWidth={fullWidth}
           setFullWidth={setFullWidth}
           componentWidth={componentWidth}
+          onNavigateToNote={navigateToNote}
           headerRight={
             showCompactNav ? (
               <div className="flex items-center gap-2">

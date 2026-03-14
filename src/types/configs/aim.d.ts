@@ -13,6 +13,8 @@ export interface AIMBuddy {
   isSpecial?: boolean;
   /** Per-session message cap before buddy leaves (default 15, special 25) */
   messageLimit?: number;
+  /** Pool of away messages to rotate through during a session */
+  awayMessages?: string[];
 }
 
 export interface AIMBuddyGroup {

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useStore } from "~/stores";
 import { useAIMSounds } from "~/hooks";
 import { presetAwayMessages } from "~/configs/aim";
@@ -139,40 +140,93 @@ interface BuddyItemProps {
 
 const BuddyItem = ({ buddy, onDoubleClick }: BuddyItemProps) => {
   const [showAwayTooltip, setShowAwayTooltip] = useState(false);
+  const itemRef = useRef<HTMLDivElement>(null);
+  const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [tooltipCoords, setTooltipCoords] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!showAwayTooltip || !itemRef.current || !buddy.awayMessage) {
+      setTooltipCoords(null);
+      return;
+    }
+    const rect = itemRef.current.getBoundingClientRect();
+    const padding = 8;
+    const tooltipWidth = 200;
+    let left = rect.right + padding;
+    if (left + tooltipWidth > window.innerWidth - 16) {
+      left = rect.left - tooltipWidth - padding;
+    }
+    if (left < 16) left = 16;
+    setTooltipCoords({ top: rect.top, left });
+  }, [showAwayTooltip, buddy.awayMessage]);
+
+  const handleItemLeave = () => {
+    hideTimeoutRef.current = setTimeout(() => setShowAwayTooltip(false), 150);
+  };
+
+  const handleTooltipEnter = () => {
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+      hideTimeoutRef.current = null;
+    }
+  };
+
+  const handleTooltipLeave = () => {
+    setShowAwayTooltip(false);
+  };
 
   return (
-    <div
-      className="flex items-start gap-2 px-3 py-1.5 cursor-pointer hover:bg-blue-100 rounded select-none relative"
-      onDoubleClick={onDoubleClick}
-      onMouseEnter={() =>
-        buddy.status === "away" && buddy.awayMessage && setShowAwayTooltip(true)
-      }
-      onMouseLeave={() => setShowAwayTooltip(false)}
-    >
-      <StatusDot status={buddy.status} />
-      <div className="flex-1 min-w-0">
-        <div className="text-sm text-gray-900 truncate">{buddy.screenName}</div>
-        {buddy.status === "away" && buddy.awayMessage && (
-          <div className="text-[10px] text-yellow-700 italic line-clamp-1">
-            ~{buddy.awayMessage.slice(0, 25)}
-            {buddy.awayMessage.length > 25 ? "..." : ""}~
-          </div>
-        )}
+    <>
+      <div
+        ref={itemRef}
+        className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:bg-blue-100 rounded select-none"
+        onDoubleClick={onDoubleClick}
+        onMouseEnter={() =>
+          buddy.status === "away" && buddy.awayMessage && setShowAwayTooltip(true)
+        }
+        onMouseLeave={handleItemLeave}
+      >
+        <StatusDot status={buddy.status} />
+        <div className="flex-1 min-w-0 overflow-hidden">
+          <div className="text-sm text-gray-900 truncate">{buddy.screenName}</div>
+          {buddy.status === "away" && buddy.awayMessage && (
+            <div className="text-[10px] text-yellow-700 italic truncate">
+              ~{buddy.awayMessage.slice(0, 25)}
+              {buddy.awayMessage.length > 25 ? "..." : ""}~
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Away message tooltip on hover */}
-      {showAwayTooltip && buddy.awayMessage && (
-        <div
-          className="absolute left-full ml-2 top-0 z-50 p-2 bg-yellow-50 border border-yellow-300 rounded shadow-lg max-w-48"
-          style={{ minWidth: "150px" }}
-        >
-          <div className="text-[9px] font-semibold text-yellow-700 uppercase mb-1">
-            Away Message
-          </div>
-          <div className="text-xs text-gray-700 italic">"{buddy.awayMessage}"</div>
-        </div>
-      )}
-    </div>
+      {/* Away message tooltip - portal to body, fixed position, outside UI flow */}
+      {showAwayTooltip &&
+        buddy.awayMessage &&
+        tooltipCoords &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed z-[9999] p-2 bg-yellow-50 border border-yellow-300 rounded shadow-lg max-w-52"
+            style={{
+              top: tooltipCoords.top,
+              left: tooltipCoords.left,
+              minWidth: "160px"
+            }}
+            onMouseEnter={handleTooltipEnter}
+            onMouseLeave={handleTooltipLeave}
+          >
+            <div className="text-[9px] font-semibold text-yellow-700 uppercase mb-1">
+              Away Message
+            </div>
+            <div className="text-xs text-gray-700 italic break-words">
+              "{buddy.awayMessage}"
+            </div>
+          </div>,
+          document.body
+        )}
+    </>
   );
 };
 
@@ -196,12 +250,10 @@ const BuddyGroup = ({ group, onToggleCollapse, onOpenChat }: BuddyGroupProps) =>
         className="w-full flex items-center gap-1 px-2 py-0.5 text-xs font-semibold text-gray-700 hover:bg-gray-200 rounded select-none"
       >
         <span
-          className={`text-[10px] transition-transform ${
+          className={`i-mdi:chevron-right text-sm text-gray-500 transition-transform ${
             !group.collapsed ? "rotate-90" : ""
           }`}
-        >
-          ▶
-        </span>
+        />
         <span>{group.name}</span>
         <span className="text-gray-400">
           ({onlineCount}/{group.buddies.length})
@@ -251,7 +303,7 @@ const AwayPicker = ({ currentMessage, onSelect, onClose }: AwayPickerProps) => {
           onClick={onClose}
           className="p-1 hover:bg-gray-300 rounded text-gray-500 hover:text-gray-700"
         >
-          ✕
+          <span className="i-mdi:close text-sm" />
         </button>
       </div>
 
@@ -435,7 +487,7 @@ const BuddyList = ({
               {status === "offline" && "Invisible"}
             </span>
           </div>
-          <span className="text-gray-400">▼</span>
+          <span className="i-mdi:chevron-down text-gray-400 text-sm" />
         </button>
 
         {/* Status Dropdown */}
@@ -483,28 +535,23 @@ const BuddyList = ({
             background: "linear-gradient(to bottom, #fffde7 0%, #fff9c4 100%)"
           }}
         >
-          <div className="flex items-start gap-2">
-            <span className="i-mdi:message-text-clock text-yellow-600 text-lg flex-shrink-0 mt-0.5" />
-            <div className="flex-1 min-w-0">
-              <div className="text-[10px] font-semibold text-yellow-700 uppercase tracking-wide mb-1">
-                Your Away Message
-              </div>
-              <div className="aim-away-message text-sm text-gray-800 break-words">
-                <AwayMessageDisplay message={awayMessage} />
-              </div>
-              <button
-                onClick={() => setShowAwayPicker(true)}
-                className="mt-2 text-[10px] text-blue-600 hover:text-blue-800 hover:underline"
-              >
-                Change away message...
-              </button>
-            </div>
+          <div className="text-[10px] font-semibold text-yellow-700 uppercase tracking-wide mb-1">
+            Your Away Message
           </div>
+          <div className="aim-away-message text-sm text-gray-800 break-words">
+            <AwayMessageDisplay message={awayMessage} />
+          </div>
+          <button
+            onClick={() => setShowAwayPicker(true)}
+            className="mt-2 text-[10px] text-blue-600 hover:text-blue-800 hover:underline"
+          >
+            Change away message...
+          </button>
         </div>
       )}
 
       {/* Buddy Groups */}
-      <div className="flex-1 overflow-y-auto p-2 bg-white mx-2 my-2 border border-gray-300 rounded">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 bg-white">
         {buddyGroups.map((group) => (
           <BuddyGroup
             key={group.id}
@@ -564,7 +611,8 @@ const AIM = () => {
     aimToggleGroupCollapsed,
     aimOpenChat,
     aimToggleSounds,
-    aimHydrateFromStorage
+    aimHydrateFromStorage,
+    aimUpdateBuddyStatus
   } = useStore();
 
   const { playSignOn, playSignOff, playDoorOpen } = useAIMSounds();
@@ -573,6 +621,52 @@ const AIM = () => {
   useEffect(() => {
     aimHydrateFromStorage();
   }, []);
+
+  // Rotate buddy away messages and occasionally flip statuses for realism
+  useEffect(() => {
+    if (!aimIsSignedIn) return;
+
+    const interval = setInterval(() => {
+      const allBuddies = aimBuddyGroups.flatMap((g) => g.buddies);
+      const roll = Math.random();
+
+      if (roll < 0.65) {
+        // Rotate a random away buddy's message
+        const awayBuddies = allBuddies.filter(
+          (b) => b.status === "away" && b.awayMessages && b.awayMessages.length > 1
+        );
+        if (awayBuddies.length > 0) {
+          const buddy = awayBuddies[Math.floor(Math.random() * awayBuddies.length)];
+          const pool = buddy.awayMessages!;
+          const next = pool[Math.floor(Math.random() * pool.length)];
+          aimUpdateBuddyStatus(buddy.id, "away", next);
+        }
+      } else if (roll < 0.82) {
+        // Flip a random online buddy to away (skip jacquelynyakira)
+        const onlineBuddies = allBuddies.filter(
+          (b) =>
+            b.status === "online" && b.id !== "jacquelynyakira" && b.awayMessages?.length
+        );
+        if (onlineBuddies.length > 0) {
+          const buddy = onlineBuddies[Math.floor(Math.random() * onlineBuddies.length)];
+          const pool = buddy.awayMessages!;
+          const msg = pool[Math.floor(Math.random() * pool.length)];
+          aimUpdateBuddyStatus(buddy.id, "away", msg);
+        }
+      } else {
+        // Bring a random away buddy back online (skip jacquelynyakira)
+        const awayBuddies = allBuddies.filter(
+          (b) => b.status === "away" && b.id !== "jacquelynyakira"
+        );
+        if (awayBuddies.length > 0) {
+          const buddy = awayBuddies[Math.floor(Math.random() * awayBuddies.length)];
+          aimUpdateBuddyStatus(buddy.id, "online");
+        }
+      }
+    }, 55_000); // every ~55s
+
+    return () => clearInterval(interval);
+  }, [aimIsSignedIn, aimBuddyGroups, aimUpdateBuddyStatus]);
 
   // Handle sign in with sound
   const handleSignIn = (screenName: string) => {

@@ -47,32 +47,15 @@ function aimChatApiPlugin() {
                   content: m.content
                 }));
               const { generateText } = await import("ai");
-              let text: string;
-              if (isSpecial) {
-                const { createAnthropic } = await import("@ai-sdk/anthropic");
-                const apiKey = process.env.ANTHROPIC_API_KEY;
-                if (!apiKey) {
-                  res.statusCode = 500;
-                  res.end(JSON.stringify({ error: "ANTHROPIC_API_KEY not set" }));
-                  return;
-                }
-                const result = await generateText({
-                  model: createAnthropic({ apiKey })("claude-sonnet-4-6"),
-                  system: systemPrompt,
-                  messages: history,
-                  maxTokens: 300
-                });
-                text = result.text;
-              } else {
-                const { google } = await import("@ai-sdk/google");
-                const result = await generateText({
-                  model: google("gemini-2.5-flash"),
-                  system: systemPrompt,
-                  messages: history,
-                  maxTokens: 150
-                });
-                text = result.text;
-              }
+              const { google } = await import("@ai-sdk/google");
+              const maxTokens = isSpecial ? 300 : 150;
+              const result = await generateText({
+                model: google("gemini-2.5-flash"),
+                system: systemPrompt,
+                messages: history,
+                maxTokens
+              });
+              const text = result.text;
               res.setHeader("Content-Type", "application/json");
               res.end(JSON.stringify({ message: text.trim() }));
             } catch (err) {
