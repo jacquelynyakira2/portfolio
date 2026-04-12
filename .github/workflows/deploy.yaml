@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ main ]
 
+# GITHUB_TOKEN defaults are too narrow for peaceiris/actions-gh-pages (needs push to gh-pages)
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -33,7 +39,9 @@ jobs:
       - name: Build site
         run: pnpm build
 
+      # Only publish from main; PRs still run build above but skip deploy (avoids 403 on forks + no prod deploy from unmerged PRs)
       - name: Deploy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

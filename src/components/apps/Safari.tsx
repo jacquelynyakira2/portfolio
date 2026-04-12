@@ -33,23 +33,29 @@ const NavSection = ({ width, section, setGoURL }: NavSectionProps) => {
       <div className={`mt-3 grid grid-flow-row ${grid}`}>
         {section.sites.map((site: SiteData) => (
           <div key={`safari-nav-${site.id}`} className="h-28 flex flex-col">
-            <div className="size-16 mx-auto rounded-md overflow-hidden bg-white">
+            <div
+              className={`size-16 mx-auto rounded-md overflow-hidden flex items-center justify-center cursor-pointer ${
+                site.id === "claude"
+                  ? "bg-[#F5F0E6]"
+                  : ["google-ai-studio", "my-threads", "my-medium"].includes(site.id)
+                    ? "bg-black"
+                    : "bg-white"
+              }`}
+              onClick={
+                site.inner ? () => setGoURL(site.link) : () => window.open(site.link)
+              }
+            >
               {site.img ? (
                 <img
                   src={site.img}
                   alt={site.title}
                   title={site.title}
-                  onClick={
-                    site.inner ? () => setGoURL(site.link) : () => window.open(site.link)
-                  }
+                  className={`object-contain pointer-events-none ${
+                    site.id === "vercel" ? "w-2/3 h-2/3" : "w-full h-full"
+                  }`}
                 />
               ) : (
-                <div
-                  className="size-full flex-center cursor-default text-black"
-                  onClick={
-                    site.inner ? () => setGoURL(site.link) : () => window.open(site.link)
-                  }
-                >
+                <div className="size-full flex-center text-black pointer-events-none">
                   <span text-lg>{site.title}</span>
                 </div>
               )}

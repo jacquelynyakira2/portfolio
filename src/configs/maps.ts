@@ -125,26 +125,6 @@ const maps: MapsData = {
       favorite: true
     },
     {
-      id: "sydney",
-      name: "Sydney",
-      city: "Sydney",
-      country: "Australia",
-      lat: -33.8688,
-      lng: 151.2093,
-      visitedOn: "2024",
-      notes: "Opera House photos."
-    },
-    {
-      id: "cape-town",
-      name: "Cape Town",
-      city: "Cape Town",
-      country: "South Africa",
-      lat: -33.9249,
-      lng: 18.4241,
-      visitedOn: "2024",
-      notes: "Table Mountain hike."
-    },
-    {
       id: "malta",
       name: "Malta",
       city: "Valletta",
@@ -274,6 +254,123 @@ const maps: MapsData = {
       lng: 16.8719,
       visitedOn: "2023",
       notes: "Puglia gateway."
+    },
+    {
+      id: "oxford",
+      name: "Oxford",
+      city: "Oxford",
+      country: "United Kingdom",
+      lat: 51.752,
+      lng: -1.2577,
+      notes: "University city."
+    },
+    {
+      id: "hollywood-beach-fl",
+      name: "Hollywood Beach",
+      city: "Hollywood",
+      country: "United States",
+      lat: 25.9879,
+      lng: -80.1203,
+      notes: "Atlantic coast, Broward County."
+    },
+    {
+      id: "miami",
+      name: "Miami",
+      city: "Miami",
+      country: "United States",
+      lat: 25.7617,
+      lng: -80.1918,
+      notes: "South Florida."
+    },
+    {
+      id: "montana",
+      name: "Montana",
+      city: "Helena",
+      country: "United States",
+      lat: 46.5891,
+      lng: -112.0391,
+      notes: "Big Sky Country."
+    },
+    {
+      id: "north-carolina",
+      name: "North Carolina",
+      city: "Raleigh",
+      country: "United States",
+      lat: 35.7796,
+      lng: -78.6382,
+      notes: "Tar Heel State."
+    },
+    {
+      id: "austin",
+      name: "Austin",
+      city: "Austin",
+      country: "United States",
+      lat: 30.2672,
+      lng: -97.7431,
+      notes: "Live music and tacos."
+    },
+    {
+      id: "south-carolina",
+      name: "South Carolina",
+      city: "Columbia",
+      country: "United States",
+      lat: 34.0007,
+      lng: -81.0348,
+      notes: "Palmetto State."
+    },
+    {
+      id: "chicago",
+      name: "Chicago",
+      city: "Chicago",
+      country: "United States",
+      lat: 41.8781,
+      lng: -87.6298,
+      notes: "Lakefront and deep dish."
+    },
+    {
+      id: "tennessee",
+      name: "Tennessee",
+      city: "Nashville",
+      country: "United States",
+      lat: 36.1627,
+      lng: -86.7816,
+      notes: "Volunteer State."
+    },
+    {
+      id: "ohio",
+      name: "Ohio",
+      city: "Columbus",
+      country: "United States",
+      lat: 39.9612,
+      lng: -82.9988,
+      notes: "Buckeye State."
+    },
+    {
+      id: "denver",
+      name: "Denver",
+      city: "Denver",
+      country: "United States",
+      lat: 39.7392,
+      lng: -104.9903,
+      notes: "Mile High City."
+    },
+    {
+      id: "colorado-springs",
+      name: "Colorado Springs",
+      city: "Colorado Springs",
+      country: "United States",
+      lat: 38.8339,
+      lng: -104.8214,
+      notes: "Pikes Peak and Garden of the Gods."
+    },
+    {
+      id: "michigan",
+      name: "Michigan",
+      city: "Lansing",
+      country: "United States",
+      lat: 42.7325,
+      lng: -84.5555,
+      notes: "Great Lakes state."
     }
   ]
 };

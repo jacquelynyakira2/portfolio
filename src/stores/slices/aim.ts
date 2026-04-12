@@ -56,6 +56,7 @@ export interface AIMSlice {
   ) => void;
   aimToggleSounds: () => void;
   aimHydrateFromStorage: () => void;
+  aimBuddyLeave: (buddyId: string) => void;
 }
 
 // Helper to generate unique message IDs
@@ -349,14 +350,56 @@ export const createAIMSlice: StateCreator<AIMSlice> = (set, get) => ({
     });
   },
 
+  // Buddy leaves the chat (rate limit hit)
+  aimBuddyLeave: (buddyId: string) => {
+    const { aimBuddyGroups, aimReceiveMessage, aimUpdateBuddyStatus, aimCloseChat } =
+      get();
+
+    const buddy = aimBuddyGroups.flatMap((g) => g.buddies).find((b) => b.id === buddyId);
+    const isSpecial = buddy && (buddy as any).isSpecial;
+
+    const specialFarewells = [
+      "hey i gotta run, ttyl!! <3",
+      "omg i'm so sorry, something just came up – catch u later!",
+      "brb for real this time, talk soon!! <3"
+    ];
+    const regularFarewells = [
+      "omg my mom is calling me off the computer g2g",
+      "brb parents are yelling lol gtg!!",
+      "sry gotta go, mom needs the phone line!! ttyl"
+    ];
+
+    const farewells = isSpecial ? specialFarewells : regularFarewells;
+    const farewell = farewells[Math.floor(Math.random() * farewells.length)];
+
+    aimReceiveMessage(buddyId, farewell);
+
+    setTimeout(() => {
+      aimUpdateBuddyStatus(buddyId, "offline");
+    }, 2000);
+
+    setTimeout(() => {
+      aimCloseChat(buddyId);
+    }, 2500);
+  },
+
   // Hydrate state from localStorage on app load
   aimHydrateFromStorage: () => {
     const stored = loadFromStorage();
     if (stored) {
+      // Always use defaultBuddyGroups as source of truth so new buddies always appear.
+      // Only restore collapsed state from storage.
+      const collapsedMap: Record<string, boolean> = {};
+      stored.buddyGroups.forEach((g) => {
+        collapsedMap[g.id] = g.collapsed ?? false;
+      });
+      const mergedGroups = initializeBuddyGroups().map((g) => ({
+        ...g,
+        collapsed: collapsedMap[g.id] ?? false
+      }));
       set(() => ({
         aimScreenName: stored.screenName,
-        aimBuddyGroups:
-          stored.buddyGroups.length > 0 ? stored.buddyGroups : initializeBuddyGroups(),
+        aimBuddyGroups: mergedGroups,
         aimOpenChats: stored.openChats,
         aimPreferences: stored.preferences
       }));

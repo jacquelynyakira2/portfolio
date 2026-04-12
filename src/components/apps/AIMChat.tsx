@@ -43,7 +43,8 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
     aimOpenChats,
     aimSendMessage,
     aimReceiveMessage,
-    aimSetBuddyTyping
+    aimSetBuddyTyping,
+    aimBuddyLeave
   } = useStore();
 
   const { playMessageSend, playMessageReceive, playDoorClose } = useAIMSounds();
@@ -131,8 +132,8 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
     onClose();
   };
 
-  // Auto-response system
-  const handleSendMessage = useCallback(() => {
+  // AI-powered response system with rate limiting
+  const handleSendMessage = useCallback(async () => {
     if (!inputText.trim() || !buddy) return;
 
     const text = inputText.trim();
@@ -140,28 +141,79 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
     playMessageSend();
     aimSendMessage(buddyId, text);
 
-    // Trigger auto-response if buddy is online/away
-    if (buddy.status !== "offline" && buddy.autoResponses.length > 0) {
-      // Show typing indicator
+    if (buddy.status === "offline") return;
+
+    // Rate limiting via sessionStorage
+    const SESSION_KEY = `aim-msg-count-${buddyId}`;
+    const limit = buddy.messageLimit ?? 15;
+    const warningAt = limit - 2;
+    const count = parseInt(sessionStorage.getItem(SESSION_KEY) ?? "0", 10);
+    sessionStorage.setItem(SESSION_KEY, String(count + 1));
+
+    if (count >= limit) {
+      aimBuddyLeave(buddyId);
+      return;
+    }
+
+    if (count === warningAt) {
       setTimeout(() => {
         aimSetBuddyTyping(buddyId, true);
-      }, 500);
+        setTimeout(() => {
+          const warnings = [
+            "hey i should probably get going soon lol",
+            "omg i might have to get off soon, parents",
+            "brb but also might have to go soon 👀"
+          ];
+          aimReceiveMessage(
+            buddyId,
+            warnings[Math.floor(Math.random() * warnings.length)]
+          );
+        }, 1200);
+      }, 400);
+      return;
+    }
 
-      // Send auto-response
-      const delay = 1500 + Math.random() * 2500;
-      setTimeout(() => {
-        const response =
-          buddy.autoResponses[Math.floor(Math.random() * buddy.autoResponses.length)];
-        aimReceiveMessage(buddyId, response);
-      }, delay);
+    // Build conversation history for the API
+    const history = (chat?.messages ?? []).slice(-10).map((m) => ({
+      role: m.senderId === "me" ? "user" : "assistant",
+      content: m.text
+    }));
+    // Append the current message
+    history.push({ role: "user", content: text });
+
+    // Show typing indicator
+    setTimeout(() => aimSetBuddyTyping(buddyId, true), 400);
+
+    try {
+      const res = await fetch("/api/aim-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          buddyId,
+          messages: history,
+          systemPrompt: buddy.systemPrompt,
+          isSpecial: buddy.isSpecial ?? false
+        })
+      });
+
+      if (!res.ok) throw new Error("API error");
+      const data = await res.json();
+      aimReceiveMessage(buddyId, data.message);
+    } catch {
+      // Silent fallback to static autoResponses
+      const response =
+        buddy.autoResponses[Math.floor(Math.random() * buddy.autoResponses.length)];
+      setTimeout(() => aimReceiveMessage(buddyId, response), 800);
     }
   }, [
     inputText,
     buddy,
     buddyId,
+    chat,
     aimSendMessage,
     aimReceiveMessage,
     aimSetBuddyTyping,
+    aimBuddyLeave,
     playMessageSend
   ]);
 
@@ -178,16 +230,55 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
     });
   };
 
-  // Render message text with basic formatting
+  // Render message text with AIM-style inline formatting
+  // Supports: **bold**, *italic*, __underline__, [text](url), newlines
   const renderMessageText = (text: string) => {
-    // Simple markdown-like rendering
-    // **bold** -> bold
-    // *italic* or _italic_ -> italic
-    // __underline__ -> underline
-    const rendered = text;
+    // Split on newlines first, then parse inline tokens per line
+    const lines = text.split("\n");
+    const elements: React.ReactNode[] = [];
 
-    // This is simplified - in a real app you'd use a proper parser
-    return <span>{rendered}</span>;
+    lines.forEach((line, lineIdx) => {
+      if (lineIdx > 0) elements.push(<br key={`br-${lineIdx}`} />);
+
+      // Tokenize inline formatting: **bold**, __underline__, *italic*, [label](url)
+      const pattern =
+        /(\*\*(.+?)\*\*|__(.+?)__|(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)|(\[(.+?)\]\((.+?)\)))/g;
+      let last = 0;
+      let match: RegExpExecArray | null;
+      const parts: React.ReactNode[] = [];
+      let key = 0;
+
+      while ((match = pattern.exec(line)) !== null) {
+        if (match.index > last) {
+          parts.push(line.slice(last, match.index));
+        }
+        if (match[2] !== undefined) {
+          parts.push(<strong key={key++}>{match[2]}</strong>);
+        } else if (match[3] !== undefined) {
+          parts.push(<u key={key++}>{match[3]}</u>);
+        } else if (match[4] !== undefined) {
+          parts.push(<em key={key++}>{match[4]}</em>);
+        } else if (match[6] !== undefined) {
+          parts.push(
+            <a
+              key={key++}
+              href={match[7]}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800"
+            >
+              {match[6]}
+            </a>
+          );
+        }
+        last = match.index + match[0].length;
+      }
+
+      if (last < line.length) parts.push(line.slice(last));
+      elements.push(<span key={`line-${lineIdx}`}>{parts}</span>);
+    });
+
+    return <span>{elements}</span>;
   };
 
   if (!buddy || !chat) {

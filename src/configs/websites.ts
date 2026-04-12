@@ -5,17 +5,10 @@ const websites: WebsitesData = {
     title: "SNS Links",
     sites: [
       {
-        id: "my-blog",
-        title: "Website",
-        img: "https://zxh.me/img/avatar.jpg",
-        link: "https://zxh.me/",
-        inner: true
-      },
-      {
         id: "my-github",
         title: "Github",
         img: "img/sites/github.svg",
-        link: "https://github.com/Renovamen"
+        link: "https://github.com/jacquelynyakira2/"
       },
       {
         id: "my-linkedin",
@@ -24,22 +17,22 @@ const websites: WebsitesData = {
         link: "https://www.linkedin.com/in/jacquelynhalpern/"
       },
       {
-        id: "my-google-scholar",
-        title: "Scholar",
-        img: "img/sites/google-scholar.svg",
-        link: "https://scholar.google.com/citations?user=RuW6xgMAAAAJ"
+        id: "my-threads",
+        title: "Threads",
+        img: "img/icons/threads.png",
+        link: "https://www.threads.com/@jacquelynyakira"
       },
       {
-        id: "my-zhihu",
-        title: "知乎",
-        img: "img/sites/zhihu.jpeg",
-        link: "https://www.zhihu.com/people/chao-neng-gui-su"
+        id: "my-medium",
+        title: "Medium",
+        img: "img/icons/medium.png",
+        link: "https://medium.com/@jacquelynyakira"
       },
       {
-        id: "my-twitter",
-        title: "Twitter",
-        img: "img/sites/twitter.svg",
-        link: "https://www.twitter.com/renovamen_zxh"
+        id: "my-dribbble",
+        title: "Dribbble",
+        img: "img/sites/dribbble.svg",
+        link: "https://dribbble.com/Jacquelynyakira"
       },
       {
         id: "my-email",
@@ -59,16 +52,40 @@ const websites: WebsitesData = {
         link: "https://github.com/jacquelynyakira2/"
       },
       {
-        id: "dribbble",
-        title: "Dribbble",
-        img: "img/sites/dribbble.svg",
-        link: "https://dribbble.com/Jacquelynyakira"
+        id: "vercel",
+        title: "Vercel",
+        img: "img/sites/vercel.svg",
+        link: "https://vercel.com"
       },
       {
-        id: "pinterest",
-        title: "Pinterest",
-        img: "img/sites/pinterest.svg",
-        link: "https://www.pinterest.com/jacquelynyakira/"
+        id: "claude",
+        title: "Claude",
+        img: "img/sites/claude.svg",
+        link: "https://claude.ai/"
+      },
+      {
+        id: "gemini",
+        title: "Gemini",
+        img: "img/sites/gemini.svg",
+        link: "https://gemini.google.com/"
+      },
+      {
+        id: "chatgpt",
+        title: "ChatGPT",
+        img: "img/sites/chatgpt.svg",
+        link: "https://chatgpt.com"
+      },
+      {
+        id: "perplexity",
+        title: "Perplexity",
+        img: "img/sites/perplexity.svg",
+        link: "https://perplexity.ai/"
+      },
+      {
+        id: "google-ai-studio",
+        title: "Google AI Studio",
+        img: "img/sites/AIstudio.png",
+        link: "https://aistudio.google.com/"
       },
       {
         id: "reddit",
@@ -77,36 +94,28 @@ const websites: WebsitesData = {
         link: "https://www.reddit.com/"
       },
       {
+        id: "x",
+        title: "X",
+        img: "img/sites/twitter.svg",
+        link: "https://x.com"
+      },
+      {
+        id: "pinterest",
+        title: "Pinterest",
+        img: "img/sites/pinterest.svg",
+        link: "https://www.pinterest.com/jacquelynyakira/"
+      },
+      {
+        id: "dribbble",
+        title: "Dribbble",
+        img: "img/sites/dribbble.svg",
+        link: "https://dribbble.com/Jacquelynyakira"
+      },
+      {
         id: "hacker-news",
         title: "Hacker News",
         img: "img/sites/hacker.svg",
         link: "https://news.ycombinator.com/"
-      },
-      {
-        id: "tiny-png",
-        title: "Tiny PNG",
-        img: "https://tinypng.com/images/panda-chewing-2x.png",
-        link: "https://tinypng.com/"
-      },
-      {
-        id: "chatgpt",
-        title: "ChatGPT",
-        link: "https://chatgpt.com"
-      },
-      {
-        id: "perplexity",
-        title: "Perplexity",
-        link: "https://perplexity.ai/"
-      },
-      {
-        id: "google-ai-studio",
-        title: "Google AI Studio",
-        link: "https://aistudio.google.com/"
-      },
-      {
-        id: "claude",
-        title: "Claude",
-        link: "https://claude.ai/"
       }
     ]
   }
