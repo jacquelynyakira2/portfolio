@@ -2,15 +2,6 @@ import React from "react";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 
-type SpotifyMode = "public" | "client" | "disabled";
-type SpotifyStatus =
-  | "missing-config"
-  | "idle"
-  | "authorizing"
-  | "refreshing"
-  | "ready"
-  | "error";
-
 interface SliderProps {
   icon: string;
   value: number;
@@ -38,8 +29,6 @@ interface MusicPanelState {
   subtitle: string;
   cover: string;
   hasPreview: boolean;
-  isFromSpotify: boolean;
-  lastUpdated?: number;
 }
 
 interface CCMProps {
@@ -50,10 +39,6 @@ interface CCMProps {
   playing?: boolean;
   btnRef: React.RefObject<HTMLDivElement>;
   music: MusicPanelState;
-  spotifyStatus: SpotifyStatus;
-  spotifyError?: string;
-  spotifyConfigured: boolean;
-  spotifyMode: SpotifyMode;
 }
 
 export default function ControlCenterMenu({
@@ -63,11 +48,7 @@ export default function ControlCenterMenu({
   setVolume,
   playing,
   btnRef,
-  music,
-  spotifyStatus,
-  spotifyError,
-  spotifyConfigured,
-  spotifyMode
+  music
 }: CCMProps) {
   const controlCenterRef = useRef<HTMLDivElement>(null);
   const { dark, wifi, brightness, bluetooth, airdrop, fullscreen, volume } = useStore(
@@ -96,15 +77,6 @@ export default function ControlCenterMenu({
 
   const renderMusicAction = (): React.ReactNode => {
     if (!showPlaybackControls || !toggleAudio) return null;
-
-    if (spotifyStatus === "refreshing") {
-      return (
-        <span
-          className="i-eos-icons:loading text-xl animate-spin"
-          aria-label="Updating Spotify"
-        />
-      );
-    }
 
     return playing ? (
       <span
@@ -210,22 +182,6 @@ export default function ControlCenterMenu({
         <div className="flex-1 min-w-0">
           <div className="font-medium truncate">{music.title}</div>
           <div className="cc-text truncate">{music.subtitle}</div>
-          {spotifyMode !== "public" && !spotifyConfigured && (
-            <div className="cc-text text-xs">
-              Add Spotify env vars to enable live updates.
-            </div>
-          )}
-          {spotifyMode === "public" &&
-            music.isFromSpotify &&
-            spotifyStatus === "ready" && (
-              <div className="cc-text text-xs opacity-70">Live from Spotify</div>
-            )}
-          {music.isFromSpotify && spotifyStatus === "refreshing" && (
-            <div className="cc-text text-xs opacity-70">Updating…</div>
-          )}
-          {spotifyStatus === "error" && spotifyError && (
-            <div className="text-xs text-red-500 truncate">{spotifyError}</div>
-          )}
         </div>
         <div className="flex items-center">{renderMusicAction()}</div>
       </div>

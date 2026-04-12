@@ -1,9 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { useStore } from "~/stores";
 import { useAIMSounds } from "~/hooks";
 import { presetAwayMessages } from "~/configs/aim";
 import type { AIMBuddy, AIMBuddyGroup, AIMStatus } from "~/types";
+
+/** Buddies omitted from the buddy list (still in config for data/AI if needed). */
+const HIDDEN_BUDDY_IDS = new Set(["coolmom42", "daddio1965"]);
 
 // ============================================================================
 // LOGIN SCREEN
@@ -627,7 +630,9 @@ const AIM = () => {
     if (!aimIsSignedIn) return;
 
     const interval = setInterval(() => {
-      const allBuddies = aimBuddyGroups.flatMap((g) => g.buddies);
+      const allBuddies = aimBuddyGroups
+        .flatMap((g) => g.buddies)
+        .filter((b) => !HIDDEN_BUDDY_IDS.has(b.id));
       const roll = Math.random();
 
       if (roll < 0.65) {
@@ -680,6 +685,15 @@ const AIM = () => {
     aimSignOut();
   };
 
+  const visibleBuddyGroups = useMemo(
+    () =>
+      aimBuddyGroups.map((group) => ({
+        ...group,
+        buddies: group.buddies.filter((b) => !HIDDEN_BUDDY_IDS.has(b.id))
+      })),
+    [aimBuddyGroups]
+  );
+
   // Handle opening chat with door sound
   const handleOpenChat = (buddyId: string, buddyScreenName: string) => {
     playDoorOpen();
@@ -695,7 +709,7 @@ const AIM = () => {
       screenName={aimScreenName}
       status={aimStatus}
       awayMessage={aimAwayMessage}
-      buddyGroups={aimBuddyGroups}
+      buddyGroups={visibleBuddyGroups}
       soundEnabled={aimPreferences.soundEnabled}
       onSignOut={handleSignOut}
       onSetStatus={aimSetStatus}

@@ -81,9 +81,7 @@ const TopBar = (props: TopBarProps) => {
     title: music.title,
     subtitle: music.artist,
     cover: music.cover,
-    previewUrl: music.audio,
-    isFromSpotify: false,
-    lastUpdated: undefined
+    previewUrl: music.audio
   };
 
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -175,9 +173,7 @@ const TopBar = (props: TopBarProps) => {
     title: activeMusic.title,
     subtitle: activeMusic.subtitle,
     cover: activeMusic.cover,
-    hasPreview: Boolean(activeMusic.previewUrl),
-    isFromSpotify: activeMusic.isFromSpotify,
-    lastUpdated: activeMusic.lastUpdated
+    hasPreview: Boolean(activeMusic.previewUrl)
   };
 
   const logout = (): void => {
@@ -279,10 +275,6 @@ const TopBar = (props: TopBarProps) => {
             toggleControlCenter={toggleControlCenter}
             btnRef={controlCenterBtnRef}
             music={musicPanel}
-            spotifyStatus="disabled"
-            spotifyError={undefined}
-            spotifyConfigured={false}
-            spotifyMode="disabled"
           />
         )}
 
