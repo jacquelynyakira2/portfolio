@@ -8,6 +8,9 @@ import type { AIMBuddy, AIMBuddyGroup, AIMStatus } from "~/types";
 /** Buddies omitted from the buddy list (still in config for data/AI if needed). */
 const HIDDEN_BUDDY_IDS = new Set(["coolmom42", "daddio1965"]);
 
+/** Never simulated offline / away — your persona stays available. */
+const SIMULATION_EXCLUDED_IDS = new Set(["jacquelynyakira"]);
+
 // ============================================================================
 // LOGIN SCREEN
 // ============================================================================
@@ -185,8 +188,12 @@ const BuddyItem = ({ buddy, onDoubleClick }: BuddyItemProps) => {
     <>
       <div
         ref={itemRef}
-        className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:bg-blue-100 rounded select-none"
-        onDoubleClick={onDoubleClick}
+        className={`flex items-center gap-2 px-3 py-1.5 rounded select-none ${
+          buddy.status === "offline"
+            ? "cursor-not-allowed opacity-55"
+            : "cursor-pointer hover:bg-blue-100"
+        }`}
+        onDoubleClick={buddy.status === "offline" ? undefined : onDoubleClick}
         onMouseEnter={() =>
           buddy.status === "away" && buddy.awayMessage && setShowAwayTooltip(true)
         }
@@ -625,17 +632,19 @@ const AIM = () => {
     aimHydrateFromStorage();
   }, []);
 
-  // Rotate buddy away messages and occasionally flip statuses for realism
+  // Rotate away messages and nudge buddies online / away / offline like a real list
   useEffect(() => {
     if (!aimIsSignedIn) return;
 
     const interval = setInterval(() => {
-      const allBuddies = aimBuddyGroups
+      const { aimBuddyGroups: groups, aimOpenChats: openChats } = useStore.getState();
+      const chattingIds = new Set(openChats.map((c) => c.buddyId));
+      const allBuddies = groups
         .flatMap((g) => g.buddies)
         .filter((b) => !HIDDEN_BUDDY_IDS.has(b.id));
       const roll = Math.random();
 
-      if (roll < 0.65) {
+      if (roll < 0.52) {
         // Rotate a random away buddy's message
         const awayBuddies = allBuddies.filter(
           (b) => b.status === "away" && b.awayMessages && b.awayMessages.length > 1
@@ -646,11 +655,44 @@ const AIM = () => {
           const next = pool[Math.floor(Math.random() * pool.length)];
           aimUpdateBuddyStatus(buddy.id, "away", next);
         }
-      } else if (roll < 0.82) {
-        // Flip a random online buddy to away (skip jacquelynyakira)
+      } else if (roll < 0.64) {
+        // Someone signs off (not while you're in an active IM with them)
+        const signoffCandidates = allBuddies.filter(
+          (b) =>
+            !SIMULATION_EXCLUDED_IDS.has(b.id) &&
+            !chattingIds.has(b.id) &&
+            (b.status === "online" || b.status === "away")
+        );
+        if (signoffCandidates.length > 0) {
+          const buddy =
+            signoffCandidates[Math.floor(Math.random() * signoffCandidates.length)];
+          aimUpdateBuddyStatus(buddy.id, "offline");
+        }
+      } else if (roll < 0.76) {
+        // Someone comes back from offline → online or away
+        const offlineBuddies = allBuddies.filter(
+          (b) => !SIMULATION_EXCLUDED_IDS.has(b.id) && b.status === "offline"
+        );
+        if (offlineBuddies.length > 0) {
+          const buddy = offlineBuddies[Math.floor(Math.random() * offlineBuddies.length)];
+          if (buddy.awayMessages?.length && Math.random() < 0.45) {
+            const pool = buddy.awayMessages;
+            aimUpdateBuddyStatus(
+              buddy.id,
+              "away",
+              pool[Math.floor(Math.random() * pool.length)]
+            );
+          } else {
+            aimUpdateBuddyStatus(buddy.id, "online");
+          }
+        }
+      } else if (roll < 0.88) {
+        // Online → away
         const onlineBuddies = allBuddies.filter(
           (b) =>
-            b.status === "online" && b.id !== "jacquelynyakira" && b.awayMessages?.length
+            !SIMULATION_EXCLUDED_IDS.has(b.id) &&
+            b.status === "online" &&
+            b.awayMessages?.length
         );
         if (onlineBuddies.length > 0) {
           const buddy = onlineBuddies[Math.floor(Math.random() * onlineBuddies.length)];
@@ -659,19 +701,19 @@ const AIM = () => {
           aimUpdateBuddyStatus(buddy.id, "away", msg);
         }
       } else {
-        // Bring a random away buddy back online (skip jacquelynyakira)
+        // Away → online
         const awayBuddies = allBuddies.filter(
-          (b) => b.status === "away" && b.id !== "jacquelynyakira"
+          (b) => !SIMULATION_EXCLUDED_IDS.has(b.id) && b.status === "away"
         );
         if (awayBuddies.length > 0) {
           const buddy = awayBuddies[Math.floor(Math.random() * awayBuddies.length)];
           aimUpdateBuddyStatus(buddy.id, "online");
         }
       }
-    }, 55_000); // every ~55s
+    }, 48_000); // every ~48s
 
     return () => clearInterval(interval);
-  }, [aimIsSignedIn, aimBuddyGroups, aimUpdateBuddyStatus]);
+  }, [aimIsSignedIn, aimUpdateBuddyStatus]);
 
   // Handle sign in with sound
   const handleSignIn = (screenName: string) => {
