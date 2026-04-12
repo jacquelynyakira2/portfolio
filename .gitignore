@@ -1,8 +1,12 @@
 *.log
 .DS_Store
 .cache/
+.npm-cache/
 node_modules/
 dist/
+
+# This project uses pnpm only (see package.json packageManager)
+package-lock.json
 
 # Environment variables (never commit secrets)
 .env

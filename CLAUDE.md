@@ -4,6 +4,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
+**Install pnpm once**
+
+On macOS, **Homebrew is the least painful** if Corepack cannot write to `/usr/local/bin` (EACCES when running `corepack enable`):
+
+```bash
+brew install pnpm
+pnpm --version   # prefer 9.x to match package.json "packageManager"
+```
+
+Alternative — Corepack (ships with Node), only if `corepack enable` succeeds:
+
+```bash
+corepack enable
+corepack prepare pnpm@9.0.6 --activate
+```
+
 ```bash
 pnpm install      # Install dependencies
 pnpm dev          # Start dev server with hot reloading (exposed on network via --host)
@@ -11,6 +27,8 @@ pnpm build        # Build for production to dist/
 pnpm serve        # Preview production build
 pnpm lint         # Run ESLint
 ```
+
+If you previously used npm here, reinstall with pnpm: `rm -rf node_modules && pnpm install`.
 
 The package manager is **pnpm** (v9). Do not use npm or yarn.
 
