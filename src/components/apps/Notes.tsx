@@ -444,6 +444,7 @@ const Content = ({
                     <button
                       type="button"
                       className="text-c-600 dark:text-c-400 hover:underline cursor-pointer bg-transparent border-none p-0 font-inherit inline text-left"
+                      onMouseDown={(e) => e.stopPropagation()}
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -460,7 +461,13 @@ const Content = ({
                   );
                 }
                 return (
-                  <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+                  <a
+                    {...props}
+                    href={href ?? rawHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseDown={(e) => e.stopPropagation()}
+                  >
                     {children}
                   </a>
                 );

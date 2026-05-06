@@ -103,24 +103,6 @@ const bear: BearData[] = [
         excerpt:
           "First Salesforce app on Slack - bringing learning into the flow of work...",
         link: "https://trailhead.salesforce.com/en/slack"
-      },
-      {
-        id: "api-ification-project",
-        title: "The API-ification of Everything",
-        file: "markdown/project-example.md",
-        icon: "i-material-symbols:api",
-        excerpt:
-          "How Intent-Based Computing Kills the App - exploring the future of digital interaction...",
-        link: "https://example.com"
-      },
-      {
-        id: "tiny-ui-project",
-        title: "Tiny UI: Reaction Bubbles",
-        file: "markdown/tiny-ui-project.md",
-        icon: "i-material-symbols:bubble-chart",
-        excerpt:
-          "A design study exploring how micro-interactions create meaningful visual relationships...",
-        link: "https://example.com"
       }
     ]
   },

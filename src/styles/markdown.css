@@ -168,6 +168,8 @@
   height: 1px;
   background-color: #2563eb;
   transition: width 0.3s ease;
+  /* Decorative underline must not steal clicks (would block navigation in Notes / draggable windows) */
+  pointer-events: none;
 }
 
 .markdown a:hover {
