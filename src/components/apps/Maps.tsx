@@ -15,7 +15,7 @@ interface MarkerEntry {
 }
 
 const LIGHT_MAP_STYLE = "mapbox://styles/mapbox/streets-v12";
-const DARK_MAP_STYLE = "mapbox://styles/mapbox/navigation-night-v1";
+const DARK_MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
 const DEFAULT_CENTER: [number, number] = [0, 20];
 const getMapPadding = (compact: boolean) =>
   compact
