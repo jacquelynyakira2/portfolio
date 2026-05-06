@@ -49,7 +49,8 @@ export default function Spotlight({
 
   const textWhite = "text-white";
   const textBlack = "text-c-black";
-  const textSelected = "bg-blue-500";
+  /** macOS Spotlight selection */
+  const textSelected = "bg-[#007AFF]";
 
   useClickOutside(spotlightRef, toggleSpotlight, [btnRef]);
 
@@ -126,15 +127,20 @@ export default function Spotlight({
         <li
           id={`spotlight-${app.id}`}
           key={`spotlight-${app.id}`}
-          className={`pr-1 h-7 w-full flex rounded ${bg} ${text} cursor-default`}
+          className={`hstack h-8 w-full shrink-0 items-center gap-2 rounded-sm px-1.5 ${bg} ${text} cursor-default select-none`}
           data-app-type={type}
           onClick={() => handleClick(app.id)}
           onDoubleClick={() => handleDoubleClick(app.id)}
         >
-          <div className="w-8 flex-center">
-            <img w-5 src={app.img} alt={app.title} title={app.title} />
+          <div className="flex size-5 shrink-0 items-center justify-center">
+            <img
+              className="size-4 shrink-0 object-contain"
+              src={app.img}
+              alt={app.title}
+              title={app.title}
+            />
           </div>
-          <div className="flex-1 hstack overflow-hidden whitespace-nowrap">
+          <div className="min-w-0 flex-1 truncate text-[13px] leading-tight">
             {app.title}
           </div>
         </li>
@@ -161,15 +167,13 @@ export default function Spotlight({
         {app.appList.length !== 0 && (
           <div>
             <div className="spotlight-type">Applications</div>
-            <ul className="w-full text-xs">{app.appList}</ul>
+            <ul className="w-full">{app.appList}</ul>
           </div>
         )}
         {portfolio.appList.length !== 0 && (
-          <div>
-            <div className="spotlight-type mt-1.5 before:(content-empty absolute left-0 top-0 ml-2 w-63.5 border-t border-menu)">
-              Portfolio
-            </div>
-            <ul className="w-full text-xs">{portfolio.appList}</ul>
+          <div className="mt-2 border-t border-menu pt-1">
+            <div className="spotlight-type">Portfolio</div>
+            <ul className="w-full">{portfolio.appList}</ul>
           </div>
         )}
       </div>
@@ -273,51 +277,59 @@ export default function Spotlight({
           autoFocus={true}
         />
         {curDetails && (
-          <div className="hidden sm:flex col-start-11 col-span-1 flex-center">
-            <img
-              w-8
-              src={curDetails.img}
-              alt={curDetails.title}
-              title={curDetails.title}
-            />
+          <div className="hidden sm:flex col-start-11 col-span-1 flex-center pr-0.5">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-c-200/90 ring-1 ring-black/5 dark:ring-white/10">
+              <img
+                className="size-7 shrink-0 object-contain"
+                src={curDetails.img}
+                alt={curDetails.title}
+                title={curDetails.title}
+              />
+            </div>
           </div>
         )}
       </div>
       {searchText !== "" && (
-        <div flex h-85 bg-transparent border="t menu">
-          <div w="32 sm:72" border="r menu" p="x-2.5" overflow-y-scroll>
+        <div className="flex min-h-0 h-85 border-t border-menu bg-transparent">
+          <div className="w-[40%] min-w-[11.5rem] max-w-[20rem] shrink-0 overflow-y-auto border-r border-menu py-2 pl-2.5 pr-2">
             {appList}
           </div>
           {curDetails && (
-            <div className="flex-1 vstack">
-              <div className="w-4/5 h-56" flex="center col" border="b menu">
+            <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+              <div className="flex shrink-0 flex-col items-center px-5 pb-1 pt-4">
                 <img
-                  w-32
+                  className="size-18 max-h-18 max-w-full shrink-0 object-contain"
                   src={curDetails.img}
                   alt={curDetails.title}
                   title={curDetails.title}
                 />
-                <div m="t-4" text="xl c-black">
+                <div className="mt-2 text-center text-xl font-semibold leading-snug tracking-tight text-c-black">
                   {curDetails.title}
                 </div>
-                <div text="xs c-500">
+                <div className="mt-0.5 text-center text-xs text-c-500">
                   {`Version: ${getRandom(0, 99)}.${getRandom(0, 999)}`}
                 </div>
+                <div
+                  className="mt-3 w-3/5 max-w-[13rem] shrink-0 border-b border-menu"
+                  aria-hidden
+                />
               </div>
-              <div className="flex-1 hstack text-xs">
-                <div w="1/2" text="right c-500">
-                  <div>Kind</div>
-                  <div>Size</div>
-                  <div>Created</div>
-                  <div>Modified</div>
-                  <div>Last opened</div>
-                </div>
-                <div className="flex-1 pl-2 text-c-black">
-                  <div>{curDetails.type === "app" ? "Application" : "Portfolio"}</div>
-                  <div>{`${getRandom(0, 999)} G`}</div>
-                  <div>{getRandomDate()}</div>
-                  <div>{getRandomDate()}</div>
-                  <div>{getRandomDate()}</div>
+              <div className="flex min-h-0 flex-1 justify-center overflow-y-auto overscroll-contain px-5 py-3 text-xs">
+                <div className="flex w-max gap-4">
+                  <div className="w-28 shrink-0 space-y-1 text-right text-c-500">
+                    <div>Kind</div>
+                    <div>Size</div>
+                    <div>Created</div>
+                    <div>Modified</div>
+                    <div>Last opened</div>
+                  </div>
+                  <div className="shrink-0 space-y-1 text-left text-c-black">
+                    <div>{curDetails.type === "app" ? "Application" : "Portfolio"}</div>
+                    <div>{`${getRandom(0, 999)} G`}</div>
+                    <div>{getRandomDate()}</div>
+                    <div>{getRandomDate()}</div>
+                    <div>{getRandomDate()}</div>
+                  </div>
                 </div>
               </div>
             </div>

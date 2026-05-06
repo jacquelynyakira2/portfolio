@@ -94,7 +94,7 @@ const DesktopFolder = ({ depth = 0 }: DesktopFolderProps) => {
               >
                 <div className="w-24 h-24 group-hover:opacity-80 transition-opacity">
                   <img
-                    src="img/icons/Folder.png"
+                    src="img/icons/folder.png"
                     alt="desktop folder"
                     className="w-full h-full object-contain"
                   />

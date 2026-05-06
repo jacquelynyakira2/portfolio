@@ -116,7 +116,7 @@ const apps: AppsData[] = [
     height: 420,
     x: 0,
     y: 0,
-    img: "img/icons/Folder.png",
+    img: "img/icons/folder.png",
     content: <DesktopFolder />
   },
   {
