@@ -134,10 +134,17 @@ const Window = (props: WindowProps) => {
 
   useEffect(() => {
     const newMaxHeight = winHeight - dockSize - 15 - minMarginY;
-    setState({
-      ...state,
-      width: Math.min(winWidth, state.width),
-      height: Math.min(newMaxHeight, state.height)
+    setState((prev) => {
+      const newWidth = Math.min(winWidth, prev.width);
+      const newHeight = Math.min(newMaxHeight, prev.height);
+      return {
+        ...prev,
+        width: newWidth,
+        height: newHeight,
+        // Re-center the window within the new viewport so it never drifts off-screen
+        x: winWidth + (winWidth - newWidth) / 2,
+        y: (winHeight - newHeight - dockSize - minMarginY) / 2
+      };
     });
   }, [winWidth, winHeight]);
 
