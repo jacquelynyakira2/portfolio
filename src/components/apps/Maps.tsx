@@ -23,12 +23,14 @@ const getMapPadding = (compact: boolean) =>
     : { top: 40, bottom: 40, left: 320, right: 40 };
 
 const Maps = ({ width = 1024 }: MapsProps) => {
-  const token = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
+  const rawToken = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
+  const token = rawToken?.trim();
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkerEntry[]>([]);
   const [activePlaceId, setActivePlaceId] = useState<string | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [mapResourceError, setMapResourceError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const dark = useStore((state) => state.dark);
 
@@ -100,14 +102,25 @@ const Maps = ({ width = 1024 }: MapsProps) => {
     map.addControl(new mapboxgl.NavigationControl({ showCompass: true }), "bottom-right");
     mapRef.current = map;
 
+    const onMapError = (e: { error?: Error }) => {
+      const msg = e.error?.message ?? "Unknown Mapbox error";
+      console.error("[Maps]", msg, e.error);
+      setMapResourceError(msg);
+    };
+
+    map.on("error", onMapError);
+
     map.on("load", () => {
       mapRef.current = map;
+      setMapResourceError(null);
       setIsMapLoaded(true);
     });
 
     return () => {
+      map.off("error", onMapError);
       map.remove();
       mapRef.current = null;
+      setIsMapLoaded(false);
     };
   }, [token, dark]);
 
@@ -393,7 +406,25 @@ const Maps = ({ width = 1024 }: MapsProps) => {
                 dark ? "bg-gray-800/90 text-gray-300" : "bg-white/90 text-gray-600"
               }`}
             >
-              Add `VITE_MAPBOX_TOKEN` to `.env.local` to load the map.
+              Add `VITE_MAPBOX_TOKEN` to `.env` or `.env.local`, then restart the dev
+              server.
+            </div>
+          )}
+          {!tokenMissing && mapResourceError && (
+            <div
+              className={`absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 px-6 text-center text-sm ${
+                dark ? "bg-gray-800/95 text-gray-200" : "bg-white/95 text-gray-700"
+              }`}
+            >
+              <p className="max-w-md font-medium">Map tiles could not load.</p>
+              <p className="max-w-md text-xs opacity-90">
+                Check the browser Network tab for{" "}
+                <code className="font-mono">api.mapbox.com</code> (403 often means token
+                URL restrictions). In Mapbox → Access tokens, allow this site’s URL (e.g.{" "}
+                <code className="font-mono">http://localhost:5173</code> for dev) or use a
+                token without URL restrictions while testing.
+              </p>
+              <p className="max-w-md text-xs opacity-75 font-mono">{mapResourceError}</p>
             </div>
           )}
           <div

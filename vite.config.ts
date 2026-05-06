@@ -6,6 +6,8 @@ import path from "path";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import dotenv from "dotenv";
 
+// Load base env first, then optional overrides (both gitignored for secrets).
+dotenv.config({ path: ".env" });
 dotenv.config({ path: ".env.local" });
 
 // Vite plugin that handles /api/aim-chat inside the dev server — no separate process needed.

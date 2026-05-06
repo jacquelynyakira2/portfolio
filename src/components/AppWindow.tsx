@@ -119,7 +119,9 @@ const Window = (props: WindowProps) => {
   }
 
   const initWidth = Math.min(winWidth, props.width || 640);
-  const initHeight = Math.min(winHeight, props.height || 400);
+  // Cap height to the space between the top bar and the dock so windows never open behind the dock
+  const maxHeight = winHeight - dockSize - 15 - minMarginY;
+  const initHeight = Math.min(maxHeight, props.height || 400);
 
   const [state, setState] = useState<WindowState>({
     width: initWidth,
@@ -131,10 +133,11 @@ const Window = (props: WindowProps) => {
   });
 
   useEffect(() => {
+    const newMaxHeight = winHeight - dockSize - 15 - minMarginY;
     setState({
       ...state,
       width: Math.min(winWidth, state.width),
-      height: Math.min(winHeight, state.height)
+      height: Math.min(newMaxHeight, state.height)
     });
   }, [winWidth, winHeight]);
 
