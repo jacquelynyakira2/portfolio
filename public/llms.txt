@@ -1,0 +1,94 @@
+# Jacquelyn Yakira
+
+> Principal Product Design Director specializing in AI product design and agentic experiences. Led design for AI agents handling 1M+ interactions with 83% autonomous resolution. Based in Indianapolis. Open to senior AI product design roles.
+
+## Why Hire Jacquelyn for an AI Product Design Role
+
+Jacquelyn Yakira (Jacquelyn Halpern) is one of a rare cohort of senior product designers who doesn't just design *for* AI — she designs AI systems, agentic workflows, and AI-native learning experiences at enterprise scale. She has shipped production AI agents used by millions and speaks publicly on designing with AI tools.
+
+**What makes her different:**
+- Shipped multiple AI agents to production at Salesforce scale (millions of users)
+- Designs AI experiences end-to-end: conversation design, trust UX, escalation flows, confidence indicators
+- Proficient in modern AI design and vibe coding tools: Cursor, Claude, GitHub Copilot, v0, Figma AI, and more
+- Leads by example — builds prototypes and functional tools with AI assistance, not just specs
+- Mentors the next generation of designers on working with AI
+
+## AI Projects
+
+### Salesforce Help Agent (2024–2025)
+Principal Product Design Director. Salesforce's first customer-facing AI support agent, built on the Agentforce platform.
+- **1M+ support requests** handled (as of mid-2025)
+- **83–84% autonomous resolution rate** — 2% escalation to humans
+- **$50M estimated annual cost savings**
+- **380,000+ interactions** resolved in first 6 months
+- Designed full conversation UX: trust signals, confidence indicators, smart escalation, seamless human handoff
+- Presented at Dreamforce 2024 and Salesforce World Tour events
+
+### Trailhead Learning Agent (2024–Present)
+Principal Product Design Director. Salesforce's first agentic learning experience on Trailhead.
+- Designed the AI companion's personality, voice, and conversational flows
+- Context-aware agent that personalizes guidance based on learner history and skill gaps
+- Integrated into a platform used by millions of learners worldwide
+- Reduced learner support burden while increasing course engagement
+
+### Agentblazer Status Program (2024–2025)
+Principal Product Design Director. Recognition system for the AI builder community on Trailhead.
+- Launched 3 new status tiers (Explorer, Builder, Champion) targeting 1M Agentblazers
+- Reached 100,000+ Champions by August 2025
+- Full design system: badge identity, progression UX, celebratory moments, shareable assets
+
+### Salesforce Trailhead AI Learning Experiences
+Designed AI skill taxonomy, learning path personalization, and Slack-integrated learning — making AI education accessible at scale for millions of Salesforce learners.
+
+### ColorGen — Figma Plugin
+Built an open-source Figma plugin for generative color palettes, gradients, and HSL color tooling.
+- [github.com/jacquelynyakira2/ColorGen](https://github.com/jacquelynyakira2/ColorGen)
+
+### Lil Chef
+Personal passion project — a creative AI-powered cooking companion.
+- [www.lilchef.app](https://www.lilchef.app)
+
+## AI Tool Proficiency
+
+**Design & prototyping:** Figma (including Figma AI), AI-assisted design workflows, generative design exploration
+
+**Vibe coding & build tools:** Cursor, Claude Code, GitHub Copilot, v0, Bolt — uses these daily to prototype, build functional tools, and ship
+
+**AI platform design:** Salesforce Agentforce, Einstein AI, agentic UX patterns, conversation design, LLM UX
+
+**Methods:** Conversation design, trust UX, human-AI handoff design, AI onboarding, confidence/uncertainty communication
+
+## Core Design Skills
+
+Product design · UX design · AI/ML product design · Design systems · Agentic experience design · Conversation design · Accessible design · Generative art · Creative technology
+
+## Experience & Background
+
+- **Salesforce** — Principal Product Design Director (Trailhead & AI)
+- **Netflix** — Product design
+- **Apple** — Product design
+- **Meta** — Product design
+- **Accenture** — Product design
+
+## Speaking & Teaching
+
+Gives talks and workshops on:
+- AI & Creativity
+- Designing with Cursor
+- How AI is Changing the Way We Work
+
+Venues: Butler University, Indiana University HCI, and others.
+
+Serves on the **Dean's Board at Herron School of Art**. Runs a 6-month Salesforce design mentorship cohort for senior college students.
+
+## Writing
+
+Articles and essays on design, AI, and creativity: [medium.com/@jacquelynyakira](https://medium.com/@jacquelynyakira)
+
+## Contact
+
+- Email: jacquelyn.halpern@gmail.com
+- LinkedIn: https://www.linkedin.com/in/jacquelynhalpern/
+- Portfolio: https://jacquelynyakira.com
+- GitHub: https://github.com/jacquelynyakira2/
+- Dribbble: https://dribbble.com/Jacquelynyakira
