@@ -121,6 +121,15 @@ const bear: BearData[] = [
         link: "https://github.com/jacquelynyakira2/ColorGen"
       },
       {
+        id: "braun-audio-hub",
+        title: "Braun Audio Hub",
+        file: "markdown/braun-audio-hub.md",
+        icon: "i-material-symbols:radio",
+        excerpt:
+          "Braun-inspired radio player — Google Stitch for UI exploration, AI Studio + Gemini to ship...",
+        link: "https://braun-audio-hub-edition-01-68667134851.us-west1.run.app"
+      },
+      {
         id: "passion-placeholder",
         title: "Coming Soon",
         file: "markdown/passions-coming-soon.md",

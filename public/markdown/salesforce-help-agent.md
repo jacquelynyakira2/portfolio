@@ -24,6 +24,8 @@ Salesforce's support team handles millions of customer inquiries annually. Many 
 
 As "customer zero" for Salesforce's Agentforce technology, I helped launch Salesforce's first Help Agent - an AI-powered support assistant that autonomously handles customer support cases. This agent has become a cornerstone of Salesforce's support strategy, fundamentally changing how customers get help.
 
+Salesforce published a deeper look at how Agentforce on Help scales trusted service, including the milestone of **over two million conversations handled** — [read the article](https://www.salesforce.com/blog/support-requests-agentforce/).
+
 ---
 
 ## Key Features
