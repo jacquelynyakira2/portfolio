@@ -6,12 +6,14 @@ Welcome to my educational content hub! Here you'll find information about my wor
 
 ## Upcoming
 
-### **The Intersection of AI & Creativity**
-- **Date**: October 2025
-- **Attendees**: 100+ 
-- **Format**: Educational in person
-- **Location**: Butler University
-- **Description**: I am teaching a two week course on AI and Creativity for a creative writing class at Butler University. This course will walk students through the current AI landscape and how to utilize it to elevate thieir ideas and determine what creativity in an AI world means.
+### **AI Show & Tell: Innovating Design with AI**
+- **Date**: May 19, 2026
+- **Time**: 5:30 PM – 7:30 PM (local)
+- **Format**: Short presentations + Q&A (in person)
+- **Location**: [SEP](https://sep.com/), 16080 Westfield Blvd · Carmel, IN
+- **Hosted by**: IxDA Indianapolis
+- **Description**: One of three designers sharing what they're building and learning with AI—from shipping a SaaS product and prototyping faster with AI, to shaping an AI-first design system for the team. Food and beverages provided.
+- **Details & RSVP**: [IxDA event page](https://ixda.org/event/ai-show-tell/)
 
 ---
 
@@ -23,6 +25,15 @@ Welcome to my educational content hub! Here you'll find information about my wor
 - **Format**: Panel Discussion (in person)
 - **Location**: Indiana University HCI Program
 - **Description**: Joined faculty and industry leaders to share cross-functional perspectives on how AI is reshaping workflows for designers, researchers, and product teams, guiding HCI students through real-world case studies and collaboration patterns.
+
+---
+
+### **The Intersection of AI & Creativity**
+- **Date**: October 2025
+- **Attendees**: ~50
+- **Format**: Educational in person
+- **Location**: Butler University
+- **Description**: Taught a two-week course on AI and creativity for a creative writing class. Walked students through the current AI landscape, how to use it to elevate their ideas, and what creativity means in an AI-informed world.
 
 ---
 
