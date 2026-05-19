@@ -54,6 +54,7 @@ SPEAKING
 - Creative Mornings Indianapolis (March 2024): "Creativity and AI: Where We Are and How We Got Here" — 200+ attendees, on YouTube
 - National Sculpture Society Conference (Sept 2024): AI & Sculpture panel at Herron + Indianapolis Art Center, on YouTube
 - InnovateHER (Sept 2023): AI for career advancement panel with Lulay Garduno (Mastercard) and Cathy Pearl (Google)
+- Dreamforce (Sept 2023): "Generative AI: Where We Are and How We Got Here" — in-person San Francisco session
 - Designing with Cursor for Beginners (July 2025): Virtual workshop, 164 attendees
 - IU HCI Program (Oct 2025): Cross-functional AI panel for HCI grad students
 - Butler University (Oct 2025): 2-week AI & Creativity course for a creative writing class

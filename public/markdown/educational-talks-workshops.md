@@ -110,6 +110,19 @@ Welcome to my educational content hub! Here you'll find information about my wor
 
 ---
 
+### **Generative AI: Where we are and how we got here (Dreamforce)**
+- **Date**: September 2023
+- **Attendees**: Dreamforce session participants
+- **Format**: Educational talk (in person)
+- **Location**: [Dreamforce](https://www.salesforce.com/dreamforce/) · San Francisco, CA
+- **Description**: Same narrative as earlier internal editions—current landscape, how we got here, patterns emerging in AI, plus practical examples—adapted for a live Dreamforce audience on the big topics everyone was unpacking that year.
+
+<div style="margin: 0.5rem 0; background: transparent; padding: 0;">
+  <img src="/img/projects/dreamforce-generative-ai-2023.png" alt="Jacquelyn Halpern presenting Generative AI: Where we are and how we got here at Dreamforce 2023" style="width: 100%; max-width: 900px; height: auto; border-radius: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+</div>
+
+---
+
 ### **Generative AI: Where we are and how we got here (v2)**
 - **Date**: June 14, 2023
 - **Attendees**: 500+ 
