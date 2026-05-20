@@ -41,7 +41,7 @@ export default function Dock({
       overflow="visible"
     >
       <ul
-        className="flex px-2 backdrop-blur-2xl bg-c-white/20"
+        className="flex max-w-full px-2 backdrop-blur-2xl bg-c-white/20"
         border="~ c-400/40 rounded-xl"
         onMouseMove={(e) => {
           if (!isPhone) mouseX.set(e.nativeEvent.x);
@@ -50,6 +50,7 @@ export default function Dock({
         style={{
           height: `${(dockSize + 15) / 16}rem`,
           gap: isPhone ? "0.5rem" : "0.75rem",
+          width: isPhone ? "max-content" : undefined,
           maxWidth: isPhone ? "calc(100vw - 1rem)" : undefined,
           overflowX: isPhone ? "auto" : "visible",
           overflowY: "visible",
