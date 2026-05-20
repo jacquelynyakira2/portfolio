@@ -30,8 +30,7 @@ interface DesktopState {
 }
 
 export default function Desktop(props: MacActions) {
-  const { winWidth } = useWindowSize();
-  const isMobile = winWidth < 640;
+  const isMobile = useIsPhone();
 
   const [state, setState] = useState({
     showApps: {},
@@ -346,13 +345,15 @@ export default function Desktop(props: MacActions) {
   };
 
   return (
-    <div
-      className="size-full overflow-hidden bg-center bg-cover"
-      style={{
-        backgroundImage: `url(${dark ? wallpapers.night : wallpapers.day})`,
-        filter: `brightness( ${(brightness as number) * 0.7 + 50}% )`
-      }}
-    >
+    <div className="relative size-full overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 bg-center bg-cover"
+        style={{
+          backgroundImage: `url(${dark ? wallpapers.night : wallpapers.day})`,
+          filter: `brightness(${(brightness as number) * 0.7 + 50}%)`
+        }}
+      />
+
       {/* Top Menu Bar */}
       <TopBar
         title={state.currentTitle}
@@ -385,7 +386,10 @@ export default function Desktop(props: MacActions) {
       {/* Desktop Apps */}
       <div
         className="window-bound z-10 absolute"
-        style={{ top: minMarginY, pointerEvents: "none" }}
+        style={{
+          top: isMobile ? 0 : minMarginY,
+          pointerEvents: "none"
+        }}
       >
         {renderAppWindows()}
         {renderAIMChatWindows()}

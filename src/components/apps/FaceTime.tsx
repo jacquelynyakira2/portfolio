@@ -66,12 +66,12 @@ const Sidebar = ({ state, onTake, onSave, onSelect, isMobile }: SidebarProps) =>
 
   // On mobile, make sidebar full-width at the bottom instead of side
   const sidebarClasses = isMobile
-    ? "absolute w-full h-auto bottom-0 left-0 z-1 flex flex-col bg-zinc-900/85 backdrop-blur-xl"
+    ? "absolute w-full max-h-[45%] bottom-0 left-0 z-1 flex flex-col bg-zinc-900/85 backdrop-blur-xl"
     : "absolute w-74 h-full z-1 left-0 top-0 flex flex-col bg-zinc-900/85 backdrop-blur-xl";
 
   return (
     <div className={sidebarClasses}>
-      <div className="p-5 space-y-2.5 text-sm">
+      <div className="p-3 space-y-2 text-sm sm:p-5 sm:space-y-2.5">
         <button
           className="flex-center space-x-1 w-full py-1 text-white bg-green-700 rounded-md"
           onClick={onTake}
@@ -95,7 +95,7 @@ const Sidebar = ({ state, onTake, onSave, onSelect, isMobile }: SidebarProps) =>
         </button>
       </div>
 
-      <div className="text-xs flex-1 overflow-y-scroll" p="t-5 b-2.5 x-2.5">
+      <div className="min-h-0 flex-1 overflow-y-auto text-xs" p="t-3 sm:t-5 b-2.5 x-2.5">
         <div className="px-2.5 text-white/60 mb-2">Recent</div>
         {Object.keys(images)
           .reverse()
@@ -130,7 +130,7 @@ const FaceTime = ({ width }: FaceTimeProps) => {
   const isMobile = (width || 640) < 640;
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full overflow-hidden">
       <Sidebar
         state={state}
         isMobile={isMobile}
@@ -152,6 +152,7 @@ const FaceTime = ({ width }: FaceTimeProps) => {
       <div className="h-full bg-zinc-800">
         {!state.curImage ? (
           <Webcam
+            className="h-full w-full object-cover"
             mirrored={true}
             audio={false}
             ref={webcamRef}
@@ -162,7 +163,13 @@ const FaceTime = ({ width }: FaceTimeProps) => {
             }}
           />
         ) : (
-          state.curImage && <img size-full src={state.curImage} alt="your-image" />
+          state.curImage && (
+            <img
+              className="size-full object-contain"
+              src={state.curImage}
+              alt="your-image"
+            />
+          )
         )}
       </div>
     </div>

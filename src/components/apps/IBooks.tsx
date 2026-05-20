@@ -511,7 +511,7 @@ const Toolbar = ({
   dark: boolean;
 }) => (
   <div
-    className={`h-[38px] w-full flex items-center justify-between px-3 border-b ${
+    className={`min-h-[38px] w-full flex flex-wrap items-center justify-between gap-2 px-2 py-1 sm:flex-nowrap sm:px-3 border-b ${
       dark ? "border-gray-700/50" : "border-gray-300/50"
     }`}
     style={{
@@ -521,7 +521,7 @@ const Toolbar = ({
     }}
   >
     {/* Left section - View controls */}
-    <div className="flex items-center gap-1">
+    <div className="flex min-w-0 items-center gap-1">
       <div
         className={`flex rounded-md border overflow-hidden ${
           dark ? "bg-gray-800/60 border-gray-700/80" : "bg-white/60 border-gray-300/80"
@@ -552,15 +552,17 @@ const Toolbar = ({
           </svg>
         </button>
       </div>
-      <span className={`text-xs ml-2 ${dark ? "text-gray-400" : "text-gray-500"}`}>
+      <span
+        className={`hidden text-xs ml-2 sm:inline ${dark ? "text-gray-400" : "text-gray-500"}`}
+      >
         {bookCount} books
       </span>
     </div>
 
     {/* Center - Sort options */}
-    <div className="flex items-center gap-2">
+    <div className="order-3 flex w-full items-center gap-2 sm:order-none sm:w-auto">
       <select
-        className={`text-xs rounded-md px-2 py-1 focus:outline-none ${
+        className={`w-full text-xs rounded-md px-2 py-1 focus:outline-none sm:w-auto ${
           dark
             ? "bg-gray-800/60 border border-gray-700/80 text-gray-200"
             : "bg-white/60 border border-gray-300/80 text-gray-600"
@@ -576,7 +578,7 @@ const Toolbar = ({
     <div className="flex items-center gap-2">
       <button
         onClick={onRecommendClick}
-        className={`flex items-center gap-1.5 px-3 py-1 border rounded-md text-xs font-medium transition-colors ${
+        className={`flex items-center gap-1.5 px-2 py-1 border rounded-md text-xs font-medium transition-colors sm:px-3 ${
           dark
             ? "bg-gray-800/60 hover:bg-gray-700/80 border-gray-700/80 text-gray-200"
             : "bg-white/60 hover:bg-white/80 border-gray-300/80 text-gray-700"
@@ -595,7 +597,7 @@ const Toolbar = ({
             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
           />
         </svg>
-        Recommend
+        <span className="hidden xs:inline">Recommend</span>
       </button>
     </div>
   </div>
@@ -666,11 +668,11 @@ const RecommendModal = ({
   if (isSent) {
     return (
       <div
-        className="absolute inset-0 bg-black/30 flex items-start justify-center pt-12 z-50"
+        className="absolute inset-0 bg-black/30 flex items-start justify-center p-4 pt-12 z-50"
         onClick={handleClose}
       >
         <div
-          className="w-[340px] rounded-lg shadow-2xl overflow-hidden"
+          className="w-full max-w-[340px] rounded-lg shadow-2xl overflow-hidden"
           style={{
             background: "linear-gradient(to bottom, #f6f6f6 0%, #ececec 100%)",
             boxShadow: "0 10px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.1)"
@@ -714,12 +716,12 @@ const RecommendModal = ({
 
   return (
     <div
-      className="absolute inset-0 bg-black/30 flex items-start justify-center pt-12 z-50"
+      className="absolute inset-0 bg-black/30 flex items-start justify-center overflow-y-auto p-4 pt-12 z-50"
       onClick={handleClose}
     >
       {/* macOS Sheet-style modal */}
       <div
-        className="w-[340px] rounded-lg shadow-2xl overflow-hidden"
+        className="w-full max-w-[340px] rounded-lg shadow-2xl overflow-hidden"
         style={{
           background: "linear-gradient(to bottom, #f6f6f6 0%, #ececec 100%)",
           boxShadow: "0 10px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.1)"
@@ -813,8 +815,8 @@ const IBooks = ({ width = 800 }: { width?: number }) => {
   const [showRecommendModal, setShowRecommendModal] = useState(false);
   const { dark } = useStore((state) => ({ dark: state.dark }));
 
-  const availableWidth = width - 128;
-  const itemsPerShelf = Math.max(1, Math.floor(availableWidth / 120));
+  const availableWidth = Math.max(320, width) - (width < 640 ? 48 : 128);
+  const itemsPerShelf = Math.max(2, Math.floor(availableWidth / 120));
 
   const handleDragStart = (index: number) => {
     setDragIndex(index);

@@ -91,10 +91,9 @@ export default function DockItem({
 }: DockItemProps) {
   const imgRef = useRef<HTMLImageElement>(null);
   const { width } = useDockHoverAnimation(mouseX, imgRef, dockSize, dockMag);
-  const { winWidth } = useWindowSize();
 
   // Ensure touch-friendly sizing on mobile (minimum 44px)
-  const isMobile = winWidth < 640;
+  const isMobile = useIsPhone();
   const mobileSize = Math.max(dockSize, 44); // Ensure minimum 44px for touch targets
 
   return (

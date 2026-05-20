@@ -110,15 +110,15 @@ const Window = (props: WindowProps) => {
   const dockSize = useStore((state) => state.dockSize);
   const { winWidth, winHeight } = useWindowSize();
 
-  // Mobile detection - use full-screen mobile window on small screens
-  const isMobile = winWidth < 640;
+  // Mobile/touch layouts need a non-draggable frame that is constrained to the viewport.
+  const isMobile = useIsPhone();
 
   // Render mobile window on small screens
   if (isMobile) {
     return <MobileAppWindow {...props}>{props.children}</MobileAppWindow>;
   }
 
-  const initWidth = Math.min(winWidth, props.width || 640);
+  const initWidth = Math.min(winWidth - minMarginX, props.width || 640);
   // Cap height to the space between the top bar and the dock so windows never open behind the dock
   const maxHeight = winHeight - dockSize - 15 - minMarginY;
   const initHeight = Math.min(maxHeight, props.height || 400);
@@ -207,7 +207,7 @@ const Window = (props: WindowProps) => {
           ...position
         });
       }}
-      minWidth={props.minWidth ? props.minWidth : 200}
+      minWidth={Math.min(props.minWidth ? props.minWidth : 200, winWidth - minMarginX)}
       minHeight={props.minHeight ? props.minHeight : 150}
       dragHandleClassName="window-bar"
       disableDragging={props.max}

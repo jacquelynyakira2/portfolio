@@ -146,6 +146,7 @@ interface BuddyItemProps {
 
 const BuddyItem = ({ buddy, onDoubleClick }: BuddyItemProps) => {
   const [showAwayTooltip, setShowAwayTooltip] = useState(false);
+  const isPhone = useIsPhone();
   const itemRef = useRef<HTMLDivElement>(null);
   const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [tooltipCoords, setTooltipCoords] = useState<{
@@ -194,6 +195,7 @@ const BuddyItem = ({ buddy, onDoubleClick }: BuddyItemProps) => {
             : "cursor-pointer hover:bg-blue-100"
         }`}
         onDoubleClick={buddy.status === "offline" ? undefined : onDoubleClick}
+        onClick={isPhone && buddy.status !== "offline" ? onDoubleClick : undefined}
         onMouseEnter={() =>
           buddy.status === "away" && buddy.awayMessage && setShowAwayTooltip(true)
         }

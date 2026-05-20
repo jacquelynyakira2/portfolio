@@ -399,7 +399,7 @@ const Content = ({
 
   return (
     <div className="h-full flex flex-col" bg="gray-50 dark:gray-900">
-      <div className="h-10 flex items-start justify-between px-4 pt-1">
+      <div className="h-auto min-h-10 flex items-start justify-between gap-2 px-3 pt-1 sm:px-4">
         <button
           type="button"
           onClick={() => setFullWidth?.(!fullWidth)}
@@ -414,7 +414,11 @@ const Content = ({
           )}
         </button>
         {/* Right side header area for full-width navigation */}
-        <div className="flex items-center gap-2">{headerRight}</div>
+        <div className="min-w-0 flex-1 overflow-x-auto">
+          <div className="flex w-max min-w-full items-center justify-end gap-2">
+            {headerRight}
+          </div>
+        </div>
       </div>
       <div className="flex-1 overflow-auto">
         <div
@@ -747,12 +751,12 @@ const Bear = () => {
           onNavigateToNote={navigateToNote}
           headerRight={
             showCompactNav ? (
-              <div className="flex items-center gap-2">
+              <div className="flex min-w-0 items-center gap-2">
                 {/* Category selector */}
                 <div className="relative rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-600 transition-colors">
                   <select
                     aria-label="Select section"
-                    className="h-8 rounded-md border-none bg-transparent px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-600 appearance-none pr-8 text-gray-900 dark:text-gray-100"
+                    className="h-8 max-w-[34vw] rounded-md border-none bg-transparent px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-600 appearance-none pr-8 text-gray-900 dark:text-gray-100 sm:max-w-none"
                     value={state.curSidebar}
                     onChange={(e) => {
                       const idx = +e.target.value;
@@ -772,7 +776,7 @@ const Bear = () => {
                 <div className="relative rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-600 transition-colors">
                   <select
                     aria-label="Select note"
-                    className="h-8 rounded-md border-none bg-transparent px-2 text-sm max-w-60 outline-none focus-visible:ring-2 focus-visible:ring-blue-600 appearance-none pr-8 text-gray-900 dark:text-gray-100"
+                    className="h-8 max-w-[42vw] rounded-md border-none bg-transparent px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-600 appearance-none pr-8 text-gray-900 dark:text-gray-100 sm:max-w-60"
                     value={state.curMidbar}
                     onChange={(e) => {
                       const idx = +e.target.value;
