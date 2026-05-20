@@ -113,14 +113,9 @@ const Window = (props: WindowProps) => {
   // Mobile/touch layouts need a non-draggable frame that is constrained to the viewport.
   const isMobile = useIsPhone();
 
-  // Render mobile window on small screens
-  if (isMobile) {
-    return <MobileAppWindow {...props}>{props.children}</MobileAppWindow>;
-  }
-
-  const initWidth = Math.min(winWidth - minMarginX, props.width || 640);
+  const initWidth = Math.min(Math.max(winWidth - minMarginX, 200), props.width || 640);
   // Cap height to the space between the top bar and the dock so windows never open behind the dock
-  const maxHeight = winHeight - dockSize - 15 - minMarginY;
+  const maxHeight = Math.max(150, winHeight - dockSize - 15 - minMarginY);
   const initHeight = Math.min(maxHeight, props.height || 400);
 
   const [state, setState] = useState<WindowState>({
@@ -133,9 +128,9 @@ const Window = (props: WindowProps) => {
   });
 
   useEffect(() => {
-    const newMaxHeight = winHeight - dockSize - 15 - minMarginY;
+    const newMaxHeight = Math.max(150, winHeight - dockSize - 15 - minMarginY);
     setState((prev) => {
-      const newWidth = Math.min(winWidth, prev.width);
+      const newWidth = Math.min(Math.max(winWidth - minMarginX, 200), prev.width);
       const newHeight = Math.min(newMaxHeight, prev.height);
       return {
         ...prev,
@@ -146,7 +141,12 @@ const Window = (props: WindowProps) => {
         y: (winHeight - newHeight - dockSize - minMarginY) / 2
       };
     });
-  }, [winWidth, winHeight]);
+  }, [dockSize, winWidth, winHeight]);
+
+  // Render mobile window on small screens after all hooks have been called.
+  if (isMobile) {
+    return <MobileAppWindow {...props}>{props.children}</MobileAppWindow>;
+  }
 
   const round = props.max ? "rounded-none" : "rounded-lg";
   const minimized = props.min
