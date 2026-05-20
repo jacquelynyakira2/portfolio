@@ -54,6 +54,12 @@
     height: 100%;
   }
 
+  .mobile-window-content {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
   .traffic-lights .icon {
     @apply block;
   }

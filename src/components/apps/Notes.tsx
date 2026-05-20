@@ -398,7 +398,10 @@ const Content = ({
       : "pl-12 pr-6";
 
   return (
-    <div className="h-full flex flex-col" bg="gray-50 dark:gray-900">
+    <div
+      className={isNarrow ? "min-h-full flex flex-col" : "h-full flex flex-col"}
+      bg="gray-50 dark:gray-900"
+    >
       <div className="h-auto min-h-10 flex items-start justify-between gap-2 px-3 pt-1 sm:px-4">
         <button
           type="button"
@@ -420,7 +423,11 @@ const Content = ({
           </div>
         </div>
       </div>
-      <div className="flex-1 overflow-auto">
+      <div
+        className={
+          isNarrow ? "min-h-0 flex-1 overflow-visible" : "min-h-0 flex-1 overflow-auto"
+        }
+      >
         <div
           className={`markdown w-full ${paddingClass} pt-0 pb-6 ${
             fullWidth ? "max-w-[750px] mx-auto" : "max-w-[700px]"
@@ -618,6 +625,7 @@ const Bear = () => {
   const showMiddleNav = !fullWidth && componentWidth >= 600;
   // Show compact navigation when fullWidth OR when any sidebar is hidden
   const showCompactNav = fullWidth || !showLeftSidebar || !showMiddleNav;
+  const isNarrow = componentWidth < 640;
 
   const goPrev = () => {
     const list = state.midbarList;
@@ -707,7 +715,9 @@ const Bear = () => {
   return (
     <div
       ref={containerRef}
-      className="bear font-avenir flex h-full"
+      className={
+        isNarrow ? "bear font-avenir flex min-h-full" : "bear font-avenir flex h-full"
+      }
       bg="gray-50 dark:gray-900"
     >
       {/* Left Sidebar - Shrinks gracefully before hiding at < 800px OR when fullWidth is true */}
@@ -741,7 +751,11 @@ const Bear = () => {
       </div>
 
       {/* Content Area - Always visible, takes full width when sidebars are hidden */}
-      <div className="flex-1 overflow-auto min-w-0">
+      <div
+        className={
+          isNarrow ? "flex-1 min-w-0 overflow-visible" : "flex-1 overflow-auto min-w-0"
+        }
+      >
         <Content
           contentID={state.contentID}
           contentURL={state.contentURL}

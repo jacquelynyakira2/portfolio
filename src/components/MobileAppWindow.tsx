@@ -119,7 +119,8 @@ const MobileAppWindow = (props: MobileWindowProps) => {
         right: "var(--safe-area-inset-right)",
         bottom: `calc(${dockSize + 20}px + var(--safe-area-inset-bottom))`,
         height: `${usableHeight}px`,
-        maxHeight: `calc(100dvh - 32px - ${dockSize + 20}px - var(--safe-area-inset-top) - var(--safe-area-inset-bottom))`
+        maxHeight: `calc(100dvh - 32px - ${dockSize + 20}px - var(--safe-area-inset-top) - var(--safe-area-inset-bottom))`,
+        pointerEvents: "auto"
       }}
       onClick={() => props.focus(props.id)}
       id={`window-${props.id}`}
@@ -138,7 +139,9 @@ const MobileAppWindow = (props: MobileWindowProps) => {
       </div>
 
       {/* App content - scrollable */}
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">{children}</div>
+      <div className="mobile-window-content flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+        {children}
+      </div>
     </div>
   );
 };
