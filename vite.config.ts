@@ -5,6 +5,7 @@ import autoImport from "unplugin-auto-import/vite";
 import path from "path";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import dotenv from "dotenv";
+import { AIM_MODEL_DEFAULT, AIM_MODEL_SPECIAL } from "./api/aim-model-ids";
 
 // Load base env first, then optional overrides (both gitignored for secrets).
 dotenv.config({ path: ".env" });
@@ -48,18 +49,28 @@ function aimChatApiPlugin() {
                   role: m.role as "user" | "assistant",
                   content: m.content
                 }));
+              if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+                throw new Error("GOOGLE_GENERATIVE_AI_API_KEY not configured");
+              }
+              const modelId = isSpecial ? AIM_MODEL_SPECIAL : AIM_MODEL_DEFAULT;
+              const maxTokens = isSpecial ? 300 : 150;
               const { generateText } = await import("ai");
               const { google } = await import("@ai-sdk/google");
-              const maxTokens = isSpecial ? 300 : 150;
               const result = await generateText({
-                model: google("gemini-2.5-flash"),
+                model: google(modelId),
                 system: systemPrompt,
                 messages: history,
                 maxTokens
               });
               const text = result.text;
               res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ message: text.trim() }));
+              res.end(
+                JSON.stringify({
+                  message: text.trim(),
+                  provider: "google",
+                  model: modelId
+                })
+              );
             } catch (err) {
               console.error("[aim-chat-api]", err);
               res.statusCode = 500;

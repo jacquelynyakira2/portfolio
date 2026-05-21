@@ -90,11 +90,22 @@ const TrafficLights = ({ id, close, aspectRatio, max, setMax, setMin }: TrafficP
 };
 
 const MobileAppWindow = (props: MobileWindowProps) => {
-  const { winWidth, winHeight } = useWindowSize();
+  const { winWidth, winHeight, layoutHeight, viewportOffsetLeft, viewportOffsetTop } =
+    useWindowSize();
+  const dockSize = useStore((state) => state.dockSize);
+  const insets = useViewportInsets();
 
-  // Mobile windows are always full-screen
-  const width = winWidth;
-  const height = winHeight;
+  const keyboardInset = Math.max(0, layoutHeight - winHeight - viewportOffsetTop);
+  const keyboardOpen = keyboardInset > 120;
+  const dockReserve = keyboardOpen ? 0 : dockSize + 20;
+  const minUsableHeight = keyboardOpen ? 160 : 240;
+
+  // Mobile windows fill the usable space between the menu bar and dock.
+  const width = Math.floor(winWidth);
+  const usableHeight = Math.max(
+    minUsableHeight,
+    Math.floor(winHeight - 32 - dockReserve - insets.safeBottom)
+  );
 
   // Clone children and pass width prop (same as desktop AppWindow)
   const children = React.cloneElement(props.children as React.ReactElement, {
@@ -109,8 +120,18 @@ const MobileAppWindow = (props: MobileWindowProps) => {
       className={`fixed inset-0 flex flex-col bg-c-100 ${minimized}`}
       style={{
         zIndex: props.z,
-        top: "32px", // Account for TopBar height (minMarginY)
-        height: "calc(100vh - 32px)"
+        top: `calc(32px + var(--safe-area-inset-top))`,
+        left: "var(--safe-area-inset-left)",
+        right: "var(--safe-area-inset-right)",
+        height: `${usableHeight}px`,
+        maxHeight: keyboardOpen
+          ? `calc(${winHeight}px - 32px - var(--safe-area-inset-top))`
+          : `calc(100dvh - 32px - ${dockSize + 20}px - var(--safe-area-inset-top) - var(--safe-area-inset-bottom))`,
+        pointerEvents: "auto",
+        transform:
+          viewportOffsetTop || viewportOffsetLeft
+            ? `translate(${viewportOffsetLeft}px, ${viewportOffsetTop}px)`
+            : undefined
       }}
       onClick={() => props.focus(props.id)}
       id={`window-${props.id}`}
@@ -129,7 +150,9 @@ const MobileAppWindow = (props: MobileWindowProps) => {
       </div>
 
       {/* App content - scrollable */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden">{children}</div>
+      <div className="mobile-window-content flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+        {children}
+      </div>
     </div>
   );
 };

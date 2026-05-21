@@ -37,7 +37,18 @@ export default defineConfig({
     // Top-nav chevrons
     "i-tabler:chevron-left",
     "i-tabler:chevron-right",
-    "i-tabler:chevron-down"
+    "i-tabler:chevron-down",
+    // Dynamic app-control icons
+    "i-ion:sunny",
+    "i-ion:volume-high",
+    "i-mdi:format-bold",
+    "i-mdi:format-italic",
+    "i-mdi:format-underline",
+    "i-mdi:link-variant",
+    "i-mdi:emoticon-happy-outline",
+    "i-mdi:alert-outline",
+    "i-mdi:cancel",
+    "i-mdi:account-outline"
   ],
   shortcuts: [
     ["flex-center", "flex items-center justify-center"],

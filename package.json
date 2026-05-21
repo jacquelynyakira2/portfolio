@@ -16,7 +16,6 @@
   },
   "prettier": "@renovamen/prettier-config",
   "dependencies": {
-    "@ai-sdk/anthropic": "^3.0.58",
     "@ai-sdk/google": "^3.0.43",
     "@milkdown/core": "^7.3.6",
     "@milkdown/plugin-history": "^7.3.6",

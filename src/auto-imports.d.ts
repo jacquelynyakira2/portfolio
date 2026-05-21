@@ -54,7 +54,10 @@ declare global {
   const useImperativeHandle: typeof import('react')['useImperativeHandle']
   const useInsertionEffect: typeof import('react')['useInsertionEffect']
   const useInterval: typeof import('./hooks/useInterval')['useInterval']
+  const useIsMobile: typeof import('./hooks/useIsMobile')['useIsMobile']
+  const useIsPhone: typeof import('./hooks/useIsPhone')['useIsPhone']
   const useLayoutEffect: typeof import('react')['useLayoutEffect']
+  const useMediaQuery: typeof import('./hooks/useMediaQuery')['useMediaQuery']
   const useMemo: typeof import('react')['useMemo']
   const useReducer: typeof import('react')['useReducer']
   const useRef: typeof import('react')['useRef']
@@ -63,5 +66,6 @@ declare global {
   const useStore: typeof import('./stores/index')['useStore']
   const useSyncExternalStore: typeof import('react')['useSyncExternalStore']
   const useTransition: typeof import('react')['useTransition']
+  const useViewportInsets: typeof import('./hooks/useViewportInsets')['useViewportInsets']
   const useWindowSize: typeof import('./hooks/useWindowSize')['useWindowSize']
 }

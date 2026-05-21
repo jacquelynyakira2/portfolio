@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useStore } from "~/stores";
-import { useAIMSounds } from "~/hooks";
+import { useAIMSounds, useIsPhone } from "~/hooks";
 import type { AIMBuddy, AIMChat } from "~/types";
 
 // Common emoji shortcuts for the picker
@@ -36,6 +36,7 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const prevMessageCount = useRef(0);
+  const isPhone = useIsPhone();
 
   const {
     aimScreenName,
@@ -132,6 +133,18 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
     onClose();
   };
 
+  const handleInputFocus = () => {
+    if (!isPhone) return;
+
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      textareaRef.current?.scrollIntoView({
+        block: "nearest",
+        inline: "nearest"
+      });
+    }, 80);
+  };
+
   // AI-powered response system with rate limiting
   const handleSendMessage = useCallback(async () => {
     if (!inputText.trim() || !buddy) return;
@@ -196,14 +209,20 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
         })
       });
 
-      if (!res.ok) throw new Error("API error");
+      if (!res.ok) throw new Error(`AIM chat API returned ${res.status}`);
       const data = await res.json();
+      if (!data.message || typeof data.message !== "string") {
+        throw new Error("AIM chat API returned an empty message");
+      }
       aimReceiveMessage(buddyId, data.message);
-    } catch {
-      // Silent fallback to static autoResponses
-      const response =
-        buddy.autoResponses[Math.floor(Math.random() * buddy.autoResponses.length)];
-      setTimeout(() => aimReceiveMessage(buddyId, response), 800);
+    } catch (error) {
+      console.error("[aim-chat]", error);
+      setTimeout(() => {
+        aimReceiveMessage(
+          buddyId,
+          "ugh my AIM connection is being weird and I can't get a real response through. try me again in a sec?"
+        );
+      }, 800);
     }
   }, [
     inputText,
@@ -296,15 +315,15 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
     >
       {/* Classic AIM Menu Bar */}
       <div
-        className="flex items-center gap-4 px-2 py-1 text-[11px] border-b border-gray-400/50"
+        className="flex items-center gap-3 overflow-hidden px-2 py-1 text-[11px] border-b border-gray-400/50 sm:gap-4"
         style={{ background: "linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%)" }}
       >
         <span className="text-gray-600 hover:text-gray-900 cursor-default">File</span>
         <span className="text-gray-600 hover:text-gray-900 cursor-default">Edit</span>
         <span className="text-gray-600 hover:text-gray-900 cursor-default">Insert</span>
         <span className="text-gray-600 hover:text-gray-900 cursor-default">People</span>
-        <div className="flex-1" />
-        <span className="text-[10px] text-gray-400">
+        <div className="flex-1 min-w-0" />
+        <span className="hidden truncate text-[10px] text-gray-400 xs:inline">
           {buddy.screenName}'s Warning Level: 0%
         </span>
       </div>
@@ -360,34 +379,34 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
 
       {/* Formatting Toolbar */}
       <div
-        className="flex items-center gap-0.5 px-2 py-1 mx-2 mt-1 border border-gray-400"
+        className="flex items-center gap-0.5 overflow-x-auto px-2 py-1 mx-2 mt-1 border border-gray-400"
         style={{ background: "linear-gradient(to bottom, #f0f0f0 0%, #e0e0e0 100%)" }}
       >
         <ToolbarButton
-          icon="i-mdi:format-bold"
+          icon="bold"
           title="Bold (**text**)"
           onClick={() => applyFormatting("**", "**")}
         />
         <ToolbarButton
-          icon="i-mdi:format-italic"
+          icon="italic"
           title="Italic (*text*)"
           onClick={() => applyFormatting("*", "*")}
         />
         <ToolbarButton
-          icon="i-mdi:format-underline"
+          icon="underline"
           title="Underline (__text__)"
           onClick={() => applyFormatting("__", "__")}
         />
         <div className="w-px h-4 bg-gray-400 mx-1" />
         <ToolbarButton
-          icon="i-mdi:link-variant"
+          icon="link"
           title="Insert Link"
           onClick={() => applyFormatting("[", "](url)")}
         />
         <div className="flex-1" />
         <div className="relative">
           <ToolbarButton
-            icon="i-mdi:emoticon-happy-outline"
+            icon="emoji"
             title="Insert Emoji"
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
             active={showEmojiPicker}
@@ -416,11 +435,12 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
       </div>
 
       {/* Input Area */}
-      <form onSubmit={handleSubmit} className="px-2 py-1">
+      <form onSubmit={handleSubmit} className="shrink-0 px-2 py-1">
         <textarea
           ref={textareaRef}
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
+          onFocus={handleInputFocus}
           onSelect={handleSelect}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
@@ -429,21 +449,21 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
             }
           }}
           placeholder="Type your message..."
-          className="w-full h-16 px-2 py-1 text-sm border border-gray-400 bg-white text-gray-900 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="h-14 w-full resize-none border border-gray-400 bg-white px-2 py-1 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:h-16"
         />
       </form>
 
       {/* Action Buttons */}
       <div
-        className="flex items-center justify-between px-2 py-2 border-t border-gray-400/50"
+        className="flex items-center justify-between gap-2 px-2 py-2 border-t border-gray-400/50"
         style={{ background: "linear-gradient(to bottom, #e0e0e0 0%, #c8c8c8 100%)" }}
       >
-        <div className="flex gap-1">
-          <ActionButton icon="i-mdi:alert-outline" label="Warn" />
-          <ActionButton icon="i-mdi:cancel" label="Block" />
+        <div className="flex min-w-0 gap-1">
+          <ActionButton icon="warn" label="Warn" />
+          <ActionButton icon="block" label="Block" />
         </div>
-        <div className="flex gap-1">
-          <ActionButton icon="i-mdi:account-outline" label="Info" />
+        <div className="flex shrink-0 gap-1">
+          <ActionButton icon="info" label="Info" />
           <button
             onClick={handleSendMessage}
             disabled={!inputText.trim()}
@@ -473,7 +493,7 @@ const ToolbarButton = ({
   onClick,
   active = false
 }: {
-  icon: string;
+  icon: "bold" | "italic" | "underline" | "link" | "emoji";
   title: string;
   onClick: () => void;
   active?: boolean;
@@ -483,17 +503,37 @@ const ToolbarButton = ({
     className={`p-1 rounded hover:bg-gray-300 ${active ? "bg-gray-300" : ""}`}
     title={title}
   >
-    <span className={`${icon} text-base text-gray-700`} />
+    {icon === "bold" && <span className="i-mdi:format-bold text-base text-gray-700" />}
+    {icon === "italic" && (
+      <span className="i-mdi:format-italic text-base text-gray-700" />
+    )}
+    {icon === "underline" && (
+      <span className="i-mdi:format-underline text-base text-gray-700" />
+    )}
+    {icon === "link" && <span className="i-mdi:link-variant text-base text-gray-700" />}
+    {icon === "emoji" && (
+      <span className="i-mdi:emoticon-happy-outline text-base text-gray-700" />
+    )}
   </button>
 );
 
 // Action Button Component
-const ActionButton = ({ icon, label }: { icon: string; label: string }) => (
+const ActionButton = ({
+  icon,
+  label
+}: {
+  icon: "warn" | "block" | "info";
+  label: string;
+}) => (
   <button
     className="flex flex-col items-center px-2 py-1 hover:bg-gray-300/50 rounded"
     title={label}
   >
-    <span className={`${icon} text-base text-gray-600`} />
+    {icon === "warn" && <span className="i-mdi:alert-outline text-base text-gray-600" />}
+    {icon === "block" && <span className="i-mdi:cancel text-base text-gray-600" />}
+    {icon === "info" && (
+      <span className="i-mdi:account-outline text-base text-gray-600" />
+    )}
     <span className="text-[9px] text-gray-600">{label}</span>
   </button>
 );

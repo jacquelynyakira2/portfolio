@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useMemo, useState } from "react";
 
 interface Book {
   id: string;
@@ -8,6 +8,9 @@ interface Book {
   isSample?: boolean;
   isbn?: string;
 }
+
+type ViewMode = "shelf" | "list";
+type SortMode = "title" | "author" | "recent";
 
 const initialBooks: Book[] = [
   {
@@ -212,6 +215,7 @@ const initialBooks: Book[] = [
 interface BookItemProps {
   book: Book;
   index: number;
+  canDrag: boolean;
   onDragStart: (index: number) => void;
   onDragOver: (e: React.DragEvent, index: number) => void;
   onDragEnd: () => void;
@@ -222,6 +226,7 @@ interface BookItemProps {
 const BookItem = ({
   book,
   index,
+  canDrag,
   onDragStart,
   onDragOver,
   onDragEnd,
@@ -251,11 +256,13 @@ const BookItem = ({
 
   return (
     <div
-      draggable
+      draggable={canDrag}
       onDragStart={() => onDragStart(index)}
       onDragOver={(e) => onDragOver(e, index)}
       onDragEnd={onDragEnd}
-      className={`w-24 ${book.coverColor} rounded-[1px] flex flex-col transition-all duration-200 cursor-grab active:cursor-grabbing relative z-20 mx-3 shrink-0 overflow-hidden h-fit ${
+      className={`w-24 ${book.coverColor} rounded-[1px] flex flex-col transition-all duration-200 relative z-20 mx-3 shrink-0 overflow-hidden h-fit ${
+        canDrag ? "cursor-grab active:cursor-grabbing" : "cursor-default"
+      } ${
         isDragging ? "opacity-50 scale-95" : "hover:scale-105"
       } ${isOver ? "translate-x-4" : ""}`}
       style={{
@@ -349,6 +356,7 @@ const BookItem = ({
 interface ShelfRowProps {
   books: Book[];
   startIndex: number;
+  canDrag: boolean;
   onDragStart: (index: number) => void;
   onDragOver: (e: React.DragEvent, index: number) => void;
   onDragEnd: () => void;
@@ -360,6 +368,7 @@ interface ShelfRowProps {
 const ShelfRow = ({
   books,
   startIndex,
+  canDrag,
   onDragStart,
   onDragOver,
   onDragEnd,
@@ -463,6 +472,7 @@ const ShelfRow = ({
             key={book.id}
             book={book}
             index={startIndex + i}
+            canDrag={canDrag}
             onDragStart={onDragStart}
             onDragOver={onDragOver}
             onDragEnd={onDragEnd}
@@ -500,18 +510,81 @@ const ShelfRow = ({
   );
 };
 
+const BookList = ({ books, dark }: { books: Book[]; dark: boolean }) => (
+  <div className={`min-h-full p-3 ${dark ? "bg-[#0f0a07]" : "bg-[#4a3215]"}`}>
+    <div
+      className={`overflow-hidden rounded-lg border ${
+        dark ? "border-white/10 bg-white/5" : "border-black/15 bg-white/80"
+      }`}
+    >
+      {books.map((book) => {
+        const coverUrl = book.isbn
+          ? `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`
+          : null;
+
+        return (
+          <div
+            key={book.id}
+            className={`flex min-h-16 items-center gap-3 border-b px-3 py-2 last:border-b-0 ${
+              dark ? "border-white/10 text-white" : "border-black/10 text-gray-900"
+            }`}
+          >
+            <div
+              className={`h-12 w-9 shrink-0 overflow-hidden rounded-sm ${book.coverColor}`}
+            >
+              {coverUrl ? (
+                <img
+                  src={coverUrl}
+                  alt={`${book.title} cover`}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              ) : null}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-sm font-semibold">{book.title}</div>
+              <div
+                className={
+                  dark
+                    ? "truncate text-xs text-white/60"
+                    : "truncate text-xs text-gray-500"
+                }
+              >
+                {book.author}
+              </div>
+            </div>
+            {book.isSample && (
+              <span className="rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                Current
+              </span>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
 // macOS-style Toolbar
 const Toolbar = ({
   onRecommendClick,
+  viewMode,
+  setViewMode,
+  sortMode,
+  setSortMode,
   bookCount,
   dark
 }: {
   onRecommendClick: () => void;
+  viewMode: ViewMode;
+  setViewMode: (value: ViewMode) => void;
+  sortMode: SortMode;
+  setSortMode: (value: SortMode) => void;
   bookCount: number;
   dark: boolean;
 }) => (
   <div
-    className={`h-[38px] w-full flex items-center justify-between px-3 border-b ${
+    className={`min-h-[38px] w-full flex flex-wrap items-center justify-between gap-2 px-2 py-1 sm:flex-nowrap sm:px-3 border-b ${
       dark ? "border-gray-700/50" : "border-gray-300/50"
     }`}
     style={{
@@ -521,17 +594,25 @@ const Toolbar = ({
     }}
   >
     {/* Left section - View controls */}
-    <div className="flex items-center gap-1">
+    <div className="flex min-w-0 items-center gap-1">
       <div
         className={`flex rounded-md border overflow-hidden ${
           dark ? "bg-gray-800/60 border-gray-700/80" : "bg-white/60 border-gray-300/80"
         }`}
       >
         <button
+          type="button"
+          aria-label="List view"
+          aria-pressed={viewMode === "list"}
+          onClick={() => setViewMode("list")}
           className={`px-2.5 py-1 border-r ${
-            dark
-              ? "hover:bg-gray-700/50 border-gray-700/80"
-              : "hover:bg-gray-200/50 border-gray-300/80"
+            viewMode === "list"
+              ? dark
+                ? "bg-gray-700/80 border-gray-700/80"
+                : "bg-gray-200/80 border-gray-300/80"
+              : dark
+                ? "hover:bg-gray-700/50 border-gray-700/80"
+                : "hover:bg-gray-200/50 border-gray-300/80"
           }`}
         >
           <svg
@@ -542,7 +623,21 @@ const Toolbar = ({
             <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
           </svg>
         </button>
-        <button className={`px-2.5 py-1 ${dark ? "bg-gray-700/80" : "bg-gray-200/80"}`}>
+        <button
+          type="button"
+          aria-label="Shelf view"
+          aria-pressed={viewMode === "shelf"}
+          onClick={() => setViewMode("shelf")}
+          className={`px-2.5 py-1 ${
+            viewMode === "shelf"
+              ? dark
+                ? "bg-gray-700/80"
+                : "bg-gray-200/80"
+              : dark
+                ? "hover:bg-gray-700/50"
+                : "hover:bg-gray-200/50"
+          }`}
+        >
           <svg
             className={`w-4 h-4 ${dark ? "text-gray-200" : "text-gray-700"}`}
             fill="currentColor"
@@ -552,23 +647,27 @@ const Toolbar = ({
           </svg>
         </button>
       </div>
-      <span className={`text-xs ml-2 ${dark ? "text-gray-400" : "text-gray-500"}`}>
+      <span
+        className={`hidden text-xs ml-2 sm:inline ${dark ? "text-gray-400" : "text-gray-500"}`}
+      >
         {bookCount} books
       </span>
     </div>
 
     {/* Center - Sort options */}
-    <div className="flex items-center gap-2">
+    <div className="order-3 flex w-full items-center gap-2 sm:order-none sm:w-auto">
       <select
-        className={`text-xs rounded-md px-2 py-1 focus:outline-none ${
+        value={sortMode}
+        onChange={(event) => setSortMode(event.target.value as SortMode)}
+        className={`w-full text-xs rounded-md px-2 py-1 focus:outline-none sm:w-auto ${
           dark
             ? "bg-gray-800/60 border border-gray-700/80 text-gray-200"
             : "bg-white/60 border border-gray-300/80 text-gray-600"
         }`}
       >
-        <option>Sort by Title</option>
-        <option>Sort by Author</option>
-        <option>Sort by Recent</option>
+        <option value="title">Sort by Title</option>
+        <option value="author">Sort by Author</option>
+        <option value="recent">Sort by Recent</option>
       </select>
     </div>
 
@@ -576,7 +675,7 @@ const Toolbar = ({
     <div className="flex items-center gap-2">
       <button
         onClick={onRecommendClick}
-        className={`flex items-center gap-1.5 px-3 py-1 border rounded-md text-xs font-medium transition-colors ${
+        className={`flex items-center gap-1.5 px-2 py-1 border rounded-md text-xs font-medium transition-colors sm:px-3 ${
           dark
             ? "bg-gray-800/60 hover:bg-gray-700/80 border-gray-700/80 text-gray-200"
             : "bg-white/60 hover:bg-white/80 border-gray-300/80 text-gray-700"
@@ -595,7 +694,7 @@ const Toolbar = ({
             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
           />
         </svg>
-        Recommend
+        <span className="hidden xs:inline">Recommend</span>
       </button>
     </div>
   </div>
@@ -666,11 +765,11 @@ const RecommendModal = ({
   if (isSent) {
     return (
       <div
-        className="absolute inset-0 bg-black/30 flex items-start justify-center pt-12 z-50"
+        className="absolute inset-0 bg-black/30 flex items-start justify-center p-4 pt-12 z-50"
         onClick={handleClose}
       >
         <div
-          className="w-[340px] rounded-lg shadow-2xl overflow-hidden"
+          className="w-full max-w-[340px] rounded-lg shadow-2xl overflow-hidden"
           style={{
             background: "linear-gradient(to bottom, #f6f6f6 0%, #ececec 100%)",
             boxShadow: "0 10px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.1)"
@@ -714,12 +813,12 @@ const RecommendModal = ({
 
   return (
     <div
-      className="absolute inset-0 bg-black/30 flex items-start justify-center pt-12 z-50"
+      className="absolute inset-0 bg-black/30 flex items-start justify-center overflow-y-auto p-4 pt-12 z-50"
       onClick={handleClose}
     >
       {/* macOS Sheet-style modal */}
       <div
-        className="w-[340px] rounded-lg shadow-2xl overflow-hidden"
+        className="w-full max-w-[340px] rounded-lg shadow-2xl overflow-hidden"
         style={{
           background: "linear-gradient(to bottom, #f6f6f6 0%, #ececec 100%)",
           boxShadow: "0 10px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.1)"
@@ -811,10 +910,32 @@ const IBooks = ({ width = 800 }: { width?: number }) => {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [overIndex, setOverIndex] = useState<number | null>(null);
   const [showRecommendModal, setShowRecommendModal] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("shelf");
+  const [sortMode, setSortMode] = useState<SortMode>("title");
   const { dark } = useStore((state) => ({ dark: state.dark }));
 
-  const availableWidth = width - 128;
-  const itemsPerShelf = Math.max(1, Math.floor(availableWidth / 120));
+  const availableWidth = Math.max(320, width) - (width < 640 ? 48 : 128);
+  const itemsPerShelf = Math.max(2, Math.floor(availableWidth / 120));
+  const sortedBooks = useMemo(() => {
+    const collator = new Intl.Collator(undefined, {
+      numeric: true,
+      sensitivity: "base"
+    });
+
+    if (sortMode === "title") {
+      return [...books].sort((a, b) => collator.compare(a.title, b.title));
+    }
+
+    if (sortMode === "author") {
+      return [...books].sort(
+        (a, b) =>
+          collator.compare(a.author, b.author) || collator.compare(a.title, b.title)
+      );
+    }
+
+    return books;
+  }, [books, sortMode]);
+  const canDragBooks = sortMode === "recent";
 
   const handleDragStart = (index: number) => {
     setDragIndex(index);
@@ -828,7 +949,12 @@ const IBooks = ({ width = 800 }: { width?: number }) => {
   };
 
   const handleDragEnd = () => {
-    if (dragIndex !== null && overIndex !== null && dragIndex !== overIndex) {
+    if (
+      canDragBooks &&
+      dragIndex !== null &&
+      overIndex !== null &&
+      dragIndex !== overIndex
+    ) {
       const newBooks = [...books];
       const [draggedBook] = newBooks.splice(dragIndex, 1);
       newBooks.splice(overIndex, 0, draggedBook);
@@ -839,8 +965,8 @@ const IBooks = ({ width = 800 }: { width?: number }) => {
   };
 
   const shelves: Book[][] = [];
-  for (let i = 0; i < books.length; i += itemsPerShelf) {
-    shelves.push(books.slice(i, i + itemsPerShelf));
+  for (let i = 0; i < sortedBooks.length; i += itemsPerShelf) {
+    shelves.push(sortedBooks.slice(i, i + itemsPerShelf));
   }
   while (shelves.length < 5) shelves.push([]);
 
@@ -856,7 +982,11 @@ const IBooks = ({ width = 800 }: { width?: number }) => {
       {/* macOS-style Toolbar */}
       <Toolbar
         onRecommendClick={() => setShowRecommendModal(true)}
-        bookCount={books.length}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        sortMode={sortMode}
+        setSortMode={setSortMode}
+        bookCount={sortedBooks.length}
         dark={dark}
       />
 
@@ -867,14 +997,32 @@ const IBooks = ({ width = 800 }: { width?: number }) => {
           background: dark ? "#0f0a07" : "#4a3215"
         }}
       >
-        {shelves.map((shelfBooks, index) => {
-          const startIndex = bookIndex;
-          bookIndex += shelfBooks.length;
-          return (
+        {viewMode === "list" ? (
+          <BookList books={sortedBooks} dark={dark} />
+        ) : (
+          <>
+            {shelves.map((shelfBooks, index) => {
+              const startIndex = bookIndex;
+              bookIndex += shelfBooks.length;
+              return (
+                <ShelfRow
+                  key={index}
+                  books={shelfBooks}
+                  startIndex={startIndex}
+                  canDrag={canDragBooks}
+                  onDragStart={handleDragStart}
+                  onDragOver={handleDragOver}
+                  onDragEnd={handleDragEnd}
+                  dragIndex={dragIndex}
+                  overIndex={overIndex}
+                  dark={dark}
+                />
+              );
+            })}
             <ShelfRow
-              key={index}
-              books={shelfBooks}
-              startIndex={startIndex}
+              books={[]}
+              startIndex={sortedBooks.length}
+              canDrag={canDragBooks}
               onDragStart={handleDragStart}
               onDragOver={handleDragOver}
               onDragEnd={handleDragEnd}
@@ -882,18 +1030,8 @@ const IBooks = ({ width = 800 }: { width?: number }) => {
               overIndex={overIndex}
               dark={dark}
             />
-          );
-        })}
-        <ShelfRow
-          books={[]}
-          startIndex={books.length}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-          dragIndex={dragIndex}
-          overIndex={overIndex}
-          dark={dark}
-        />
+          </>
+        )}
       </div>
 
       {/* Recommendation Modal */}

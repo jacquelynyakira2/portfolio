@@ -167,17 +167,17 @@ const Safari = ({ width }: SafariProps) => {
   };
 
   const buttonColor = state.goURL === "" ? "text-c-400" : "text-c-700";
-  const grid = (width as number) < 640 ? "grid-cols-2" : "grid-cols-3";
-  const hideLast = (width as number) < 640 ? "hidden" : "flex";
   const isMobile = (width as number) < 640;
+  const grid = isMobile ? "grid-cols-[auto,minmax(0,1fr)]" : "grid-cols-3";
+  const hideLast = isMobile ? "hidden" : "flex";
   const btnSize = isMobile ? "w-10" : "w-7"; // Larger buttons on mobile for better touch targets
   const btnSizeLg = isMobile ? "w-11" : "w-9";
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full min-w-0 overflow-hidden">
       {/* browser topbar */}
       <div className={`h-10 grid ${grid} items-center bg-c-white`}>
-        <div className="flex px-2">
+        <div className="flex min-w-0 px-2">
           <button
             className={`safari-btn ${btnSize} ${buttonColor}`}
             onClick={() => setGoURL("")}
@@ -191,8 +191,12 @@ const Safari = ({ width }: SafariProps) => {
             <span className="i-bi:layout-sidebar text-sm" />
           </button>
         </div>
-        <div className="hstack space-x-2 px-2">
-          <button className={`safari-btn ${btnSizeLg} -ml-10 text-c-400`}>
+        <div className="hstack min-w-0 space-x-2 px-2">
+          <button
+            className={`safari-btn ${btnSizeLg} ${
+              isMobile ? "hidden" : "-ml-10"
+            } text-c-400`}
+          >
             <span className="i-fa-solid:shield-alt text-sm" />
           </button>
           <input

@@ -23,7 +23,7 @@ const TopBarItem = forwardRef(
     return (
       <div
         ref={ref}
-        className={`hstack space-x-1 px-1 cursor-default rounded ${hide} ${bg} ${
+        className={`hstack min-w-0 space-x-1 px-1 cursor-default rounded ${hide} ${bg} ${
           props.className || ""
         }`}
         style={{ minHeight: "32px", alignItems: "center" }}
@@ -201,8 +201,12 @@ const TopBar = (props: TopBarProps) => {
       className={`w-full h-8 px-2 fixed top-0 hstack justify-between ${
         props.hide ? "z-0" : "z-20"
       } text-sm text-white bg-gray-700/10 backdrop-blur-2xl shadow transition`}
+      style={{
+        paddingLeft: "max(0.5rem, var(--safe-area-inset-left))",
+        paddingRight: "max(0.5rem, var(--safe-area-inset-right))"
+      }}
     >
-      <div className="hstack space-x-1">
+      <div className="hstack min-w-0 flex-1 space-x-1">
         <TopBarItem
           className="px-2"
           forceHover={state.showAppleMenu}
@@ -212,12 +216,12 @@ const TopBar = (props: TopBarProps) => {
           <span className="i-ri:apple-fill text-base" />
         </TopBarItem>
         <TopBarItem
-          className="font-semibold px-2"
+          className="font-semibold px-2 min-w-0 max-w-[40vw] sm:max-w-none"
           onMouseEnter={() => {
             if (state.showAppleMenu) toggleAppleMenu();
           }}
         >
-          {props.title}
+          <span className="truncate">{props.title}</span>
         </TopBarItem>
       </div>
 
@@ -233,7 +237,7 @@ const TopBar = (props: TopBarProps) => {
         />
       )}
 
-      <div className="hstack flex-row justify-end space-x-2">
+      <div className="hstack flex-row justify-end space-x-1 sm:space-x-2">
         <TopBarItem hideOnMobile={true}>
           <Battery />
         </TopBarItem>

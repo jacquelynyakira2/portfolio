@@ -91,17 +91,17 @@ export default function DockItem({
 }: DockItemProps) {
   const imgRef = useRef<HTMLImageElement>(null);
   const { width } = useDockHoverAnimation(mouseX, imgRef, dockSize, dockMag);
-  const { winWidth } = useWindowSize();
 
   // Ensure touch-friendly sizing on mobile (minimum 44px)
-  const isMobile = winWidth < 640;
+  const isMobile = useIsPhone();
   const mobileSize = Math.max(dockSize, 44); // Ensure minimum 44px for touch targets
 
   return (
     <li
       id={`dock-${id}`}
       onClick={desktop || id === "launchpad" ? () => openApp(id) : () => {}}
-      className="relative flex flex-col justify-end mb-1"
+      className="relative flex shrink-0 flex-col justify-end mb-1"
+      style={isMobile ? { width: `${mobileSize}px` } : undefined}
     >
       <p
         className="tooltip absolute inset-x-0 mx-auto w-max rounded-md bg-c-300/80"
@@ -120,7 +120,12 @@ export default function DockItem({
             draggable={false}
             style={
               isMobile
-                ? { width: `${mobileSize}px`, height: `${mobileSize}px` }
+                ? {
+                    width: `${mobileSize}px`,
+                    height: `${mobileSize}px`,
+                    minWidth: `${mobileSize}px`,
+                    flexShrink: 0
+                  }
                 : { width, willChange: "width" }
             }
           />
@@ -134,7 +139,12 @@ export default function DockItem({
           draggable={false}
           style={
             isMobile
-              ? { width: `${mobileSize}px`, height: `${mobileSize}px` }
+              ? {
+                  width: `${mobileSize}px`,
+                  height: `${mobileSize}px`,
+                  minWidth: `${mobileSize}px`,
+                  flexShrink: 0
+                }
               : { width, willChange: "width" }
           }
         />

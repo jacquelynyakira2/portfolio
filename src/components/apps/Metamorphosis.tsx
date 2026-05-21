@@ -257,12 +257,17 @@ const Metamorphosis = ({ size = 420 }: MetamorphosisProps) => {
   }, [size]);
 
   return (
-    <div className="flex items-center justify-center w-full h-full">
+    <div className="flex h-full w-full items-center justify-center overflow-hidden p-3">
       <canvas
         ref={canvasRef}
         width={size}
         height={size}
-        style={{ background: "transparent" }}
+        style={{
+          background: "transparent",
+          maxWidth: "100%",
+          maxHeight: "100%",
+          aspectRatio: "1 / 1"
+        }}
       />
     </div>
   );

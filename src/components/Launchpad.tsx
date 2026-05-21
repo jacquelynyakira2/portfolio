@@ -35,9 +35,9 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
       }}
       onClick={() => toggleLaunchpad(false)}
     >
-      <div className="size-full absolute bg-gray-900/20 backdrop-blur-2xl">
+      <div className="size-full absolute overflow-y-auto bg-gray-900/20 backdrop-blur-2xl">
         <div
-          className="mx-auto flex h-7 w-64 mt-5 bg-gray-200/10"
+          className="mx-auto flex h-8 w-[min(16rem,calc(100vw-2rem))] mt-5 bg-gray-200/10"
           border="1 rounded-md gray-200/30"
           onClick={(e) => e.stopPropagation()}
           onFocus={() => setFocus(true)}
@@ -59,11 +59,11 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
         </div>
 
         <div
-          className="max-w-[1100px] mx-auto mt-8 w-full px-4 sm:px-10"
-          grid="~ flow-row cols-4 sm:cols-7"
+          className="max-w-[1100px] mx-auto mt-8 w-full px-4 pb-10 sm:px-10"
+          grid="~ flow-row cols-3 xs:cols-4 sm:cols-7"
         >
           {search().map((app) => (
-            <div key={`launchpad-${app.id}`} h="32 sm:36" flex="~ col">
+            <div key={`launchpad-${app.id}`} h="30 sm:36" flex="~ col">
               <a
                 className="w-14 sm:w-20 mx-auto"
                 href={app.link}

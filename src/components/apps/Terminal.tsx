@@ -188,7 +188,7 @@ export default class Terminal extends React.Component<{}, TerminalState> {
     }
     this.generateResultRow(
       this.curInputTimes,
-      <div className="grid grid-cols-4 w-full">{result}</div>
+      <div className="grid w-full grid-cols-2 gap-x-3 sm:grid-cols-4">{result}</div>
     );
   };
 
@@ -339,8 +339,11 @@ export default class Terminal extends React.Component<{}, TerminalState> {
 
   generateInputRow = (id: number) => {
     const newRow = (
-      <div key={`terminal-input-row-${id}`} flex>
-        <div className="w-max hstack space-x-1.5">
+      <div
+        key={`terminal-input-row-${id}`}
+        className="flex min-w-0 flex-wrap sm:flex-nowrap"
+      >
+        <div className="hstack max-w-full space-x-1.5">
           <span text-yellow-200>
             jacquelynyakira@macbook-pro <span text-green-300>{this.getCurDirName()}</span>
           </span>
@@ -348,7 +351,7 @@ export default class Terminal extends React.Component<{}, TerminalState> {
         </div>
         <input
           id={`terminal-input-${id}`}
-          className="flex-1 px-1 text-white outline-none bg-transparent"
+          className="min-w-[8rem] flex-1 px-1 text-white outline-none bg-transparent"
           onKeyDown={this.keyPress}
           autoFocus={true}
         />
@@ -369,7 +372,7 @@ export default class Terminal extends React.Component<{}, TerminalState> {
   render() {
     return (
       <div
-        className="terminal font-terminal font-normal relative h-full bg-gray-800/90 overflow-y-scroll"
+        className="terminal font-terminal font-normal relative h-full bg-gray-800/90 overflow-y-auto overflow-x-hidden"
         text="white sm"
         onClick={() => this.focusOnInput(this.curInputTimes)}
       >
