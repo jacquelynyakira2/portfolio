@@ -7,8 +7,8 @@ dotenv.config({ path: ".env.local" });
 
 import express from "express";
 import { google } from "@ai-sdk/google";
-import { createAnthropic } from "@ai-sdk/anthropic";
 import { generateText } from "ai";
+import { AIM_MODEL_DEFAULT, AIM_MODEL_SPECIAL } from "../api/aim-model-ids";
 
 const PORT = 3001;
 const app = express();
@@ -27,33 +27,22 @@ app.post("/api/aim-chat", async (req, res) => {
     content: m.content
   }));
 
+  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    res.status(500).json({ error: "GOOGLE_GENERATIVE_AI_API_KEY not set" });
+    return;
+  }
+
+  const modelId = isSpecial ? AIM_MODEL_SPECIAL : AIM_MODEL_DEFAULT;
+  const maxTokens = isSpecial ? 300 : 150;
+
   try {
-    if (isSpecial) {
-      const apiKey = process.env.ANTHROPIC_API_KEY;
-      if (!apiKey) {
-        res.status(500).json({ error: "ANTHROPIC_API_KEY not set" });
-        return;
-      }
-      const { text } = await generateText({
-        model: createAnthropic({ apiKey })("claude-sonnet-4-6"),
-        system: systemPrompt,
-        messages: history,
-        maxTokens: 300
-      });
-      res.json({ message: text.trim(), provider: "anthropic" });
-    } else {
-      if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-        res.status(500).json({ error: "GOOGLE_GENERATIVE_AI_API_KEY not set" });
-        return;
-      }
-      const { text } = await generateText({
-        model: google("gemini-2.5-flash"),
-        system: systemPrompt,
-        messages: history,
-        maxTokens: 150
-      });
-      res.json({ message: text.trim(), provider: "google" });
-    }
+    const { text } = await generateText({
+      model: google(modelId),
+      system: systemPrompt,
+      messages: history,
+      maxTokens
+    });
+    res.json({ message: text.trim(), provider: "google", model: modelId });
   } catch (err) {
     console.error("[dev-api] error:", err);
     res.status(500).json({ error: "LLM request failed" });

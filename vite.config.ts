@@ -5,6 +5,7 @@ import autoImport from "unplugin-auto-import/vite";
 import path from "path";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import dotenv from "dotenv";
+import { AIM_MODEL_DEFAULT, AIM_MODEL_SPECIAL } from "./api/aim-model-ids";
 
 // Load base env first, then optional overrides (both gitignored for secrets).
 dotenv.config({ path: ".env" });
@@ -48,37 +49,28 @@ function aimChatApiPlugin() {
                   role: m.role as "user" | "assistant",
                   content: m.content
                 }));
-              const provider = isSpecial ? "anthropic" : "google";
-              const { generateText } = await import("ai");
-              const model =
-                provider === "anthropic"
-                  ? (() => {
-                      const apiKey = process.env.ANTHROPIC_API_KEY;
-                      if (!apiKey) {
-                        throw new Error("ANTHROPIC_API_KEY not configured");
-                      }
-                      return import("@ai-sdk/anthropic").then(({ createAnthropic }) =>
-                        createAnthropic({ apiKey })("claude-sonnet-4-6")
-                      );
-                    })()
-                  : (() => {
-                      if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-                        throw new Error("GOOGLE_GENERATIVE_AI_API_KEY not configured");
-                      }
-                      return import("@ai-sdk/google").then(({ google }) =>
-                        google("gemini-2.5-flash")
-                      );
-                    })();
+              if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+                throw new Error("GOOGLE_GENERATIVE_AI_API_KEY not configured");
+              }
+              const modelId = isSpecial ? AIM_MODEL_SPECIAL : AIM_MODEL_DEFAULT;
               const maxTokens = isSpecial ? 300 : 150;
+              const { generateText } = await import("ai");
+              const { google } = await import("@ai-sdk/google");
               const result = await generateText({
-                model: await model,
+                model: google(modelId),
                 system: systemPrompt,
                 messages: history,
                 maxTokens
               });
               const text = result.text;
               res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ message: text.trim(), provider }));
+              res.end(
+                JSON.stringify({
+                  message: text.trim(),
+                  provider: "google",
+                  model: modelId
+                })
+              );
             } catch (err) {
               console.error("[aim-chat-api]", err);
               res.statusCode = 500;
