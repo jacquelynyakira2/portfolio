@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { google } from "@ai-sdk/google";
+import { createAnthropic } from "@ai-sdk/anthropic";
 import { generateText } from "ai";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -13,8 +14,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Invalid request body" });
   }
 
+  const provider = isSpecial ? "anthropic" : "google";
+  const anthropicKey = process.env.ANTHROPIC_API_KEY;
   const googleKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-  if (!googleKey) {
+
+  if (provider === "anthropic" && !anthropicKey) {
+    return res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
+  }
+
+  if (provider === "google" && !googleKey) {
     return res.status(500).json({ error: "GOOGLE_GENERATIVE_AI_API_KEY not configured" });
   }
 
@@ -27,11 +35,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }));
 
   const { text } = await generateText({
-    model: google("gemini-2.5-flash"),
+    model:
+      provider === "anthropic"
+        ? createAnthropic({ apiKey: anthropicKey })("claude-sonnet-4-6")
+        : google("gemini-2.5-flash"),
     system: systemPrompt,
     messages: history,
     maxTokens
   });
 
-  return res.status(200).json({ message: text.trim() });
+  return res.status(200).json({ message: text.trim(), provider });
 }

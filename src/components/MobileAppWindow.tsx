@@ -90,15 +90,21 @@ const TrafficLights = ({ id, close, aspectRatio, max, setMax, setMin }: TrafficP
 };
 
 const MobileAppWindow = (props: MobileWindowProps) => {
-  const { winWidth, winHeight } = useWindowSize();
+  const { winWidth, winHeight, layoutHeight, viewportOffsetLeft, viewportOffsetTop } =
+    useWindowSize();
   const dockSize = useStore((state) => state.dockSize);
   const insets = useViewportInsets();
+
+  const keyboardInset = Math.max(0, layoutHeight - winHeight - viewportOffsetTop);
+  const keyboardOpen = keyboardInset > 120;
+  const dockReserve = keyboardOpen ? 0 : dockSize + 20;
+  const minUsableHeight = keyboardOpen ? 160 : 240;
 
   // Mobile windows fill the usable space between the menu bar and dock.
   const width = Math.floor(winWidth);
   const usableHeight = Math.max(
-    240,
-    Math.floor(winHeight - 32 - dockSize - 20 - insets.safeBottom)
+    minUsableHeight,
+    Math.floor(winHeight - 32 - dockReserve - insets.safeBottom)
   );
 
   // Clone children and pass width prop (same as desktop AppWindow)
@@ -117,10 +123,15 @@ const MobileAppWindow = (props: MobileWindowProps) => {
         top: `calc(32px + var(--safe-area-inset-top))`,
         left: "var(--safe-area-inset-left)",
         right: "var(--safe-area-inset-right)",
-        bottom: `calc(${dockSize + 20}px + var(--safe-area-inset-bottom))`,
         height: `${usableHeight}px`,
-        maxHeight: `calc(100dvh - 32px - ${dockSize + 20}px - var(--safe-area-inset-top) - var(--safe-area-inset-bottom))`,
-        pointerEvents: "auto"
+        maxHeight: keyboardOpen
+          ? `calc(${winHeight}px - 32px - var(--safe-area-inset-top))`
+          : `calc(100dvh - 32px - ${dockSize + 20}px - var(--safe-area-inset-top) - var(--safe-area-inset-bottom))`,
+        pointerEvents: "auto",
+        transform:
+          viewportOffsetTop || viewportOffsetLeft
+            ? `translate(${viewportOffsetLeft}px, ${viewportOffsetTop}px)`
+            : undefined
       }}
       onClick={() => props.focus(props.id)}
       id={`window-${props.id}`}

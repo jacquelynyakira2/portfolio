@@ -48,18 +48,37 @@ function aimChatApiPlugin() {
                   role: m.role as "user" | "assistant",
                   content: m.content
                 }));
+              const provider = isSpecial ? "anthropic" : "google";
               const { generateText } = await import("ai");
-              const { google } = await import("@ai-sdk/google");
+              const model =
+                provider === "anthropic"
+                  ? (() => {
+                      const apiKey = process.env.ANTHROPIC_API_KEY;
+                      if (!apiKey) {
+                        throw new Error("ANTHROPIC_API_KEY not configured");
+                      }
+                      return import("@ai-sdk/anthropic").then(({ createAnthropic }) =>
+                        createAnthropic({ apiKey })("claude-sonnet-4-6")
+                      );
+                    })()
+                  : (() => {
+                      if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+                        throw new Error("GOOGLE_GENERATIVE_AI_API_KEY not configured");
+                      }
+                      return import("@ai-sdk/google").then(({ google }) =>
+                        google("gemini-2.5-flash")
+                      );
+                    })();
               const maxTokens = isSpecial ? 300 : 150;
               const result = await generateText({
-                model: google("gemini-2.5-flash"),
+                model: await model,
                 system: systemPrompt,
                 messages: history,
                 maxTokens
               });
               const text = result.text;
               res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ message: text.trim() }));
+              res.end(JSON.stringify({ message: text.trim(), provider }));
             } catch (err) {
               console.error("[aim-chat-api]", err);
               res.statusCode = 500;

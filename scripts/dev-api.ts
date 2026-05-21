@@ -40,7 +40,7 @@ app.post("/api/aim-chat", async (req, res) => {
         messages: history,
         maxTokens: 300
       });
-      res.json({ message: text.trim() });
+      res.json({ message: text.trim(), provider: "anthropic" });
     } else {
       if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
         res.status(500).json({ error: "GOOGLE_GENERATIVE_AI_API_KEY not set" });
@@ -52,7 +52,7 @@ app.post("/api/aim-chat", async (req, res) => {
         messages: history,
         maxTokens: 150
       });
-      res.json({ message: text.trim() });
+      res.json({ message: text.trim(), provider: "google" });
     }
   } catch (err) {
     console.error("[dev-api] error:", err);

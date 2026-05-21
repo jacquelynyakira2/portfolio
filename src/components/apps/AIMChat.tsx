@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useStore } from "~/stores";
-import { useAIMSounds } from "~/hooks";
+import { useAIMSounds, useIsPhone } from "~/hooks";
 import type { AIMBuddy, AIMChat } from "~/types";
 
 // Common emoji shortcuts for the picker
@@ -36,6 +36,7 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const prevMessageCount = useRef(0);
+  const isPhone = useIsPhone();
 
   const {
     aimScreenName,
@@ -132,6 +133,18 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
     onClose();
   };
 
+  const handleInputFocus = () => {
+    if (!isPhone) return;
+
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      textareaRef.current?.scrollIntoView({
+        block: "nearest",
+        inline: "nearest"
+      });
+    }, 80);
+  };
+
   // AI-powered response system with rate limiting
   const handleSendMessage = useCallback(async () => {
     if (!inputText.trim() || !buddy) return;
@@ -196,14 +209,20 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
         })
       });
 
-      if (!res.ok) throw new Error("API error");
+      if (!res.ok) throw new Error(`AIM chat API returned ${res.status}`);
       const data = await res.json();
+      if (!data.message || typeof data.message !== "string") {
+        throw new Error("AIM chat API returned an empty message");
+      }
       aimReceiveMessage(buddyId, data.message);
-    } catch {
-      // Silent fallback to static autoResponses
-      const response =
-        buddy.autoResponses[Math.floor(Math.random() * buddy.autoResponses.length)];
-      setTimeout(() => aimReceiveMessage(buddyId, response), 800);
+    } catch (error) {
+      console.error("[aim-chat]", error);
+      setTimeout(() => {
+        aimReceiveMessage(
+          buddyId,
+          "ugh my AIM connection is being weird and I can't get a real response through. try me again in a sec?"
+        );
+      }, 800);
     }
   }, [
     inputText,
@@ -416,11 +435,12 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
       </div>
 
       {/* Input Area */}
-      <form onSubmit={handleSubmit} className="px-2 py-1">
+      <form onSubmit={handleSubmit} className="shrink-0 px-2 py-1">
         <textarea
           ref={textareaRef}
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
+          onFocus={handleInputFocus}
           onSelect={handleSelect}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
@@ -429,7 +449,7 @@ const AIMChatWindow = ({ buddyId, onClose }: AIMChatProps) => {
             }
           }}
           placeholder="Type your message..."
-          className="w-full h-16 px-2 py-1 text-sm border border-gray-400 bg-white text-gray-900 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="h-14 w-full resize-none border border-gray-400 bg-white px-2 py-1 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:h-16"
         />
       </form>
 

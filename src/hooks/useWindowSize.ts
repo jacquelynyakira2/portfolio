@@ -1,8 +1,16 @@
 export function useWindowSize() {
-  const getWindowSize = () => ({
-    winWidth: window.visualViewport?.width ?? window.innerWidth,
-    winHeight: window.visualViewport?.height ?? window.innerHeight
-  });
+  const getWindowSize = () => {
+    const viewport = window.visualViewport;
+
+    return {
+      winWidth: viewport?.width ?? window.innerWidth,
+      winHeight: viewport?.height ?? window.innerHeight,
+      layoutWidth: window.innerWidth,
+      layoutHeight: window.innerHeight,
+      viewportOffsetLeft: viewport?.offsetLeft ?? 0,
+      viewportOffsetTop: viewport?.offsetTop ?? 0
+    };
+  };
 
   const [state, setState] = useState({
     ...getWindowSize()
