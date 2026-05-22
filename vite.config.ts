@@ -53,14 +53,14 @@ function aimChatApiPlugin() {
                 throw new Error("GOOGLE_GENERATIVE_AI_API_KEY not configured");
               }
               const modelId = isSpecial ? AIM_MODEL_SPECIAL : AIM_MODEL_DEFAULT;
-              const maxTokens = isSpecial ? 300 : 150;
+              const maxOutputTokens = isSpecial ? 300 : 150;
               const { generateText } = await import("ai");
               const { google } = await import("@ai-sdk/google");
               const result = await generateText({
                 model: google(modelId),
                 system: systemPrompt,
                 messages: history,
-                maxTokens
+                maxOutputTokens
               });
               const text = result.text;
               res.setHeader("Content-Type", "application/json");

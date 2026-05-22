@@ -33,14 +33,14 @@ app.post("/api/aim-chat", async (req, res) => {
   }
 
   const modelId = isSpecial ? AIM_MODEL_SPECIAL : AIM_MODEL_DEFAULT;
-  const maxTokens = isSpecial ? 300 : 150;
+  const maxOutputTokens = isSpecial ? 300 : 150;
 
   try {
     const { text } = await generateText({
       model: google(modelId),
       system: systemPrompt,
       messages: history,
-      maxTokens
+      maxOutputTokens
     });
     res.json({ message: text.trim(), provider: "google", model: modelId });
   } catch (err) {

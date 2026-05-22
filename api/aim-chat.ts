@@ -23,7 +23,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const modelId = isSpecial ? AIM_MODEL_SPECIAL : AIM_MODEL_DEFAULT;
-  const maxTokens = isSpecial ? 300 : 150;
+  const maxOutputTokens = isSpecial ? 300 : 150;
 
   const history = messages.slice(-10).map((m: { role: string; content: string }) => ({
     role: m.role as "user" | "assistant",
@@ -35,7 +35,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       model: google(modelId),
       system: systemPrompt,
       messages: history,
-      maxTokens
+      maxOutputTokens
     });
 
     return res
