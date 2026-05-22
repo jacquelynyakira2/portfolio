@@ -1,7 +1,11 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
-import { AIM_MODEL_DEFAULT, AIM_MODEL_SPECIAL } from "./aim-model-ids";
+
+// Inlined for Vercel Node ESM — extensionless ./aim-model-ids imports crash at cold start.
+// Keep in sync with api/aim-model-ids.ts (used by Vite dev + scripts).
+const AIM_MODEL_DEFAULT = "gemini-3.1-flash-lite";
+const AIM_MODEL_SPECIAL = "gemini-2.5-flash";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
@@ -26,14 +30,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     content: m.content
   }));
 
-  const { text } = await generateText({
-    model: google(modelId),
-    system: systemPrompt,
-    messages: history,
-    maxTokens
-  });
+  try {
+    const { text } = await generateText({
+      model: google(modelId),
+      system: systemPrompt,
+      messages: history,
+      maxTokens
+    });
 
-  return res
-    .status(200)
-    .json({ message: text.trim(), provider: "google", model: modelId });
+    return res
+      .status(200)
+      .json({ message: text.trim(), provider: "google", model: modelId });
+  } catch (err) {
+    console.error("[aim-chat]", err);
+    return res.status(500).json({ error: "LLM request failed" });
+  }
 }
