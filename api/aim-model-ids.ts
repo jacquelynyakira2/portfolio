@@ -7,7 +7,8 @@
 export const AIM_MODEL_DEFAULT = "gemini-3.1-flash-lite";
 
 /**
- * Special buddy (`isSpecial`): strongest available Gemini 3.1 reasoning tier (preview).
- * @see https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview
+ * Special buddy (`isSpecial`): higher-quality flash tier (works on Gemini free tier).
+ * Pro/preview models require billing and return quota errors on free keys.
+ * @see https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash
  */
-export const AIM_MODEL_SPECIAL = "gemini-3.1-pro-preview";
+export const AIM_MODEL_SPECIAL = "gemini-2.5-flash";
