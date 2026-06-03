@@ -130,13 +130,15 @@ const apps: AppsData[] = [
     id: "medium",
     title: "Medium",
     desktop: false,
-    img: "img/icons/medium.png", // temporary; swap to img/icons/medium.png later
+    dockHidden: true,
+    img: "img/icons/medium.png",
     link: "https://medium.com/@jacquelynyakira"
   },
   {
     id: "threads",
     title: "Threads",
     desktop: false,
+    dockHidden: true,
     img: "img/icons/threads.png",
     link: "https://www.threads.com/@jacquelynyakira"
   },
@@ -144,6 +146,7 @@ const apps: AppsData[] = [
     id: "dribbble",
     title: "Dribbble",
     desktop: false,
+    dockHidden: true,
     img: "img/icons/dribbble.png",
     link: "https://dribbble.com/Jacquelynyakira"
   },

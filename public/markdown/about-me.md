@@ -2,9 +2,24 @@
   <video src="/logo/avatar.mp4" autoplay loop muted playsinline style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" aria-label="Jacquelyn's Logo"></video>
 </div>
 
-<h1 style="margin-top: 0; padding-top: 0;">Hi I'm Jacquelyn</h1>
+<h1 class="profile-heading">Hi I'm Jacquelyn</h1>
 
-## Principal Product Design Director at Salesforce
+<h2 class="profile-role">Principal Product Design Director at Salesforce</h2>
+
+<nav class="profile-social" aria-label="Social links">
+  <a href="https://www.linkedin.com/in/jacquelynhalpern/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="profile-social-linkedin">
+    <span class="profile-social-icon"><img src="/img/sites/linkedin.svg" alt="LinkedIn" width="28" height="28" /></span>
+  </a>
+  <a href="https://medium.com/@jacquelynyakira" target="_blank" rel="noopener noreferrer" title="Medium">
+    <span class="profile-social-icon"><img src="/img/icons/medium.png" alt="Medium" width="28" height="28" /></span>
+  </a>
+  <a href="https://dribbble.com/Jacquelynyakira" target="_blank" rel="noopener noreferrer" title="Dribbble">
+    <span class="profile-social-icon"><img src="/img/icons/dribbble.png" alt="Dribbble" width="28" height="28" /></span>
+  </a>
+  <a href="https://www.threads.com/@jacquelynyakira" target="_blank" rel="noopener noreferrer" title="Threads">
+    <span class="profile-social-icon"><img src="/img/icons/threads.png" alt="Threads" width="28" height="28" /></span>
+  </a>
+</nav>
 
 <style>
 .location-hover {
@@ -32,6 +47,82 @@
 
 .location-hover:hover .hover-image {
   display: block !important;
+}
+
+.profile-heading {
+  margin-top: 0 !important;
+  margin-bottom: 0.375rem !important;
+  padding-top: 0 !important;
+}
+
+.profile-role {
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.375rem !important;
+}
+
+.profile-social {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  margin: 0.25rem 0 0.75rem 0;
+}
+
+.profile-social a {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+  padding-bottom: 5px;
+  opacity: 0.88;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.profile-social a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #2563eb;
+  border-radius: 1px;
+  transition: width 0.3s ease;
+  pointer-events: none;
+}
+
+.profile-social a:hover {
+  opacity: 1;
+}
+
+.profile-social a:hover::after {
+  width: 100%;
+}
+
+.dark .profile-social a::after {
+  background-color: #60a5fa;
+}
+
+.profile-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.profile-social img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.profile-social .profile-social-linkedin img {
+  transform: scale(0.82);
 }
 </style>
 
