@@ -66,6 +66,17 @@ const terminal: TerminalData[] = [
               </a>
             </li>
             <li>
+              Resume:{" "}
+              <a
+                className="text-blue-300"
+                href="/resume.html"
+                target="_blank"
+                rel="noreferrer"
+              >
+                resume.html (save as PDF)
+              </a>
+            </li>
+            <li>
               GitHub:{" "}
               <a
                 className="text-blue-300"

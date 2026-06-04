@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Jacquelyn Halpern — Principal Product Design Director, AI product design and learning platforms."
+    />
+    <title>Jacquelyn Halpern — Resume</title>
+    <style>
+      :root {
+        --text: #1d1d1f;
+        --secondary: #6e6e73;
+        --tertiary: #86868b;
+        --line: #d2d2d7;
+        --link: #0066cc;
+        --bg: #fbfbfd;
+        --paper: #ffffff;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          -apple-system,
+          BlinkMacSystemFont,
+          "SF Pro Text",
+          "SF Pro Display",
+          "Helvetica Neue",
+          Helvetica,
+          Arial,
+          sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.47059;
+        letter-spacing: -0.022em;
+      }
+
+      .bar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        height: 44px;
+        background: rgba(251, 251, 253, 0.72);
+        backdrop-filter: saturate(180%) blur(20px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .bar a,
+      .bar button {
+        font: inherit;
+        font-size: 12px;
+        letter-spacing: -0.01em;
+        color: var(--link);
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .bar button {
+        font-weight: 400;
+      }
+
+      .bar a:hover,
+      .bar button:hover {
+        text-decoration: underline;
+      }
+
+      .sheet {
+        max-width: 42rem;
+        margin: 0 auto;
+        padding: 3.5rem 1.5rem 4rem;
+      }
+
+      .resume {
+        background: var(--paper);
+        padding: 3rem 2.5rem 2.75rem;
+        border-radius: 18px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2.125rem;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+      }
+
+      .role-line {
+        margin: 0.35rem 0 0;
+        font-size: 1.0625rem;
+        font-weight: 400;
+        color: var(--secondary);
+        letter-spacing: -0.022em;
+      }
+
+      .contact {
+        margin: 1.25rem 0 0;
+        font-size: 0.8125rem;
+        color: var(--tertiary);
+        line-height: 1.6;
+      }
+
+      .contact a {
+        color: var(--link);
+        text-decoration: none;
+      }
+
+      .contact a:hover {
+        text-decoration: underline;
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--line);
+        margin: 2rem 0;
+        border: none;
+      }
+
+      section {
+        margin-bottom: 2rem;
+      }
+
+      section:last-child {
+        margin-bottom: 0;
+      }
+
+      h2 {
+        margin: 0 0 0.75rem;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--tertiary);
+      }
+
+      .lead {
+        margin: 0;
+        font-size: 0.9375rem;
+        color: var(--text);
+        line-height: 1.55;
+        letter-spacing: -0.016em;
+      }
+
+      .metrics {
+        margin: 1rem 0 0;
+        font-size: 0.8125rem;
+        color: var(--secondary);
+        letter-spacing: -0.01em;
+      }
+
+      .job {
+        margin-bottom: 1.75rem;
+      }
+
+      .job:last-child {
+        margin-bottom: 0;
+      }
+
+      .job-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+        margin-bottom: 0.15rem;
+      }
+
+      .job-title {
+        margin: 0;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        letter-spacing: -0.022em;
+      }
+
+      .job-date {
+        font-size: 0.8125rem;
+        color: var(--tertiary);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .job-org {
+        margin: 0 0 0.5rem;
+        font-size: 0.8125rem;
+        color: var(--secondary);
+      }
+
+      ul {
+        margin: 0;
+        padding: 0 0 0 1.125rem;
+        font-size: 0.8125rem;
+        color: var(--text);
+      }
+
+      li {
+        margin-bottom: 0.35rem;
+        padding-left: 0.125rem;
+      }
+
+      li::marker {
+        color: var(--tertiary);
+      }
+
+      .compact {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.8125rem;
+      }
+
+      .compact li {
+        margin-bottom: 0.65rem;
+        padding-left: 0;
+      }
+
+      .compact strong {
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .compact .meta-inline {
+        display: block;
+        color: var(--tertiary);
+        font-size: 0.75rem;
+        margin-top: 0.1rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem 2.5rem;
+        font-size: 0.8125rem;
+        color: var(--secondary);
+        line-height: 1.5;
+      }
+
+      .footer-grid p {
+        margin: 0;
+      }
+
+      .footer-grid ul {
+        margin: 0.25rem 0 0;
+        padding-left: 1rem;
+        font-size: 0.8125rem;
+      }
+
+      .pubs {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 0.8125rem;
+      }
+
+      .pubs li {
+        margin-bottom: 0.4rem;
+        padding-left: 0;
+      }
+
+      .pubs a {
+        color: var(--link);
+        text-decoration: none;
+      }
+
+      .pubs a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 540px) {
+        .resume {
+          padding: 2rem 1.5rem;
+        }
+
+        .job-header {
+          flex-direction: column;
+          gap: 0.15rem;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+
+        .no-print {
+          display: none !important;
+        }
+
+        .sheet {
+          padding: 0;
+          max-width: none;
+        }
+
+        .resume {
+          padding: 0;
+          border-radius: 0;
+          box-shadow: none;
+        }
+
+        a {
+          color: var(--text) !important;
+          text-decoration: none !important;
+        }
+      }
+
+      @page {
+        size: letter;
+        margin: 0.65in 0.7in;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="bar no-print" aria-label="Resume">
+      <a href="/">Portfolio</a>
+      <button type="button" onclick="window.print()">Save as PDF</button>
+    </nav>
+
+    <div class="sheet">
+      <article class="resume">
+        <header>
+          <h1>Jacquelyn Halpern</h1>
+          <p class="role-line">Principal Product Design Director</p>
+          <p class="contact">
+            Indianapolis, IN
+            <br />
+            <a href="mailto:jacquelyn.halpern@gmail.com">jacquelyn.halpern@gmail.com</a>
+            ·
+            <a href="https://www.linkedin.com/in/jacquelynhalpern/">LinkedIn</a>
+            ·
+            <a href="https://jacquelynyakira.com">jacquelynyakira.com</a>
+          </p>
+        </header>
+
+        <hr class="divider" />
+
+        <section>
+          <h2>Summary</h2>
+          <p class="lead">
+            Product design leader at the intersection of generative AI, agentic experiences, and
+            learning platforms. I lead design for Trailhead at Salesforce—shipping AI companions,
+            autonomous support agents, and discovery systems used by millions. Previously Lead
+            Designer across Netflix and Apple engagements at DockYard. I believe AI should elevate
+            people, not replace them.
+          </p>
+          <p class="metrics">
+            Help Agent: 2M+ conversations · 83% autonomous resolution at launch · 100K+ Agentblazer
+            Champions
+          </p>
+        </section>
+
+        <section>
+          <h2>Experience</h2>
+
+          <div class="job">
+            <div class="job-header">
+              <h3 class="job-title">Principal Product Design Director, Trailhead</h3>
+              <span class="job-date">2023 – Present</span>
+            </div>
+            <p class="job-org">Salesforce</p>
+            <ul>
+              <li>Lead design for agentic learning and AI surfaces on Salesforce's global skills platform.</li>
+              <li>Trailhead Learning Agent—conversational companion for guidance, recommendations, and in-flow support.</li>
+              <li>Customer zero for Agentforce on Help; first autonomous support agent at multi-million conversation scale.</li>
+              <li>Agentblazer program design for AI skill progression; Skill Taxonomy redesign (Skills, Products, Industries).</li>
+              <li>Trailhead for Slack—first Salesforce app on Slack; unified Trailblazer Community across product neighborhoods.</li>
+            </ul>
+          </div>
+
+          <div class="job">
+            <div class="job-header">
+              <h3 class="job-title">Lead Product Designer, Trailhead</h3>
+              <span class="job-date">2020 – 2023</span>
+            </div>
+            <p class="job-org">Salesforce</p>
+            <ul>
+              <li>End-to-end design for core learning, badges, trails, and community through platform scale-up.</li>
+              <li>Einstein and generative AI integration patterns for discovery and learner motivation.</li>
+              <li>AI &amp; Accessibility Hackathon winner—Agent Astro personalized learning agent.</li>
+            </ul>
+          </div>
+
+          <div class="job">
+            <div class="job-header">
+              <h3 class="job-title">Lead Product Designer</h3>
+              <span class="job-date">2018 – 2020</span>
+            </div>
+            <p class="job-org">DockYard</p>
+            <ul>
+              <li>Design strategy and delivery across Netflix's product suite; internal tools for Apple teams.</li>
+            </ul>
+          </div>
+
+          <ul class="compact">
+            <li>
+              <strong>Director of User Experience</strong>, Level Up Development
+              <span class="meta-inline">2017 – 2018</span>
+            </li>
+            <li>
+              <strong>Creative Director</strong>, BrandGlue
+              <span class="meta-inline">2015 – 2017</span>
+            </li>
+            <li>
+              <strong>Senior Designer</strong>, Firebelly Marketing
+              <span class="meta-inline">2012 – 2015</span>
+            </li>
+          </ul>
+        </section>
+
+        <hr class="divider" />
+
+        <section>
+          <div class="footer-grid">
+            <div>
+              <h2>Focus</h2>
+              <p>
+                AI &amp; agent UX · Learning platforms · Design systems · Research &amp; prototyping ·
+                Accessibility &amp; trust
+              </p>
+            </div>
+            <div>
+              <h2>Education</h2>
+              <p>
+                BFA, Visual Communications<br />
+                Herron School of Art &amp; Design, 2012
+              </p>
+            </div>
+            <div>
+              <h2>Leadership</h2>
+              <ul>
+                <li>Dean's Board, Herron School of Art</li>
+                <li>Design mentorship, Salesforce</li>
+                <li>Annual capstone cohort facilitator</li>
+              </ul>
+            </div>
+            <div>
+              <h2>Clients</h2>
+              <p>Salesforce, Netflix, Apple, Meta, Accenture</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Writing &amp; recognition</h2>
+          <ul class="pubs">
+            <li>
+              <a href="https://uxmag.com/articles/the-future-of-product-design-in-an-ai-driven-world"
+                >UX Magazine — The Future of Product Design in an AI-Driven World</a
+              >
+            </li>
+            <li>
+              <a href="https://uxmag.com/articles/vibe-coding-is-this-how-well-build-software-in-the-future"
+                >UX Magazine — Vibe Coding</a
+              >
+            </li>
+            <li>GEN:48 Finalist, RunwayML — <em>Far From Home</em> (2023)</li>
+            <li>Salesforce AI &amp; Accessibility Hackathon Winner (2023)</li>
+          </ul>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>

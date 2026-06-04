@@ -19,6 +19,9 @@
   <a href="https://www.threads.com/@jacquelynyakira" target="_blank" rel="noopener noreferrer" title="Threads">
     <span class="profile-social-icon"><img src="/img/icons/threads.png" alt="Threads" width="28" height="28" /></span>
   </a>
+  <a href="/resume.html" target="_blank" rel="noopener noreferrer" title="Resume (PDF)" class="profile-social-resume">
+    <span class="profile-social-icon profile-social-icon--resume" aria-hidden="true">CV</span>
+  </a>
 </nav>
 
 <style>
@@ -124,6 +127,14 @@
 .profile-social .profile-social-linkedin img {
   transform: scale(0.82);
 }
+
+.profile-social-icon--resume {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #1d1d1f;
+  background: #f5f5f7;
+}
 </style>
 
 Thanks for stopping by! I am a creative technologist and product designer based in <span class="location-hover">Indianapolis<img class="hover-image" src="/img/projects/Trailhead/indy.jpg" alt="Indianapolis skyline" /></span>, specializing in AI-driven experiences, product design, and creative technology.
@@ -139,6 +150,7 @@ Contact me by:
 
 - Email: [jacquelyn.halpern@gmail.com](mailto:jacquelyn.halpern@gmail.com)
 - LinkedIn: [/jacquelynhalpern](https://www.linkedin.com/in/jacquelynhalpern/)
+- Resume: [View &amp; save as PDF](/resume.html) (opens in new tab)
 - Passion Project: [www.lilchef.app](https://www.lilchef.app)
 
 ## Brands I've Worked With

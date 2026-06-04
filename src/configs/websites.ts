@@ -17,6 +17,12 @@ const websites: WebsitesData = {
         link: "https://www.linkedin.com/in/jacquelynhalpern/"
       },
       {
+        id: "my-resume",
+        title: "Resume",
+        img: "img/sites/resume.svg",
+        link: "/resume.html"
+      },
+      {
         id: "my-threads",
         title: "Threads",
         img: "img/icons/threads.png",
