@@ -125,6 +125,48 @@ const Highlighter = (dark: boolean): any => {
   };
 };
 
+const mailtoLinkClass =
+  "mailto-copy-link cursor-pointer bg-transparent border-none p-0 font-inherit inline text-left";
+
+const MailtoCopyLink = ({ email, children }: { email: string; children: ReactNode }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for environments where Clipboard API is unavailable
+      const input = document.createElement("textarea");
+      input.value = email;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.left = "-9999px";
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      document.body.removeChild(input);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      className={mailtoLinkClass}
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={handleClick}
+      title={copied ? "Email copied" : `Copy ${email}`}
+    >
+      {copied ? "Copied!" : children}
+    </button>
+  );
+};
+
 const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
   return (
     <div
@@ -448,7 +490,12 @@ const Content = ({
                   href ??
                   (node as { properties?: { href?: string } })?.properties?.href ??
                   "";
-                const normalized = rawHref ? normalizeNotePath(String(rawHref)) : "";
+                const hrefStr = String(rawHref);
+                if (hrefStr.toLowerCase().startsWith("mailto:")) {
+                  const email = decodeURIComponent(hrefStr.slice(7).split("?")[0]);
+                  return <MailtoCopyLink email={email}>{children}</MailtoCopyLink>;
+                }
+                const normalized = rawHref ? normalizeNotePath(hrefStr) : "";
                 const match = noteLookup.get(normalized);
                 if (match && onNavigateToNote) {
                   return (

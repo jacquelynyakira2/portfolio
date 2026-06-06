@@ -6,6 +6,16 @@ Welcome to my educational content hub! Here you'll find information about my wor
 
 ## Upcoming
 
+Nothing scheduled right now—and that's an invitation.
+
+I'm open to speaking with your team, conference, or classroom on **generative AI, product design, creative technology, and learning at scale**. Formats I love: keynotes, panels, hands-on workshops, and honest Q&A about what's actually working in practice.
+
+**Interested in having me talk to you and your group?** [Email me](mailto:jacquelyn.halpern@gmail.com)—tell me a bit about your audience and what you're hoping to explore, and we'll figure out the right fit together.
+
+---
+
+## Past Educational Events
+
 ### **AI Show & Tell: Innovating Design with AI**
 - **Date**: May 19, 2026
 - **Time**: 5:30 PM – 7:30 PM (local)
@@ -16,8 +26,6 @@ Welcome to my educational content hub! Here you'll find information about my wor
 - **Details & RSVP**: [IxDA event page](https://ixda.org/event/ai-show-tell/)
 
 ---
-
-## Past Educational Events
 
 ### **How AI is Changing the Way We Work: Cross-Functional Viewpoints**
 - **Date**: October 30, 2025
@@ -189,4 +197,4 @@ Interested in booking a workshop or educational session? I'd love to discuss how
 
 ---
 
-*This page is a work in progress. Check back soon for updates on upcoming workshops and educational content.*
+*Upcoming events will be listed here when they're on the calendar. In the meantime, reach out if you'd like to collaborate.*

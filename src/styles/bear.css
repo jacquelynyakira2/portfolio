@@ -2,6 +2,10 @@
   @apply text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors;
 }
 
+.bear .markdown .mailto-copy-link {
+  @apply text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 underline transition-colors;
+}
+
 .bear .markdown h1,
 .bear .markdown h2,
 .bear .markdown h3,
