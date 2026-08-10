@@ -18,7 +18,6 @@ const initialBooks: Book[] = [
     title: "The Alchemist",
     author: "Paulo Coelho",
     coverColor: "bg-[#e5e7eb] text-gray-900",
-    isSample: true,
     isbn: "9780062315007"
   },
   {
@@ -209,6 +208,14 @@ const initialBooks: Book[] = [
     author: "Kassia St. Clair",
     coverColor: "bg-rose-500 text-white",
     isbn: "9780143131144"
+  },
+  {
+    id: "29",
+    title: "Throne of Glass",
+    author: "Sarah J. Maas",
+    coverColor: "bg-sky-900 text-white",
+    isSample: true,
+    isbn: "9781639730957"
   }
 ];
 

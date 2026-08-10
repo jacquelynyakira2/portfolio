@@ -21,6 +21,13 @@ Currently leading design for our agentic experience for Salesforce learning - an
 
 ---
 
+### Trailhead MCP Support
+Helped launch MCP (Model Context Protocol) support on Trailhead, enabling AI assistants to securely connect with Trailhead learning content. Learners and developers can now get personalized guidance, discover trails and badges, and access Salesforce learning resources directly through MCP-compatible tools.
+
+[Learn more →](https://trailhead.salesforce.com/support/mcp)
+
+---
+
 ### Salesforce Help Agent
 As customer zero for Salesforce's Agentforce technology, I helped launch the first AI-powered Help agent that autonomously handles customer support cases. This agent has crossed 1 million support requests with an 83% autonomous resolution rate and $50M in estimated annual savings.
 

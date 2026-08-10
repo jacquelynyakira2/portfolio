@@ -65,6 +65,18 @@ const noteIdLookup = buildNoteIdLookup();
 /** Path prefix for note URLs (avoids collision with /markdown/* static files) */
 const NOTES_PATH_PREFIX = "/notes/";
 
+/**
+ * Markdown files live under /public/markdown. Config stores paths like
+ * "markdown/foo.md". When the browser URL is /notes/<id>, a relative fetch
+ * resolves to /notes/markdown/foo.md and Vite's SPA fallback returns index.html
+ * — which then shows up as raw HTML in the note. Always fetch from site root.
+ */
+const resolveMarkdownFetchURL = (url: string): string => {
+  if (!url) return url;
+  if (/^https?:\/\//i.test(url) || url.startsWith("/")) return url;
+  return `/${url}`;
+};
+
 interface ContentProps {
   contentID: string;
   contentURL: string;
@@ -413,10 +425,21 @@ const Content = ({
   const fetchMarkdown = useCallback(
     (id: string, url: string) => {
       if (!storeMd[id]) {
-        fetch(url)
+        const fetchURL = resolveMarkdownFetchURL(url);
+        fetch(fetchURL)
           .then((response) => response.text())
           .then((text) => {
-            storeMd[id] = fixImageURL(text, url);
+            // Guard against caching SPA HTML if a path is still wrong
+            if (
+              text.trimStart().startsWith("<!DOCTYPE html>") ||
+              text.trimStart().startsWith("<html")
+            ) {
+              console.error(
+                `Expected markdown for "${id}" but got HTML from ${fetchURL}`
+              );
+              return;
+            }
+            storeMd[id] = fixImageURL(text, fetchURL);
             setStoreMd({ ...storeMd });
           })
           .catch((error) => console.error(error));
