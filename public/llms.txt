@@ -40,6 +40,10 @@ Principal Product Design Director. Recognition system for the AI builder communi
 ### Salesforce Trailhead AI Learning Experiences
 Designed AI skill taxonomy, learning path personalization, and Slack-integrated learning — making AI education accessible at scale for millions of Salesforce learners.
 
+### Micrographics
+Browser-based micrographics editor — 96 layered templates, canvas editing, SVG/PNG export.
+- [micrographics.jacquelynyakira.com](https://micrographics.jacquelynyakira.com/)
+
 ### ColorGen — Figma Plugin
 Built an open-source Figma plugin for generative color palettes, gradients, and HSL color tooling.
 - [github.com/jacquelynyakira2/ColorGen](https://github.com/jacquelynyakira2/ColorGen)

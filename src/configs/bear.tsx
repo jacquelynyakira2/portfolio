@@ -112,6 +112,15 @@ const bear: BearData[] = [
     icon: "i-carbon:favorite-filled",
     md: [
       {
+        id: "micrographics",
+        title: "Micrographics",
+        file: "/markdown/micrographics.md",
+        icon: "i-material-symbols:layers",
+        excerpt:
+          "Browser-based micrographics editor — 96 layered templates, edit on canvas, export SVG/PNG...",
+        link: "https://micrographics.jacquelynyakira.com/"
+      },
+      {
         id: "colorgen-project",
         title: "ColorGen - Figma Plugin",
         file: "/markdown/colorgen-project.md",
